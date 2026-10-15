@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>設定 | AI Secretary</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- CSS -->
+     <link rel="stylesheet" href="../css/common.css">
+    <link
+        rel="stylesheet"
+        href="../css/settings.css"
+    >
+</head>
+
+<body>
+
+    <div class="settings-container">
+
+
+        <!-- ============================= -->
+        <!-- ヘッダー -->
+        <!-- ============================= -->
+
+<header class="page-header">
+
+    <div class="page-header-left">
+
+        <button
+            class="back-button"
+            id="backButton"
+            type="button"
+            aria-label="メイン画面に戻る"
+        >
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+
+        <div class="page-heading">
+
+            <div class="page-heading-icon">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+
+            <h2>設定</h2>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="header-save-button"
+        id="headerSaveButton"
+        type="button"
+    >
+        保存
+    </button>
+
+</header>
+
+
+        <!-- ============================= -->
+        <!-- 設定メイン -->
+        <!-- ============================= -->
+
+        <main class="settings-main">
+
+
+            <!-- ============================= -->
+            <!-- 場所・天気設定 -->
+            <!-- ============================= -->
+
+            <section class="settings-card">
+
+                <div class="section-title">
+
+                    <div class="section-icon pink-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+
+                    <div>
+                        <h3>場所・天気</h3>
+
+                        <p>
+                            自宅や職場の天気を表示するための設定です
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-content">
+
+
+                    <!-- 自宅 -->
+                    <div class="form-group">
+
+                        <label for="homeLocation">
+
+                            <span>
+                                <i class="fa-solid fa-house"></i>
+                                自宅
+                            </span>
+
+                            <small>
+                                市区町村までの登録がおすすめ
+                            </small>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-location-crosshairs"></i>
+
+                            <input
+                                type="text"
+                                id="homeLocation"
+                                placeholder="例：埼玉県熊谷市"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 職場 -->
+                    <div class="form-group">
+
+                        <label for="workLocation">
+
+                            <span>
+                                <i class="fa-solid fa-building"></i>
+                                職場
+                            </span>
+
+                            <small>
+                                市区町村までの登録がおすすめ
+                            </small>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <input
+                                type="text"
+                                id="workLocation"
+                                placeholder="例：東京都渋谷区"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 最初に表示する天気 -->
+                    <div class="form-group">
+
+                        <label>
+
+                            <span>
+                                <i class="fa-solid fa-cloud-sun"></i>
+                                メイン画面で最初に表示する天気
+                            </span>
+
+                        </label>
+
+
+                        <div class="select-card-group">
+
+                            <label class="select-card">
+
+                                <input
+                                    type="radio"
+                                    name="defaultWeatherLocation"
+                                    value="current"
+                                    checked
+                                >
+
+                                <span class="select-card-content">
+
+                                    <i class="fa-solid fa-location-arrow"></i>
+
+                                    <strong>現在地</strong>
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="select-card">
+
+                                <input
+                                    type="radio"
+                                    name="defaultWeatherLocation"
+                                    value="home"
+                                >
+
+                                <span class="select-card-content">
+
+                                    <i class="fa-solid fa-house"></i>
+
+                                    <strong>自宅</strong>
+                                </span>
+
+                            </label>
+
+
+                            <label class="select-card">
+
+                                <input
+                                    type="radio"
+                                    name="defaultWeatherLocation"
+                                    value="work"
+                                >
+
+                                <span class="select-card-content">
+
+                                    <i class="fa-solid fa-building"></i>
+
+                                    <strong>職場</strong>
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 位置情報 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+                                <i class="fa-solid fa-location-crosshairs"></i>
+                                現在地の天気を利用する
+                            </div>
+
+                            <p>
+                                ブラウザの位置情報を使って現在地周辺の天気を表示します
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="useCurrentLocation"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- 通勤・通学設定 -->
+            <!-- ============================= -->
+
+            <section class="settings-card">
+
+                <div class="section-title">
+
+                    <div class="section-icon lavender-icon">
+                        <i class="fa-solid fa-train"></i>
+                    </div>
+
+                    <div>
+                        <h3>通勤・通学</h3>
+
+                        <p>
+                            普段利用する電車の情報を登録します
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-content">
+
+
+                    <!-- 路線 -->
+                    <div class="form-group">
+
+                        <label for="trainLine">
+
+                            <span>
+                                <i class="fa-solid fa-route"></i>
+                                利用路線
+                            </span>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-train-subway"></i>
+
+                            <input
+                                type="text"
+                                id="trainLine"
+                                list="trainLineList"
+                                placeholder="例：JR高崎線"
+                                autocomplete="off"
+                            >
+
+                            <datalist id="trainLineList">
+
+                                <option value="JR高崎線">
+                                <option value="JR宇都宮線">
+                                <option value="JR埼京線">
+                                <option value="JR京浜東北線">
+                                <option value="JR山手線">
+                                <option value="JR中央線">
+                                <option value="JR総武線">
+                                <option value="東京メトロ銀座線">
+                                <option value="東京メトロ丸ノ内線">
+                                <option value="東京メトロ千代田線">
+                                <option value="東武東上線">
+                                <option value="東武スカイツリーライン">
+                                <option value="西武池袋線">
+                                <option value="西武新宿線">
+
+                            </datalist>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 駅 -->
+                    <div class="station-grid">
+
+                        <div class="form-group">
+
+                            <label for="boardingStation">
+
+                                <span>
+                                    <i class="fa-solid fa-circle-play"></i>
+                                    乗車駅
+                                </span>
+
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <input
+                                    type="text"
+                                    id="boardingStation"
+                                    placeholder="例：桶川"
+                                    autocomplete="off"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="station-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="arrivalStation">
+
+                                <span>
+                                    <i class="fa-solid fa-circle-stop"></i>
+                                    降車駅
+                                </span>
+
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <input
+                                    type="text"
+                                    id="arrivalStation"
+                                    placeholder="例：大宮"
+                                    autocomplete="off"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 曜日 -->
+                    <div class="form-group">
+
+                        <label>
+
+                            <span>
+                                <i class="fa-regular fa-calendar-days"></i>
+                                利用する曜日
+                            </span>
+
+                        </label>
+
+
+                        <div class="weekday-area">
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="月"
+                                    checked
+                                >
+
+                                <span>月</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="火"
+                                    checked
+                                >
+
+                                <span>火</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="水"
+                                    checked
+                                >
+
+                                <span>水</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="木"
+                                    checked
+                                >
+
+                                <span>木</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="金"
+                                    checked
+                                >
+
+                                <span>金</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="土"
+                                >
+
+                                <span>土</span>
+
+                            </label>
+
+
+                            <label class="weekday-button">
+
+                                <input
+                                    type="checkbox"
+                                    name="weekday"
+                                    value="日"
+                                >
+
+                                <span>日</span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 利用時間 -->
+                    <div class="time-section">
+
+                        <div class="time-block">
+
+                            <div class="time-block-title">
+
+                                <i class="fa-solid fa-sun"></i>
+
+                                <div>
+                                    <strong>出勤する時間帯</strong>
+                                </div>
+
+                            </div>
+
+
+                            <div class="time-inputs">
+
+                                <input
+                                    type="time"
+                                    id="morningStart"
+                                    value="07:00"
+                                >
+
+                                <span>～</span>
+
+                                <input
+                                    type="time"
+                                    id="morningEnd"
+                                    value="09:30"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="time-block">
+
+                            <div class="time-block-title">
+
+                                <i class="fa-solid fa-moon"></i>
+
+                                <div>
+                                    <strong>帰宅する時間帯</strong>
+                                </div>
+
+                            </div>
+
+
+                            <div class="time-inputs">
+
+                                <input
+                                    type="time"
+                                    id="eveningStart"
+                                    value="17:00"
+                                >
+
+                                <span>～</span>
+
+                                <input
+                                    type="time"
+                                    id="eveningEnd"
+                                    value="20:00"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- 通知設定 -->
+            <!-- ============================= -->
+
+            <section class="settings-card">
+
+                <div class="section-title">
+
+                    <div class="section-icon yellow-icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+
+                    <div>
+                        <h3>お知らせ</h3>
+
+                        <p>
+                            AI秘書から受け取りたい情報を選択します
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-content notification-settings">
+
+
+                    <!-- 大雨など -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon weather-alert-icon">
+                                    <i class="fa-solid fa-cloud-showers-heavy"></i>
+                                </span>
+
+                                気象警報・注意報
+
+                            </div>
+
+                            <p>
+                                大雨・暴風・大雪などの情報をお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="weatherAlertNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- 熱中症 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon heat-icon">
+                                    <i class="fa-solid fa-temperature-high"></i>
+                                </span>
+
+                                熱中症警戒情報
+
+                            </div>
+
+                            <p>
+                                熱中症警戒アラートが発表された場合にお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="heatAlertNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- 雨 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon umbrella-icon">
+                                    <i class="fa-solid fa-umbrella"></i>
+                                </span>
+
+                                雨のお知らせ
+
+                            </div>
+
+                            <p>
+                                今日または明日に雨が予想される場合にお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="rainNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- 遅延 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon train-delay-icon">
+                                    <i class="fa-solid fa-train"></i>
+                                </span>
+
+                                電車の遅延
+
+                            </div>
+
+                            <p>
+                                登録した路線で遅延が発生した場合にお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="trainDelayNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- 運休 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon train-stop-icon">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </span>
+
+                                運転見合わせ・運休
+
+                            </div>
+
+                            <p>
+                                登録した路線の運転見合わせや運休をお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="trainStopNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- 予定 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+
+                                <span class="notification-icon schedule-icon">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                </span>
+
+                                予定のリマインド
+
+                            </div>
+
+                            <p>
+                                登録した予定の開始前にAI秘書がお知らせします
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="scheduleNotification"
+                                checked
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- AI秘書設定 -->
+            <!-- ============================= -->
+
+            <section class="settings-card">
+
+                <div class="section-title">
+
+                    <div class="section-icon ai-icon">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+
+                    <div>
+                        <h3>AI秘書</h3>
+
+                        <p>
+                            AI秘書の表示や案内方法を設定します
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="settings-content">
+
+
+                    <div class="form-group">
+
+                        <label for="secretaryName">
+
+                            <span>
+                                <i class="fa-solid fa-id-badge"></i>
+                                AI秘書の名前
+                            </span>
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-sparkles"></i>
+
+                            <input
+                                type="text"
+                                id="secretaryName"
+                                placeholder="例：Luna"
+                                maxlength="20"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="secretaryTone">
+
+                            <span>
+                                <i class="fa-regular fa-comment-dots"></i>
+                                話し方
+                            </span>
+
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+                            <i class="fa-solid fa-comments"></i>
+
+                            <select id="secretaryTone">
+
+                                <option value="friendly">
+                                    親しみやすい
+                                </option>
+
+                                <option value="polite">
+                                    丁寧
+                                </option>
+
+                                <option value="business">
+                                    ビジネス
+                                </option>
+
+                                <option value="simple">
+                                    簡潔
+                                </option>
+
+                            </select>
+
+                            <i class="fa-solid fa-chevron-down select-arrow"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 音声 -->
+                    <div class="setting-row">
+
+                        <div class="setting-row-text">
+
+                            <div class="setting-row-title">
+                                <i class="fa-solid fa-volume-high"></i>
+                                音声で案内する
+                            </div>
+
+                            <p>
+                                音声合成機能は後から実装予定です
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="voiceEnabled"
+                            >
+
+                            <span class="switch-slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- 保存ボタン -->
+            <!-- ============================= -->
+
+            <div class="bottom-actions">
+
+                <button
+                    class="reset-button"
+                    id="resetButton"
+                    type="button"
+                >
+                    <i class="fa-solid fa-rotate-left"></i>
+                    設定を初期化
+                </button>
+
+
+                <button
+                    class="save-button"
+                    id="saveButton"
+                    type="button"
+                >
+                    <i class="fa-solid fa-check"></i>
+                    保存
+                </button>
+
+            </div>
+
+        </main>
+
+    <!-- ============================= -->
+    <!-- 保存完了トースト -->
+    <!-- ============================= -->
+
+    <div
+        class="toast"
+        id="toast"
+    >
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span id="toastMessage">
+            設定を保存しました
+        </span>
+
+    </div>
+
+
+
+    <!-- JavaScript -->
+    <script src="../js/settings.js"></script>
+
+</body>
+
+</html>

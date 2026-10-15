@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>お知らせ | AI Secretary</title>
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+
+
+    <!-- news専用CSS -->
+    <link rel="stylesheet" href="../css/news.css">
+
+</head>
+
+
+<body class="app-page news-page">
+
+    <div class="app-container news-container">
+
+
+        <!-- ============================= -->
+        <!-- ヘッダー -->
+        <!-- ============================= -->
+
+       <header class="page-header news-header">
+
+    <!-- 左側 -->
+    <div class="page-header-left">
+
+        <!-- 戻る -->
+        <button
+            class="back-button"
+            id="backButton"
+            type="button"
+            aria-label="メイン画面に戻る"
+        >
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+
+        <!-- 共通ページタイトル -->
+        <div class="page-heading">
+
+            <div class="page-heading-icon">
+                <i class="fa-regular fa-bell"></i>
+            </div>
+
+            <h2>お知らせ</h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- 未読件数・すべて既読 -->
+    <div class="news-summary">
+
+        <span
+            class="unread-count"
+            id="unreadCount"
+        >
+            未読 0件
+        </span>
+
+        <button
+            class="read-all-button"
+            id="readAllButton"
+            type="button"
+        >
+            すべて既読
+        </button>
+
+    </div>
+
+</header>
+
+
+
+        <!-- ============================= -->
+        <!-- メイン -->
+        <!-- ============================= -->
+
+        <main class="news-main">
+
+
+            <!-- ============================= -->
+            <!-- フィルター -->
+            <!-- ============================= -->
+
+            <section class="news-filter-section" aria-label="お知らせの絞り込み">
+
+                <div class="filter-tabs" role="tablist" aria-label="お知らせカテゴリ">
+
+
+                    <button class="filter-tab is-active" type="button" data-filter="all" role="tab"
+                        aria-selected="true">
+                        すべて
+                    </button>
+
+
+                    <button class="filter-tab" type="button" data-filter="weather" role="tab" aria-selected="false">
+                        天気
+                    </button>
+
+
+                    <button class="filter-tab" type="button" data-filter="train" role="tab" aria-selected="false">
+                        交通
+                    </button>
+
+
+                    <button class="filter-tab" type="button" data-filter="schedule" role="tab" aria-selected="false">
+                        予定
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- 通知一覧 -->
+            <!-- ============================= -->
+
+            <section class="notification-section" aria-label="お知らせ一覧">
+
+
+                <div class="notification-list" id="notificationList"></div>
+
+
+
+                <!-- 通知なし -->
+                <div class="empty-state" id="emptyState" hidden>
+
+                    <h2>
+                        現在、新しいお知らせはありません
+                    </h2>
+
+                    <p>
+                        今日も良い一日をお過ごしください。
+                    </p>
+
+                </div>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="../js/news.js"></script>
+
+</body>
+
+</html>

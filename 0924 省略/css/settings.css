@@ -1,0 +1,1311 @@
+/* ============================= */
+/* 設定ページ */
+/* common.css を先に読み込む */
+/* ============================= */
+
+
+/* ============================= */
+/* 設定ページ全体 */
+/* ============================= */
+
+.settings-container {
+    width: min(1120px, calc(100% - 64px));
+    margin: 0 auto;
+    padding: 28px 0 48px;
+}
+
+
+/* ============================= */
+/* ヘッダー */
+/* ============================= */
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    margin-bottom: 26px;
+}
+
+
+/* 左側 */
+
+.header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+/* 保存ボタン */
+
+.header-save-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 46px;
+
+    padding:
+        0
+        18px;
+
+    border: none;
+    border-radius: 15px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--pink2)
+        );
+
+    box-shadow:
+        0 8px 20px
+        rgba(207, 79, 137, 0.20);
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.header-save-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 11px 25px
+        rgba(207, 79, 137, 0.26);
+}
+
+
+/* ============================= */
+/* メイン */
+/* ============================= */
+
+.settings-main {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+/* ============================= */
+/* 設定カード */
+/* ============================= */
+
+.settings-card {
+    overflow: visible;
+
+    border:
+        1px solid
+        rgba(234, 217, 226, 0.78);
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* ============================= */
+/* カードタイトル */
+/* ============================= */
+
+.section-title {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding:
+        22px
+        26px;
+
+    border-bottom:
+        1px solid
+        rgba(234, 217, 226, 0.7);
+}
+
+
+.section-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    font-size: 18px;
+}
+
+
+.pink-icon {
+    color: var(--pink2);
+    background: var(--soft);
+}
+
+
+.lavender-icon {
+    color: #8873c7;
+    background: var(--lav-light);
+}
+
+
+.yellow-icon {
+    color: #b18337;
+    background: #fff5dc;
+}
+
+
+.ai-icon {
+    color: #9d72bf;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fbeaf2,
+            #eee7fb
+        );
+}
+
+
+.section-title h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+/* ============================= */
+/* 説明ツールチップ */
+/* ============================= */
+
+.section-title,
+.setting-row,
+.form-group {
+    position: relative;
+}
+
+
+/* 普段は非表示 */
+
+.section-title p,
+.setting-row-text p,
+.form-group label small {
+    position: absolute;
+
+    z-index: 100;
+
+    top: calc(100% + 7px);
+    left: 12px;
+
+    width: max-content;
+    max-width: 300px;
+
+    margin: 0;
+
+    padding:
+        8px
+        11px;
+
+    border:
+        1px solid
+        #4b4147;
+
+    border-radius: 4px;
+
+    color: #4b4147;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.10);
+
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform: translateY(-4px);
+
+    transition:
+        opacity 0.15s,
+        transform 0.15s,
+        visibility 0.15s;
+}
+
+
+/* カーソルを乗せたら表示 */
+
+.section-title:hover p,
+.setting-row:hover .setting-row-text p,
+.form-group:hover label small,
+.form-group:focus-within label small {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+/* ============================= */
+/* カード内部 */
+/* ============================= */
+
+.settings-content {
+    padding:
+        25px
+        26px;
+}
+
+
+/* ============================= */
+/* フォーム */
+/* ============================= */
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+.form-group > label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 9px;
+
+    color: #61555d;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.form-group > label > span {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+}
+
+
+.form-group > label span i {
+    width: 19px;
+
+    color: #a7899a;
+}
+
+
+/* ============================= */
+/* 入力欄 */
+/* ============================= */
+
+.input-wrapper,
+.select-wrapper {
+    position: relative;
+}
+
+
+.input-wrapper > i,
+.select-wrapper > i:first-child {
+    position: absolute;
+
+    z-index: 2;
+
+    top: 50%;
+    left: 16px;
+
+    transform: translateY(-50%);
+
+    color: #ad9fa7;
+
+    font-size: 14px;
+
+    pointer-events: none;
+}
+
+
+.input-wrapper input,
+.select-wrapper select {
+    width: 100%;
+
+    min-height: 46px;
+
+    padding:
+        12px
+        16px
+        12px
+        43px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 15px;
+
+    color: var(--text);
+
+    background: #fffdfe;
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background-color 0.2s;
+}
+
+
+.input-wrapper input::placeholder {
+    color: #c1b5bc;
+}
+
+
+.input-wrapper input:focus,
+.select-wrapper select:focus {
+    border-color: #c8b4e7;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(187, 169, 233, 0.11);
+
+    outline: none;
+}
+
+
+/* ============================= */
+/* セレクト */
+/* ============================= */
+
+.select-wrapper select {
+    appearance: none;
+
+    padding-right: 45px;
+
+    cursor: pointer;
+}
+
+
+.select-arrow {
+    position: absolute;
+
+    top: 50%;
+    right: 17px;
+
+    transform: translateY(-50%);
+
+    color: #ad9fa7;
+
+    font-size: 11px;
+
+    pointer-events: none;
+}
+
+
+/* ============================= */
+/* 天気表示場所 */
+/* ============================= */
+
+.select-card-group {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+.select-card {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+
+.select-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.select-card-content {
+    width: 100%;
+    min-height: 105px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 20px;
+
+    color: var(--muted);
+
+    background: #fffdfe;
+
+    transition:
+        border-color 0.2s,
+        background 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.select-card-content > i {
+    color: #aa98b6;
+
+    font-size: 20px;
+}
+
+
+.select-card-content strong {
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+.select-card:hover .select-card-content {
+    transform: translateY(-2px);
+
+    border-color: #dbc7e6;
+}
+
+
+.select-card input:checked + .select-card-content {
+    border-color: #d9bcdb;
+
+    color: var(--pink2);
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0f6,
+            #f4f0ff
+        );
+
+    box-shadow:
+        0 7px 20px
+        rgba(155, 119, 149, 0.08);
+}
+
+
+.select-card input:checked + .select-card-content > i {
+    color: var(--pink2);
+}
+
+
+/* ============================= */
+/* 設定1行 */
+/* ============================= */
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    min-height: 68px;
+
+    padding:
+        15px
+        0;
+
+    border-bottom:
+        1px solid
+        #f1e9ed;
+}
+
+
+.setting-row:last-child {
+    border-bottom: none;
+}
+
+
+.setting-row-text {
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.setting-row-title {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.setting-row-title > i {
+    width: 20px;
+
+    color: #a98f9e;
+}
+
+
+/* ============================= */
+/* スイッチ */
+/* ============================= */
+
+.switch {
+    position: relative;
+
+    display: inline-block;
+
+    width: 48px;
+    height: 27px;
+
+    flex-shrink: 0;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+
+.switch input {
+    width: 0;
+    height: 0;
+
+    opacity: 0;
+}
+
+
+.switch-slider {
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 50px;
+
+    background: #ded5da;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+
+.switch-slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 21px;
+    height: 21px;
+
+    left: 3px;
+    bottom: 3px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        0 2px 7px
+        rgba(84, 66, 75, 0.18);
+
+    transition: 0.25s;
+}
+
+
+.switch input:checked + .switch-slider {
+    background:
+        linear-gradient(
+            135deg,
+            #e995b8,
+            #b5a0e7
+        );
+}
+
+
+.switch input:checked + .switch-slider::before {
+    transform: translateX(21px);
+}
+
+
+/* ============================= */
+/* 駅 */
+/* ============================= */
+
+.station-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        minmax(0, 1fr);
+
+    align-items: end;
+
+    gap: 16px;
+}
+
+
+.station-grid .form-group {
+    margin-bottom: 24px;
+}
+
+
+.station-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-bottom: 38px;
+
+    color: #b3a5ae;
+
+    font-size: 14px;
+}
+
+
+/* ============================= */
+/* 曜日 */
+/* ============================= */
+
+.weekday-area {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+
+.weekday-button {
+    display: block;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+
+.weekday-button input {
+    position: absolute;
+
+    opacity: 0;
+}
+
+
+.weekday-button span {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        10px
+        5px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 12px;
+
+    color: var(--muted);
+
+    background: white;
+
+    font-size: 12px;
+
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+
+.weekday-button:hover span {
+    transform: translateY(-1px);
+}
+
+
+.weekday-button input:checked + span {
+    border-color: #ddb9d0;
+
+    color: var(--pink2);
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0f6,
+            #f4f0ff
+        );
+}
+
+
+/* ============================= */
+/* 利用時間 */
+/* ============================= */
+
+.time-section {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+.time-block {
+    padding: 17px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffdfe,
+            #fbf8fc
+        );
+}
+
+
+.time-block-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
+}
+
+
+.time-block-title > i {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    color: #ae82a0;
+
+    background: var(--soft);
+}
+
+
+.time-block-title strong {
+    font-size: 12px;
+}
+
+
+.time-inputs {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.time-inputs input {
+    min-width: 0;
+
+    flex: 1;
+
+    padding:
+        9px
+        10px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 12px;
+
+    color: var(--text);
+
+    background: white;
+
+    font-size: 12px;
+}
+
+
+.time-inputs span {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* ============================= */
+/* 通知アイコン */
+/* ============================= */
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+}
+
+
+.weather-alert-icon {
+    color: #7489bd;
+    background: #edf1fb;
+}
+
+
+.heat-icon {
+    color: #d88a64;
+    background: #fff0e8;
+}
+
+
+.umbrella-icon {
+    color: #8773bf;
+    background: #f0ecfb;
+}
+
+
+.train-delay-icon {
+    color: #bc8851;
+    background: #fff3df;
+}
+
+
+.train-stop-icon {
+    color: #c76e80;
+    background: #fdecef;
+}
+
+
+.schedule-icon {
+    color: #6eaa91;
+    background: #eaf7f1;
+}
+
+
+/* ============================= */
+/* 下部ボタン */
+/* ============================= */
+
+.bottom-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding-top: 4px;
+}
+
+
+.reset-button,
+.save-button {
+    min-height: 46px;
+
+    padding:
+        0
+        22px;
+
+    border: none;
+    border-radius: 16px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.reset-button {
+    color: #796b74;
+
+    background: #f5eff2;
+}
+
+
+.save-button {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            #a992db
+        );
+
+    box-shadow:
+        0 9px 23px
+        rgba(193, 113, 157, 0.2);
+}
+
+
+.reset-button i,
+.save-button i {
+    margin-right: 6px;
+}
+
+
+.reset-button:hover,
+.save-button:hover {
+    transform: translateY(-2px);
+}
+
+/* ============================= */
+/* スマートフォン */
+/* ============================= */
+
+@media (max-width: 550px) {
+
+    .settings-container {
+        width: calc(100% - 20px);
+
+        padding:
+            12px
+            0
+            30px;
+    }
+
+
+    /* ヘッダー */
+
+    .settings-header {
+        gap: 8px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .header-left {
+        gap: 8px;
+    }
+
+
+    .settings-header-title {
+        gap: 8px;
+    }
+
+
+    .settings-header-title h1 {
+        font-size: 20px;
+    }
+
+
+    /* スマホでは保存をアイコン中心にする */
+
+    .header-save-button {
+        min-height: 42px;
+
+        padding:
+            0
+            14px;
+
+        font-size: 12;
+    }
+
+    /* カード */
+
+    .settings-main {
+        gap: 14px;
+    }
+
+
+    .settings-card {
+        border-radius: 22px;
+    }
+
+
+    .section-title {
+        gap: 11px;
+
+        padding:
+            17px
+            16px;
+    }
+
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 13px;
+
+        font-size: 16px;
+    }
+
+
+    .section-title h3 {
+        font-size: 16px;
+    }
+
+
+    .settings-content {
+        padding:
+            20px
+            16px;
+    }
+
+
+    /* 入力 */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+
+    .form-group > label {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 2px;
+
+        font-size: 12px;
+    }
+
+
+    .input-wrapper input,
+    .select-wrapper select {
+        min-height: 45px;
+
+        font-size: 16px;
+    }
+
+
+    /* iPhoneで入力時に勝手にズームされるのを防ぐため
+       font-sizeは16px */
+
+
+    /* 天気場所 */
+
+    .select-card-group {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+
+    .select-card-content {
+        min-height: 82px;
+
+        gap: 5px;
+
+        padding:
+            12px
+            5px;
+
+        border-radius: 15px;
+    }
+
+
+    .select-card-content > i {
+        font-size: 17px;
+    }
+
+
+    .select-card-content strong {
+        font-size: 11px;
+    }
+
+
+    /* 設定行 */
+
+    .setting-row {
+        gap: 12px;
+
+        min-height: 64px;
+
+        padding:
+            13px
+            0;
+    }
+
+
+    .setting-row-title {
+        gap: 6px;
+
+        font-size: 12px;
+    }
+
+
+    .notification-icon {
+        width: 29px;
+        height: 29px;
+
+        border-radius: 9px;
+
+        font-size: 12px;
+    }
+
+
+    /* スイッチ */
+
+    .switch {
+        width: 45px;
+        height: 26px;
+    }
+
+
+    .switch-slider::before {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    .switch input:checked + .switch-slider::before {
+        transform: translateX(19px);
+    }
+
+
+    /* 曜日 */
+
+    .weekday-area {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+
+    .weekday-button span {
+        padding:
+            9px
+            4px;
+    }
+
+
+    /* 時間 */
+
+    .time-block {
+        padding: 14px;
+    }
+
+
+    .time-inputs {
+        gap: 5px;
+    }
+
+
+    .time-inputs input {
+        width: 100%;
+
+        font-size: 16px;
+    }
+
+
+    /* 下部ボタン */
+
+    .bottom-actions {
+        flex-direction: column-reverse;
+
+        gap: 9px;
+    }
+
+
+    .reset-button,
+    .save-button {
+        width: 100%;
+
+        min-height: 46px;
+    }
+
+
+    /* 説明文
+       スマホにはマウスカーソルがないので
+       入力欄をタップした場合に表示 */
+
+    .form-group:focus-within label small {
+        max-height: 60px;
+
+        margin-top: 4px;
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}

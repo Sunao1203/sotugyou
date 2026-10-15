@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Secretary</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- 共通CSSを必ず先に読み込む -->
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <script type="importmap">
+{
+    "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+</head>
+
+<body class="app-page main-page">
+
+    <div class="app-container main-container">
+        <!-- ============================= -->
+        <!-- ヘッダー -->
+        <!-- ============================= -->
+
+        <header class="main-header">
+
+            <!-- 日付・時刻 -->
+            <div class="datetime-area">
+
+                <span id="currentDate">
+                    ----年--月--日
+                </span>
+
+                <strong id="currentTime">
+                    --:--
+                </strong>
+
+            </div>
+
+
+            <!-- 天気 -->
+            <div class="weather-area">
+
+                <!-- 現在地・自宅・職場 -->
+                <div class="weather-location-tabs">
+
+                    <!-- 現在地 -->
+                    <button class="weather-location-button is-active tooltip-target" type="button"
+                        data-weather-location="current" data-tooltip="現在地の天気を表示" aria-label="現在地の天気">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>現在地</span>
+                    </button>
+
+
+                    <!-- 自宅 -->
+                    <button class="weather-location-button tooltip-target" type="button" data-weather-location="home"
+                        data-tooltip="自宅の天気を表示" aria-label="自宅の天気">
+                        <i class="fa-solid fa-house"></i>
+                        <span>自宅</span>
+                    </button>
+
+
+                    <!-- 職場 -->
+                    <button class="weather-location-button tooltip-target" type="button" data-weather-location="work"
+                        data-tooltip="職場の天気を表示" aria-label="職場の天気">
+                        <i class="fa-solid fa-building"></i>
+                        <span>職場</span>
+                    </button>
+
+                </div>
+
+
+                <!-- 今日・明日 -->
+                <div class="weather-day-tabs">
+
+                    <button class="weather-day-button is-active" type="button" data-weather-day="today">
+                        今日
+                    </button>
+
+                    <button class="weather-day-button" type="button" data-weather-day="tomorrow">
+                        明日
+                    </button>
+
+                </div>
+
+
+                <!-- 天気情報 -->
+                <div class="weather-summary">
+
+                    <span class="weather-icon" id="weatherIcon" aria-hidden="true">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                    </span>
+
+                    <strong id="weatherTemperature">
+                        --℃
+                    </strong>
+
+                    <div class="rain-info">
+
+                        <i class="fa-solid fa-umbrella"></i>
+
+                        <strong id="weatherRain">
+                            --%
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- お知らせ・設定 -->
+            <div class="header-actions">
+
+                <!-- お知らせ -->
+                <button class="header-icon-button tooltip-target" id="notificationButton" type="button"
+                    aria-label="お知らせ" data-tooltip="お知らせを確認">
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="notification-dot" aria-hidden="true"></span>
+
+                </button>
+
+
+                <!-- 設定 -->
+                <button class="header-icon-button tooltip-target" id="settingsButton" type="button" aria-label="設定"
+                    data-tooltip="設定を開く">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- ============================= -->
+        <!-- PC用ナビゲーション -->
+        <!-- ============================= -->
+
+        <nav class="main-navigation" aria-label="PC用メインメニュー">
+            <button class="nav-item is-active" data-page="home" type="button">
+                <i class="fa-solid fa-house"></i>
+                <span>ホーム</span>
+            </button>
+
+
+            <button class="nav-item" data-page="task" type="button">
+                <i class="fa-solid fa-list-check"></i>
+                <span>タスク</span>
+            </button>
+
+
+            <button class="nav-item" data-page="calendar" type="button">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>カレンダー</span>
+            </button>
+
+
+            <button class="nav-item" data-page="diary" type="button">
+                <i class="fa-solid fa-book-open"></i>
+                <span>日記</span>
+            </button>
+        </nav>
+
+
+        <!-- ============================= -->
+        <!-- メインコンテンツ -->
+        <!-- ============================= -->
+        <main class="main-content">
+
+            <!-- ============================= -->
+            <!-- 左側 -->
+            <!-- ============================= -->
+            <div class="main-left-column">
+
+                <!-- ============================= -->
+                <!-- スケジュール -->
+                <!-- ============================= -->
+                <section class="common-card schedule-card">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+
+                            <span class="card-title-icon schedule-icon">
+                                <i class="fa-regular fa-calendar"></i>
+                            </span>
+
+                            <h2>スケジュール</h2>
+
+                        </div>
+                        <button class="detail-icon-button tooltip-target" id="scheduleDetailButton" type="button"
+                            aria-label="カレンダーを見る" data-tooltip="カレンダーを見る">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+
+                    <!-- 今日・明日 -->
+                    <div class="main-schedule-tabs">
+
+                        <button class="main-schedule-tab is-active" type="button" data-schedule-day="today">
+                            今日
+                        </button>
+
+
+                        <button class="main-schedule-tab" type="button" data-schedule-day="tomorrow">
+                            明日
+                        </button>
+
+                    </div>
+
+
+                    <!-- JavaScriptで予定を表示 -->
+                    <div class="schedule-list" id="scheduleList"></div>
+
+
+                    <!-- 予定なし -->
+                    <div class="schedule-empty" id="mainScheduleEmpty" hidden>
+
+                        <i class="fa-regular fa-calendar-xmark"></i>
+
+                        <span id="mainScheduleEmptyText">
+                            今日は予定がありません
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ============================= -->
+                <!-- タスク -->
+                <!-- ============================= -->
+                <section class="common-card task-summary-card">
+
+                    <div class="card-header">
+
+                        <div class="card-title">
+
+                            <span class="card-title-icon task-icon">
+                                <i class="fa-solid fa-list-check"></i>
+                            </span>
+
+                            <h2>タスク</h2>
+
+                        </div>
+
+                        <button class="detail-icon-button tooltip-target" id="taskDetailButton" type="button"
+                            aria-label="タスク一覧を見る" data-tooltip="タスク一覧を見る">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+
+                    <!-- タスクは件数のみ表示 -->
+                    <div class="task-count-area">
+
+                        <div class="task-count-row">
+
+                            <span class="task-count-label">
+
+                                <i class="fa-regular fa-circle"></i>
+
+                                未完了
+
+                            </span>
+
+                            <strong id="unfinishedTaskCount">
+                                0件
+                            </strong>
+
+                        </div>
+
+
+                        <div class="task-count-row">
+
+                            <span class="task-count-label">
+
+                                <i class="fa-regular fa-clock"></i>
+
+                                今日中
+
+                            </span>
+
+                            <strong id="todayTaskCount">
+                                0件
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- AI秘書 -->
+            <!-- ============================= -->
+            <section class="assistant-section">
+
+                <!-- AI秘書表示 -->
+                <div class="assistant-card">
+
+                    <div class="avatar-area" id="avatarArea">
+
+                        <!-- 背景装飾 -->
+                        <div class="background-decoration decoration-one"></div>
+                        <div class="background-decoration decoration-two"></div>
+                        <div class="background-decoration decoration-three"></div>
+
+                        <!-- 3Dアバター -->
+                        <div class="avatar-canvas" id="avatarCanvas"></div>
+
+                        <!-- ============================= -->
+                        <!-- 下部操作ボタン -->
+                        <!-- ============================= -->
+
+                        <div class="assistant-bottom-actions">
+
+                            <!-- チャット -->
+                            <button class="assistant-action-button chat-action" id="helpButton" type="button">
+                                <span class="assistant-action-icon">
+                                    <i class="fa-regular fa-comment-dots"></i>
+                                </span>
+
+                                <strong>チャット</strong>
+                            </button>
+
+
+                            <!-- 登録モード -->
+                            <button class="assistant-action-button register-action" id="registerModeButton"
+                                type="button">
+                                <span class="assistant-action-icon">
+                                    <i class="fa-solid fa-file-circle-plus"></i>
+                                </span>
+
+                                <strong>音声登録</strong>
+                            </button>
+
+
+                            <!-- 会話モード -->
+                            <button class="assistant-action-button conversation-action" id="conversationModeButton"
+                                type="button">
+                                <span class="assistant-action-icon">
+                                    <i class="fa-regular fa-comments"></i>
+                                </span>
+
+                                <strong>音声会話</strong>
+                            </button>
+
+                        </div>
+                        <!-- assistant-bottom-actions 終了 -->
+
+                    </div>
+                    <!-- avatar-area 終了 -->
+
+                </div>
+                <!-- assistant-card 終了 -->
+
+            </section>
+            <!-- assistant-section 終了 -->
+
+        </main>
+        <!-- main-content 終了 -->
+
+    </div>
+    <!-- main-container 終了 -->
+
+<!-- ============================= -->
+<!-- スマホ用固定ボトムナビ -->
+<!-- ============================= -->
+
+<nav
+    class="mobile-bottom-navigation"
+    aria-label="スマホ用メインメニュー"
+>
+    <!-- ホーム -->
+    <a
+        class="mobile-bottom-item is-active"
+        href="main.html"
+        aria-current="page"
+    >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+    </a>
+
+
+    <!-- タスク -->
+    <a
+        class="mobile-bottom-item"
+        href="task.html"
+    >
+        <i class="fa-solid fa-list-check"></i>
+        <span>タスク</span>
+    </a>
+
+
+    <!-- カレンダー -->
+    <a
+        class="mobile-bottom-item"
+        href="calendar.html"
+    >
+        <i class="fa-regular fa-calendar-days"></i>
+        <span>カレンダー</span>
+    </a>
+
+
+    <!-- 天気 -->
+    <button
+        class="mobile-bottom-item"
+        id="bottomWeatherButton"
+        type="button"
+    >
+        <i class="fa-solid fa-cloud-sun"></i>
+        <span>天気</span>
+    </button>
+
+
+    <!-- もっと見る -->
+    <button
+        class="mobile-bottom-item"
+        id="bottomMoreButton"
+        type="button"
+        aria-expanded="false"
+        aria-controls="bottomMoreMenu"
+    >
+        <i class="fa-solid fa-ellipsis"></i>
+        <span>もっと見る</span>
+    </button>
+
+
+    <!-- もっと見る展開メニュー -->
+    <div
+        class="bottom-more-menu"
+        id="bottomMoreMenu"
+        hidden
+    >
+        <button
+            class="bottom-more-menu-item"
+            id="bottomDiaryButton"
+            type="button"
+        >
+            <i class="fa-solid fa-book-open"></i>
+            <span>日記</span>
+        </button>
+    </div>
+</nav>
+
+
+<!-- ============================= -->
+<!-- トーストメッセージ -->
+<!-- ============================= -->
+
+
+        <!-- ============================= -->
+        <!-- トーストメッセージ -->
+        <!-- ============================= -->
+
+        <div class="toast" id="toast" role="status" aria-live="polite">
+            <i class="fa-solid fa-circle-info"></i>
+            <span id="toastMessage"></span>
+        </div>
+
+
+        <script src="../js/main.js"></script>
+
+        <script type="module" src="../js/avatar.js"></script>
+
+</body>
+
+</html>

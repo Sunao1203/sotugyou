@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>カレンダー | AI Secretary</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- 共通CSSを先に読み込む -->
+    <link rel="stylesheet" href="../css/common.css?v=3">
+    <link rel="stylesheet" href="../css/calendar.css?v=3">
+</head>
+
+
+<body class="app-page calendar-page">
+
+    <div class="app-container calendar-container">
+
+
+        <!-- ============================= -->
+        <!-- ヘッダー -->
+        <!-- ============================= -->
+
+        <header class="page-header calendar-header">
+
+            <div class="page-header-left">
+
+                <button
+                    class="back-button"
+                    id="backButton"
+                    type="button"
+                    aria-label="メイン画面に戻る"
+                >
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+
+                <div class="page-heading">
+
+                    <div class="page-heading-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </div>
+
+                    <h2>
+                        カレンダー
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="header-add-button"
+                id="addScheduleButton"
+                type="button"
+            >
+                <i class="fa-solid fa-plus"></i>
+                <span>追加</span>
+            </button>
+
+        </header>
+
+
+        <!-- ============================= -->
+        <!-- メイン -->
+        <!-- ============================= -->
+
+        <main class="calendar-main">
+
+            <div class="calendar-layout">
+
+                <section
+                    class="common-card calendar-board"
+                    aria-labelledby="calendarMonthTitle"
+                >
+
+
+                    <!-- ============================= -->
+                    <!-- 月切り替え -->
+                    <!-- ============================= -->
+
+                    <div class="calendar-toolbar">
+
+                        <div class="month-navigation">
+
+                            <button
+                                class="calendar-icon-button"
+                                id="previousMonthButton"
+                                type="button"
+                                aria-label="前月を表示"
+                            >
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+
+
+                            <h3
+                                id="calendarMonthTitle"
+                                class="calendar-month-title"
+                            >
+                                ----年--月
+                            </h3>
+
+
+                            <button
+                                class="calendar-icon-button"
+                                id="nextMonthButton"
+                                type="button"
+                                aria-label="次月を表示"
+                            >
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+
+                            <button
+                                class="today-button"
+                                id="todayButton"
+                                type="button"
+                            >
+                                今日
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================= -->
+                    <!-- 曜日 -->
+                    <!-- ============================= -->
+
+                    <div
+                        class="calendar-weekdays"
+                        aria-hidden="true"
+                    >
+                        <div>日</div>
+                        <div>月</div>
+                        <div>火</div>
+                        <div>水</div>
+                        <div>木</div>
+                        <div>金</div>
+                        <div>土</div>
+                    </div>
+
+
+                    <!-- ============================= -->
+                    <!-- カレンダー本体 -->
+                    <!-- ============================= -->
+
+                    <div
+                        class="calendar-grid"
+                        id="calendarGrid"
+                        aria-label="月間カレンダー"
+                    ></div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- 選択日の予定一覧モーダル -->
+    <!-- ============================= -->
+
+    <div
+        class="day-detail-modal"
+        id="dayDetailModal"
+        hidden
+    >
+
+        <div
+            class="modal-overlay"
+            id="dayDetailModalOverlay"
+        ></div>
+
+
+        <section
+            class="day-detail-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dayDetailTitle"
+        >
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="dayDetailTitle">
+                        --月--日の予定
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="modal-close-button"
+                    id="closeDayDetailButton"
+                    type="button"
+                    aria-label="閉じる"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div
+                class="day-schedule-list"
+                id="dayScheduleList"
+            ></div>
+
+
+            <div
+                class="day-schedule-empty"
+                id="dayScheduleEmpty"
+                hidden
+            >
+
+                <div class="day-schedule-empty-icon">
+                    <i class="fa-regular fa-calendar"></i>
+                </div>
+
+                <p>
+                    この日の予定はありません。
+                </p>
+
+            </div>
+
+
+            <button
+                class="day-add-button"
+                id="selectedDayAddButton"
+                type="button"
+            >
+                <i class="fa-solid fa-plus"></i>
+                この日に予定を追加
+            </button>
+
+        </section>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- 予定追加・編集モーダル -->
+    <!-- ============================= -->
+
+    <div
+        class="schedule-modal"
+        id="scheduleModal"
+        hidden
+    >
+
+        <div
+            class="modal-overlay"
+            id="scheduleModalOverlay"
+        ></div>
+
+
+        <section
+            class="schedule-modal-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="schedulePanelTitle"
+        >
+
+
+            <!-- ============================= -->
+            <!-- モーダルヘッダー -->
+            <!-- ============================= -->
+
+            <div class="schedule-panel-header">
+
+                <div>
+
+                    <p
+                        class="selected-day-label"
+                        id="selectedDateTitle"
+                    >
+                        --月--日
+                    </p>
+
+
+                    <h2 id="schedulePanelTitle">
+                        予定を追加
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="schedule-panel-close"
+                    id="closeScheduleModalButton"
+                    type="button"
+                    aria-label="閉じる"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- フォーム -->
+            <!-- ============================= -->
+
+            <form
+                id="scheduleForm"
+                novalidate
+            >
+
+                <input
+                    type="hidden"
+                    id="scheduleId"
+                    name="scheduleId"
+                >
+
+
+                <!-- 予定名 -->
+
+                <div
+                    class="
+                        schedule-form-group
+                        schedule-form-group-full
+                    "
+                >
+
+                    <label for="scheduleTitle">
+
+                        予定名
+
+                    </label>
+
+
+                    <input
+                        id="scheduleTitle"
+                        name="title"
+                        type="text"
+                        maxlength="80"
+                        placeholder="例：チーム会議"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="schedule-form-grid">
+
+
+                    <!-- 日付 -->
+
+                    <div
+                        class="
+                            schedule-form-group
+                            schedule-form-group-full
+                        "
+                    >
+
+                        <label for="scheduleDate">
+
+                            日付
+
+                        </label>
+
+
+                        <input
+                            id="scheduleDate"
+                            name="date"
+                            type="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- 開始時間 -->
+
+                    <div class="schedule-form-group">
+
+                        <label for="scheduleStartTime">
+
+                            開始
+
+                        </label>
+
+
+                        <div class="input-with-icon">
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            <input
+                                id="scheduleStartTime"
+                                name="startTime"
+                                type="time"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 終了時間 -->
+
+                    <div class="schedule-form-group">
+
+                        <label for="scheduleEndTime">
+                            終了
+                        </label>
+
+
+                        <div class="input-with-icon">
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            <input
+                                id="scheduleEndTime"
+                                name="endTime"
+                                type="time"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- 場所 -->
+
+                    <div
+                        class="
+                            schedule-form-group
+                            schedule-form-group-full
+                        "
+                    >
+
+                        <label for="scheduleLocation">
+                            場所
+                        </label>
+
+
+                        <div class="input-with-icon">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <input
+                                id="scheduleLocation"
+                                name="location"
+                                type="text"
+                                maxlength="100"
+                                placeholder="例：オンライン / 第1会議室"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- メモ -->
+
+                    <div
+                        class="
+                            schedule-form-group
+                            schedule-form-group-full
+                        "
+                    >
+
+                        <label for="scheduleMemo">
+                            メモ
+                        </label>
+
+
+                        <textarea
+                            id="scheduleMemo"
+                            name="memo"
+                            rows="3"
+                            maxlength="500"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- 操作ボタン -->
+                <!-- ============================= -->
+
+                <div class="schedule-form-actions">
+
+                    <button
+                        class="delete-schedule-button"
+                        id="deleteScheduleButton"
+                        type="button"
+                        hidden
+                    >
+                        <i class="fa-regular fa-trash-can"></i>
+                        削除
+                    </button>
+
+
+                    <div class="schedule-form-actions-right">
+
+                        <button
+                            class="cancel-schedule-button"
+                            id="cancelScheduleButton"
+                            type="button"
+                        >
+                            閉じる
+                        </button>
+
+
+                        <button
+                            class="save-schedule-button"
+                            type="submit"
+                        >
+                            保存
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- トースト -->
+    <!-- ============================= -->
+
+    <div
+        class="toast"
+        id="toast"
+        role="status"
+        aria-live="polite"
+    >
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span id="toastMessage">
+            保存しました
+        </span>
+
+    </div>
+
+
+    <script src="../js/calendar.js?v=3"></script>
+
+</body>
+
+</html>

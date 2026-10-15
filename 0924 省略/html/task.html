@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>タスク一覧 | AI Secretary</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="../css/common.css">
+
+    <!-- タスクページCSS -->
+    <link rel="stylesheet" href="../css/task.css">
+</head>
+
+
+<body class="app-page task-page">
+
+    <div class="task-container">
+
+
+        <!-- ============================= -->
+        <!-- ヘッダー -->
+        <!-- ============================= -->
+
+        <header class="page-header">
+
+            <div class="page-header-left">
+
+                <button class="back-button" id="backButton" type="button" aria-label="メイン画面に戻る">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div class="page-heading">
+
+                    <div class="page-heading-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <h2>タスク一覧</h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="task-header-actions">
+
+                <button class="header-add-button" id="addTaskButton" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>追加</span>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main class="task-main">
+
+            <!-- ============================= -->
+            <!-- タスク概要 -->
+            <!-- ============================= -->
+
+            <section class="task-summary">
+
+                <div class="summary-item">
+
+                    <div>
+
+                        <span class="summary-label">
+                            未完了
+                        </span>
+
+                        <strong id="activeTaskCount">
+                            0件
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-divider"></div>
+
+
+                <div class="summary-item">
+
+                    <div>
+
+                        <span class="summary-label">
+                            今日が期限
+                        </span>
+
+                        <strong id="todayTaskCount">
+                            0件
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-item">
+
+                    <div>
+
+                        <span class="summary-label">
+                            重要
+                        </span>
+
+                        <strong id="highTaskCount">
+                            0件
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ============================= -->
+            <!-- タスク一覧カード -->
+            <!-- ============================= -->
+
+            <section class="task-list-card common-card">
+
+
+                <!-- タスクフィルター -->
+                <div class="task-toolbar">
+
+                    <div class="task-filters" aria-label="タスク表示切り替え">
+
+                        <button class="filter-button active" type="button" data-filter="active" aria-pressed="true">
+                            未完了
+                        </button>
+
+                        <button class="filter-button" type="button" data-filter="today" aria-pressed="false">
+                            今日
+                        </button>
+
+                        <button class="filter-button" type="button" data-filter="completed" aria-pressed="false">
+                            完了済み
+                        </button>
+
+                    </div>
+                </div>
+
+
+
+                <!-- タスク一覧 -->
+                <div class="task-list" id="taskList"></div>
+
+
+                <!-- 空状態 -->
+                <div class="task-empty" id="taskEmpty" hidden>
+
+                    <div class="task-empty-icon">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <h3 id="emptyTitle">
+                        現在、登録されているタスクはありません。
+                    </h3>
+
+                    <p id="emptyText">
+                        新しいタスクを追加してみましょう。
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- ============================= -->
+        <!-- タスク追加・編集モーダル -->
+        <!-- ============================= -->
+
+        <div class="task-modal" id="taskModal" hidden>
+
+            <div class="task-modal-overlay" id="taskModalOverlay"></div>
+
+
+            <div class="task-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+                <!-- モーダルヘッダー -->
+                <div class="task-modal-header">
+
+                    <div>
+
+                        <h2 id="modalTitle">
+                            追加
+                        </h2>
+
+                    </div>
+
+
+                    <button class="modal-close-button" id="modalCloseButton" type="button" aria-label="閉じる">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+
+
+                <!-- タスク入力フォーム -->
+                <form id="taskForm">
+
+                    <!-- タスク名 -->
+                    <div class="form-group">
+
+                        <label for="taskTitle">
+                            タスク名
+                        </label>
+
+                        <input id="taskTitle" name="taskTitle" type="text" maxlength="80" placeholder="例：レポート提出"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <!-- 期限 -->
+                        <div class="form-group">
+
+                            <label for="taskDueDate">
+                                期限
+                            </label>
+
+                            <div class="input-icon-wrap">
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                <input id="taskDueDate" name="taskDueDate" type="date">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- 重要設定 -->
+                        <div class="form-group priority-group">
+
+                            <label class="priority-radio">
+
+                                <input type="checkbox" id="taskPriority" name="taskPriority">
+
+                                <span class="priority-radio-text">
+                                    重要
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- メモ -->
+                    <div class="form-group">
+
+                        <label for="taskMemo">
+                            メモ
+                        </label>
+
+                        <textarea id="taskMemo" name="taskMemo" rows="4" maxlength="300"></textarea>
+
+                    </div>
+
+
+                    <!-- ボタン -->
+                    <div class="modal-actions">
+
+                        <button class="cancel-button" id="cancelButton" type="button">
+                            キャンセル
+                        </button>
+
+
+                        <button class="submit-task-button" id="submitTaskButton" type="submit">
+                            <i class="fa-solid fa-check"></i>
+
+                            <span id="submitButtonText">
+                                登録
+                            </span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ============================= -->
+        <!-- トースト -->
+        <!-- ============================= -->
+
+        <div class="toast" id="toast" role="status" aria-live="polite">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span id="toastMessage">
+                保存しました
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../js/task.js"></script>
+
+</body>
+
+</html>

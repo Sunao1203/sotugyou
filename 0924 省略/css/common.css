@@ -1,0 +1,659 @@
+/* ============================= */
+/* 共通カラー */
+/* ============================= */
+
+:root {
+    --bg: #fff8fb;
+    --surface: #ffffff;
+    --soft: #fdf0f6;
+
+    --pink: #e86fa3;
+    --pink2: #cf4f89;
+    --pink-light: #f9dbe8;
+
+    --lav: #bba9e9;
+    --lav-light: #eee9fb;
+
+    --text: #4b4147;
+    --muted: #7f7179;
+    --border: #ead9e2;
+
+    --shadow:
+        0 15px 40px rgba(105, 82, 98, 0.07);
+
+    --shadow-hover:
+        0 18px 45px rgba(105, 82, 98, 0.12);
+}
+
+
+/* ============================= */
+/* 基本設定 */
+/* ============================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+}
+
+
+body {
+    margin: 0;
+
+    color: var(--text);
+
+    font-family:
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
+}
+
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(187, 169, 233, 0.35);
+    outline-offset: 2px;
+}
+
+
+/* ============================= */
+/* ログイン後ページ共通背景 */
+/* ============================= */
+
+.app-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top left,
+            rgba(232, 111, 163, 0.08),
+            transparent 30%),
+        radial-gradient(circle at top right,
+            rgba(187, 169, 233, 0.10),
+            transparent 35%),
+        var(--bg);
+}
+
+
+/* ============================= */
+/* ログイン後ページ共通レイアウト */
+/* ============================= */
+
+.app-container {
+    width: min(1120px, calc(100% - 64px));
+
+    margin: 0 auto;
+
+    padding: 28px 0 48px;
+}
+
+
+/* ============================= */
+/* 共通ページヘッダー */
+/* ============================= */
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+
+.page-header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* ============================= */
+/* 戻るボタン */
+/* ============================= */
+
+.back-button {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border:
+        1px solid rgba(234, 217, 226, 0.85);
+
+    border-radius: 16px;
+
+    color: var(--text);
+
+    background:
+        rgba(255, 255, 255, 0.8);
+
+    box-shadow:
+        0 7px 20px rgba(105, 82, 98, 0.05);
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        background-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.back-button:hover {
+    transform: translateX(-2px);
+
+    background: white;
+
+    box-shadow:
+        0 9px 24px rgba(105, 82, 98, 0.08);
+}
+
+
+/* ============================= */
+/* 共通ページタイトル */
+/* ============================= */
+
+.page-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.page-heading-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    color: #987bcf;
+
+    background:
+        linear-gradient(145deg,
+            #f9eff7,
+            #eee8fb);
+
+    font-size: 18px;
+}
+
+
+.page-heading h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+.page-heading p {
+    margin:
+        5px 0 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* ============================= */
+/* 共通カード */
+/* ============================= */
+
+.common-card {
+    border:
+        1px solid rgba(234, 217, 226, 0.78);
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* ============================= */
+/* 共通トースト */
+/* ============================= */
+
+.toast {
+    position: fixed;
+
+    z-index: 1000;
+
+    left: 50%;
+    bottom: 30px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        13px 20px;
+
+    border:
+        1px solid rgba(234, 217, 226, 0.85);
+
+    border-radius: 16px;
+
+    color: var(--text);
+
+    background:
+        rgba(255, 255, 255, 0.95);
+
+    box-shadow:
+        0 15px 40px rgba(81, 63, 73, 0.14);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translate(-50%, 25px);
+
+    transition:
+        opacity 0.25s,
+        transform 0.25s,
+        visibility 0.25s;
+}
+
+
+.toast i {
+    color: var(--pink);
+}
+
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0);
+}
+
+/* ============================= */
+/* スマホ用固定ボトムナビ */
+/* ============================= */
+
+/* PCでは非表示 */
+.mobile-bottom-navigation {
+    display: none;
+}
+
+/* ============================= */
+/* スマートフォン */
+/* ============================= */
+
+@media (max-width: 550px) {
+
+    /* ============================= */
+    /* スマホ用固定ボトムナビ */
+    /* ============================= */
+
+    .mobile-bottom-navigation {
+        position: fixed;
+
+        z-index: 2000;
+
+        left: 50%;
+        bottom:
+            max(8px,
+                env(safe-area-inset-bottom));
+
+        width: calc(100% - 20px);
+        max-width: 460px;
+        min-height: 72px;
+
+        display: grid;
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        gap: 3px;
+        padding: 7px;
+
+        border:
+            1px solid rgba(255, 255, 255, 0.48);
+
+        border-radius: 24px;
+
+        background:
+            linear-gradient(135deg,
+                rgba(255, 255, 255, 0.30),
+                rgba(247, 239, 251, 0.20));
+
+
+        backdrop-filter:
+            blur(20px) saturate(140%);
+
+        -webkit-backdrop-filter:
+            blur(20px) saturate(140%);
+        transform: translateX(-50%);
+    }
+
+
+    /* 5つのボタン */
+    .mobile-bottom-item {
+        min-width: 0;
+        min-height: 58px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+        padding: 6px 2px;
+
+        border: none;
+        border-radius: 18px;
+
+        color: var(--muted);
+        background: transparent;
+
+        font-family: inherit;
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            color 0.2s,
+            background-color 0.2s,
+            transform 0.2s;
+    }
+
+
+    .mobile-bottom-item i {
+        font-size: 19px;
+    }
+
+
+    .mobile-bottom-item span {
+        overflow: hidden;
+
+        width: 100%;
+
+        font-size: 10px;
+        font-weight: 700;
+
+        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+
+    /* 現在開いている画面 */
+    .mobile-bottom-item.is-active {
+        color: var(--pink2);
+
+        background:
+            linear-gradient(135deg,
+                rgba(255, 235, 244, 0.92),
+                rgba(240, 234, 255, 0.92));
+    }
+
+    .app-container {
+        width: calc(100% - 20px);
+
+        padding-top: 12px;
+    }
+
+
+    .page-header {
+        gap: 10px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .page-header-left {
+        gap: 8px;
+    }
+
+
+    .back-button {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 14px;
+    }
+
+
+    .page-heading {
+        gap: 8px;
+    }
+
+
+    .page-heading-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 14px;
+
+        font-size: 16px;
+    }
+
+
+    .page-heading h2 {
+        font-size: 20px;
+    }
+
+
+    .page-heading p {
+        font-size: 11px;
+    }
+
+
+    .common-card {
+        border-radius: 23px;
+    }
+
+
+    .footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+}
+
+/* ============================= */
+/* 共通ツールチップ */
+/* ============================= */
+
+.tooltip-target {
+    position: relative;
+}
+
+
+/* 説明ボックス */
+
+.tooltip-target::after {
+    content: attr(data-tooltip);
+
+    position: absolute;
+
+    z-index: 1000;
+
+    top: calc(100% + 8px);
+    left: 50%;
+
+    width: max-content;
+    max-width: 280px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid #333;
+
+    border-radius: 3px;
+
+    color: #333;
+
+    background: white;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.10);
+
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    white-space: normal;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -4px);
+
+    transition:
+        opacity 0.15s,
+        transform 0.15s,
+        visibility 0.15s;
+}
+
+
+/* カーソルを乗せた時 */
+
+.tooltip-target:hover::after,
+.tooltip-target:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0);
+}
+
+/* ============================= */
+/* 共通追加ボタン */
+/* ============================= */
+
+.header-add-button {
+    min-height: 52px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 16px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(135deg,
+            var(--pink),
+            #d98bbd);
+
+    box-shadow:
+        0 9px 24px rgba(232, 111, 163, 0.22);
+
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        opacity 0.2s;
+}
+
+
+.header-add-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(232, 111, 163, 0.28);
+}
+
+
+.header-add-button:active {
+    transform: translateY(0);
+}
+
+/* ============================= */
+/* スマートフォン */
+/* ============================= */
+
+@media (max-width: 550px) {
+
+    .tooltip-target::after {
+        display: none;
+    }
+
+    .header-add-button {
+        width: 42px;
+        height: 42px;
+        min-height: 42px;
+
+        padding: 0;
+
+        border-radius: 14px;
+
+        flex-shrink: 0;
+    }
+
+
+    .header-add-button span {
+        display: none;
+    }
+
+
+    .header-add-button i {
+        font-size: 13px;
+    }
+
+}

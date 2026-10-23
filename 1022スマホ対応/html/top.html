@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>対話型パーソナルAI秘書</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  >
+
+  <!-- 共通CSSを先に -->
+  <link rel="stylesheet" href="../css/common.css">
+
+  <!-- topページ固有CSSを後に -->
+  <link rel="stylesheet" href="../css/top.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark"><i class="fa-solid fa-sparkles"></i></span>
+      <span class="logo-text"><small>あなたの仕事をサポートする</small><strong>AI Secretary</strong></span>
+    </a>
+    <nav class="desktop-nav">
+      <a href="#about">サービスについて</a><a href="#features">できること</a><a href="#scenes">活用シーン</a>
+      <button class="login-link js-open-login" type="button">ログイン</button>
+    </nav>
+    <button class="menu-button" id="menuButton" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#about">サービスについて</a><a href="#features">できること</a><a href="#scenes">活用シーン</a><button class="js-open-login" type="button">ログイン</button>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <img src="../assets/Image1.png" alt="AI秘書のイメージ" class="hero-image">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">PERSONAL AI ASSISTANT</p>
+      <h1>話すだけで、<br>仕事が整う。</h1>
+      <p class="hero-lead">予定管理、タスク整理、文章作成、PC操作まで。<br>あなた専用の対話型AI秘書が、毎日の仕事をサポートします。</p>
+      <div class="hero-actions"><button class="primary-button js-open-login" type="button">今すぐ使う</button><a href="#about" class="secondary-button">
+            <i class="fa-solid fa-circle-info"></i>
+            詳しく見る
+          </a></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-inner two-column">
+      <div class="text-block">
+        <p class="section-label">ABOUT</p>
+        <h2>あなた専用の、<br>仕事を支えるAI秘書。</h2>
+        <p>AI Secretaryは、会話をきっかけに予定やToDoの確認、プレゼン、文章作成などをサポートするWebサービスです。</p>
+        <p>難しい操作を覚えなくても、話しかけるだけ。必要な情報をまとめ、次に何をすればいいかを分かりやすく案内します。</p>
+      </div>
+      <div class="image-card"><img src="../assets/Image2.png" alt="AI秘書を利用しているイメージ"></div>
+    </div>
+  </section>
+
+  <section class="section features-section" id="features">
+    <div class="section-inner">
+      <p class="section-label center">FEATURES</p><h2 class="section-title center">できること</h2>
+      <p class="section-intro center">シンプルで、わかりやすく、仕事にすぐ使える機能をまとめました。</p>
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-comments"></i></div><h3>対話で操作</h3><p>「今日の予定は？」「プレゼンお願い」など、普段の言葉でAI秘書に話しかけられます。</p></article>
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-calendar-days"></i></div><h3>予定・ToDo管理</h3><p>今日・今週・今月の予定確認や、締切が近いタスクの確認をひとつの画面で行えます。</p></article>
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-laptop"></i></div><h3>仕事をサポート</h3><p>PowerPointの操作や、メール文章・要約などの日常業務を支援します。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section scenes-section" id="scenes">
+    <div class="section-inner two-column reverse-mobile">
+      <div class="scene-image-wrap"><img src="../assets/Image3.png" alt="AI秘書が活躍する場面のイメージ"></div>
+      <div class="text-block"><p class="section-label">SCENES</p><h2>こんな場面で活躍</h2>
+        <ul class="scene-list"><li><i class="fa-solid fa-sun"></i><span>朝、その日の予定とToDoを確認したいとき</span></li><li><i class="fa-solid fa-bell"></i><span>締切が近い仕事を忘れずに進めたいとき</span></li><li><i class="fa-solid fa-window-maximize"></i><span>WordやPowerPointをすぐ起動したいとき</span></li><li><i class="fa-solid fa-pen"></i><span>メールや文章を短時間で整えたいとき</span></li><li><i class="fa-solid fa-person-chalkboard"></i><span>プレゼン準備や発表をサポートしてほしいとき</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section"><div class="cta-inner"><h2>あなた専用のAI秘書を、<br>今日から。</h2><p>話しかけるだけで、毎日の仕事をもっとスムーズに。</p><button class="primary-button large js-open-login" type="button">ログインしてはじめる</button></div></section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-brand">
+  <div class="footer-logo">AI Secretary</div>
+  <p>
+    対話を通して、予定管理・タスク整理・プレゼンなどを支援する パーソナルAI秘書システムです。
+  </p>
+</div>
+
+    <div class="footer-links">
+      <a href="#about">サービスについて</a>
+      <a href="#features">できること</a>
+      <a href="#scenes">活用シーン</a>
+      <button class="js-open-login" type="button">
+        ログイン
+      </button>
+    </div>
+
+  </div>
+
+  <p class="copyright">
+    © 2026 AI Secretary Project
+  </p>
+</footer>
+<script src="../js/top.js"></script>
+</body>
+</html>

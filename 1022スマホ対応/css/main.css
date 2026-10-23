@@ -2281,6 +2281,76 @@ body.weekly-report-open {
         border-radius: 16px;
     }
 
+    /* ============================= */
+/* スマホ：ブリーフィング省略 */
+/* ============================= */
+
+.briefing-text-area {
+    min-width: 0;
+}
+
+.briefing-text {
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+
+    line-clamp: 3;
+}
+
+/* もっと見るを押した状態 */
+.briefing-text-area.is-expanded .briefing-text {
+    display: block;
+
+    overflow: visible;
+
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+}
+
+/* もっと見る */
+.briefing-more-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 5px;
+    padding: 3px 0 0;
+
+    border: none;
+
+    color: #9a7f8d;
+    background: transparent;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.briefing-more-button i {
+    font-size: 9px;
+
+    transition:
+        transform 0.2s;
+}
+
+/* 開いているときは矢印を上向き */
+.briefing-text-area.is-expanded
+.briefing-more-button i {
+    transform: rotate(180deg);
+}
+
+/* hidden を最優先 */
+.briefing-more-button[hidden] {
+    display: none !important;
+}
+
 
     .briefing-card::before {
         top: auto;
@@ -2896,6 +2966,18 @@ body.weekly-report-open {
         font-size: 15px;
         font-weight: 500;
     }
+
+    /* ============================= */
+/* ブリーフィング もっと見る */
+/* ============================= */
+
+.briefing-text-area {
+    min-width: 0;
+}
+
+.briefing-more-button {
+    display: none;
+}
 
 
 }

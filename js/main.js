@@ -1,792 +1,3978 @@
-<!DOCTYPE html>
-<html lang="ja">
+// =============================
+// 日付・時刻
+// =============================
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- iPhone ホーム画面起動時にWebアプリとして表示 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>AI Secretary</title>
+const currentDateElement =
+    document.getElementById(
+        "currentDate"
+    );
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+const currentTimeElement =
+    document.getElementById(
+        "currentTime"
+    );
 
-    <!-- 共通CSSを必ず先に読み込む -->
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/main.css">
 
-    <script type="importmap">
-{
-    "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+function updateDateTime() {
+
+    const now =
+        new Date();
+
+
+    const dayNames = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+    ];
+
+
+    const month =
+        now.getMonth() + 1;
+
+    const date =
+        now.getDate();
+
+    const day =
+        dayNames[
+        now.getDay()
+        ];
+
+
+    currentDateElement.textContent =
+        `${month}月${date}日（${day}）`;
+
+
+    const hours =
+        String(
+            now.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minutes =
+        String(
+            now.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    currentTimeElement.textContent =
+        `${hours}:${minutes}`;
+}
+
+
+updateDateTime();
+
+
+setInterval(
+    updateDateTime,
+    1000
+);
+
+
+// =============================
+// 共通：YYYY-MM-DD
+// =============================
+
+function getLocalDateString(date) {
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    return `${year}-${month}-${day}`;
+}
+
+
+// =============================
+// トースト
+// =============================
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+const toastMessage =
+    document.getElementById(
+        "toastMessage"
+    );
+
+
+let toastTimer;
+
+
+function showToast(message) {
+
+    if (
+        !toast
+        ||
+        !toastMessage
+    ) {
+        return;
+    }
+
+
+    toastMessage.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+}
+
+
+// =============================
+// 天気
+// =============================
+
+const weatherTemperature =
+    document.getElementById(
+        "weatherTemperature"
+    );
+
+
+const weatherRain =
+    document.getElementById(
+        "weatherRain"
+    );
+
+
+const weatherIcon =
+    document.querySelector(
+        "#weatherIcon i"
+    );
+
+
+const weatherLocationButtons =
+    document.querySelectorAll(
+        ".weather-location-button"
+    );
+
+
+const weatherDayButtons =
+    document.querySelectorAll(
+        ".weather-day-button"
+    );
+
+
+// =============================
+// 天気設定
+// =============================
+
+const defaultWeatherSettings = {
+
+    home: "",
+
+    work: "",
+
+    defaultLocation:
+        "current",
+
+    useCurrentLocation:
+        true
+
+};
+
+
+function loadWeatherSettings() {
+
+    const savedData =
+        localStorage.getItem(
+            "aiSecretarySettings"
+        );
+
+
+    if (!savedData) {
+
+        return {
+            ...defaultWeatherSettings
+        };
+    }
+
+
+    try {
+
+        const settings =
+            JSON.parse(
+                savedData
+            );
+
+
+        return {
+
+            ...defaultWeatherSettings,
+
+            ...(settings.weather || {})
+
+        };
+
+    }
+    catch (error) {
+
+        console.error(
+            "天気設定の読み込みに失敗しました。",
+            error
+        );
+
+
+        return {
+            ...defaultWeatherSettings
+        };
+
     }
 }
-</script>
-</head>
 
-<body class="app-page main-page">
 
-    <div class="app-container main-container">
-        <!-- ============================= -->
-        <!-- ヘッダー -->
-        <!-- ============================= -->
+let weatherSettings =
+    loadWeatherSettings();
 
-        <header class="main-header">
 
-            <!-- 日付・時刻 -->
-            <div class="datetime-area">
+let selectedWeatherLocation =
+    weatherSettings.defaultLocation
+    ||
+    "current";
 
-                <span id="currentDate">
-                    ----年--月--日
+
+let selectedWeatherDay =
+    localStorage.getItem(
+        "selectedWeatherDay"
+    )
+    ||
+    "today";
+
+// =============================
+// AI秘書用：現在表示中の天気データ
+// =============================
+
+let currentWeatherData = {
+    temperature: null,
+    weatherCode: null,
+    rain: null
+};
+// =============================
+// 天気コード → アイコン
+// =============================
+
+function getWeatherIconClass(code) {
+
+    if (code === 0) {
+
+        return "fa-sun";
+    }
+
+
+    if (
+        code === 1
+        ||
+        code === 2
+    ) {
+
+        return "fa-cloud-sun";
+    }
+
+
+    if (code === 3) {
+
+        return "fa-cloud";
+    }
+
+
+    if (
+        code === 45
+        ||
+        code === 48
+    ) {
+
+        return "fa-smog";
+    }
+
+
+    if (
+        code === 51
+        ||
+        code === 53
+        ||
+        code === 55
+        ||
+        code === 56
+        ||
+        code === 57
+        ||
+        code === 61
+        ||
+        code === 63
+        ||
+        code === 65
+        ||
+        code === 66
+        ||
+        code === 67
+    ) {
+
+        return "fa-cloud-rain";
+    }
+
+
+    if (
+        code === 71
+        ||
+        code === 73
+        ||
+        code === 75
+        ||
+        code === 77
+        ||
+        code === 85
+        ||
+        code === 86
+    ) {
+
+        return "fa-snowflake";
+    }
+
+
+    if (
+        code === 80
+        ||
+        code === 81
+        ||
+        code === 82
+    ) {
+
+        return "fa-cloud-showers-heavy";
+    }
+
+
+    if (
+        code === 95
+        ||
+        code === 96
+        ||
+        code === 99
+    ) {
+
+        return "fa-cloud-bolt";
+    }
+
+
+    return "fa-cloud";
+}
+
+
+// =============================
+// 天気ボタン状態
+// =============================
+
+function updateWeatherButtons() {
+
+    weatherLocationButtons
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+
+                    "is-active",
+
+                    button.dataset
+                        .weatherLocation
+                    ===
+                    selectedWeatherLocation
+
+                );
+
+            }
+        );
+
+
+    weatherDayButtons
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+
+                    "is-active",
+
+                    button.dataset
+                        .weatherDay
+                    ===
+                    selectedWeatherDay
+
+                );
+
+            }
+        );
+}
+
+
+// =============================
+// 天気読み込み中
+// =============================
+
+function showWeatherLoading() {
+
+    weatherTemperature.textContent =
+        "--℃";
+
+
+    weatherRain.textContent =
+        "--%";
+
+
+    weatherIcon.className =
+        "fa-solid fa-spinner fa-spin";
+}
+
+
+// =============================
+// 天気取得エラー
+// =============================
+
+function showWeatherError() {
+
+    weatherTemperature.textContent =
+        "--℃";
+
+
+    weatherRain.textContent =
+        "--%";
+
+
+    weatherIcon.className =
+        "fa-solid fa-circle-exclamation";
+}
+
+
+// =============================
+// 天気API
+// =============================
+
+async function getWeatherFromAPI(
+    latitude,
+    longitude
+) {
+
+    showWeatherLoading();
+
+
+    const url =
+        "https://api.open-meteo.com/v1/forecast"
+        + `?latitude=${latitude}`
+        + `&longitude=${longitude}`
+        + "&current=temperature_2m,weather_code"
+        + "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max"
+        + "&timezone=auto"
+        + "&forecast_days=2";
+
+
+    try {
+
+        const response =
+            await fetch(
+                url
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "天気APIの取得に失敗しました"
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        displayWeather(
+            data
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "天気情報を取得できませんでした。",
+            error
+        );
+
+
+        showWeatherError();
+    }
+}
+
+
+// =============================
+// 天気表示
+// =============================
+
+function displayWeather(data) {
+
+    let temperature;
+
+    let weatherCode;
+
+    let rain;
+
+
+    // 今日
+    if (
+        selectedWeatherDay ===
+        "today"
+    ) {
+
+        temperature =
+            Math.round(
+                data.current
+                    .temperature_2m
+            );
+
+
+        weatherCode =
+            data.current
+                .weather_code;
+
+
+        rain =
+            data.daily
+                .precipitation_probability_max[0]
+            ??
+            0;
+    }
+
+    // 明日
+    else {
+
+        temperature =
+            Math.round(
+                data.daily
+                    .temperature_2m_max[1]
+            );
+
+
+        weatherCode =
+            data.daily
+                .weather_code[1];
+
+
+        rain =
+            data.daily
+                .precipitation_probability_max[1]
+            ??
+            0;
+    }
+
+
+    weatherTemperature.textContent =
+        `${temperature}℃`;
+
+
+    weatherRain.textContent =
+        `${rain}%`;
+
+
+    weatherIcon.className =
+        `fa-solid ${getWeatherIconClass(weatherCode)}`;
+
+    if (
+        typeof updateMobileWeatherDisplay
+        ===
+        "function"
+    ) {
+
+        // AI秘書でも使えるように保存
+        currentWeatherData = {
+            temperature: temperature,
+            weatherCode: weatherCode,
+            rain: rain
+        };
+
+        // 天気取得後に秘書表示も更新
+        renderSecretaryAssistant();
+        updateMobileWeatherDisplay();
+    }
+
+}
+
+// =============================
+// 地域名 → 緯度経度
+// =============================
+
+async function geocodeLocation(
+    location
+) {
+
+    const searchText =
+        location.trim();
+
+
+    if (!searchText) {
+
+        throw new Error(
+            "地域が設定されていません"
+        );
+    }
+
+
+    const url =
+        "https://msearch.gsi.go.jp/address-search/AddressSearch"
+        + `?q=${encodeURIComponent(searchText)}`;
+
+
+    const response =
+        await fetch(
+            url
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "住所検索に失敗しました"
+        );
+    }
+
+
+    const data =
+        await response.json();
+
+
+    if (
+        !Array.isArray(data)
+        ||
+        data.length === 0
+    ) {
+
+        throw new Error(
+            "地域が見つかりません"
+        );
+    }
+
+
+    return {
+
+        longitude:
+            data[0]
+                .geometry
+                .coordinates[0],
+
+        latitude:
+            data[0]
+                .geometry
+                .coordinates[1]
+
+    };
+}
+
+
+// =============================
+// 現在地の天気
+// =============================
+
+function getCurrentLocationWeather() {
+
+    weatherSettings =
+        loadWeatherSettings();
+
+
+    if (
+        !weatherSettings
+            .useCurrentLocation
+    ) {
+
+        showWeatherError();
+
+
+        showToast(
+            "現在地の利用がOFFになっています"
+        );
+
+
+        return;
+    }
+
+
+    if (
+        !navigator.geolocation
+    ) {
+
+        showWeatherError();
+
+        return;
+    }
+
+
+    navigator.geolocation
+        .getCurrentPosition(
+
+            function (position) {
+
+                getWeatherFromAPI(
+
+                    position
+                        .coords
+                        .latitude,
+
+                    position
+                        .coords
+                        .longitude
+
+                );
+
+            },
+
+            function (error) {
+
+                console.error(
+                    "現在地を取得できませんでした。",
+                    error
+                );
+
+
+                showWeatherError();
+            }
+
+        );
+}
+
+
+// =============================
+// 自宅・職場の天気
+// =============================
+
+async function getSavedLocationWeather(
+    location,
+    label
+) {
+
+    if (!location) {
+
+        showWeatherError();
+
+
+        showToast(
+            `${label}が設定されていません`
+        );
+
+
+        return;
+    }
+
+
+    try {
+
+        const place =
+            await geocodeLocation(
+                location
+            );
+
+
+        await getWeatherFromAPI(
+
+            place.latitude,
+
+            place.longitude
+
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            `${label}の天気を取得できませんでした。`,
+            error
+        );
+
+
+        showWeatherError();
+    }
+}
+
+
+// =============================
+// 選択中の場所の天気
+// =============================
+
+function updateWeather() {
+
+    weatherSettings =
+        loadWeatherSettings();
+
+
+    updateWeatherButtons();
+
+
+    // 現在地
+    if (
+        selectedWeatherLocation ===
+        "current"
+    ) {
+
+        getCurrentLocationWeather();
+
+        return;
+    }
+
+
+    // 自宅
+    if (
+        selectedWeatherLocation ===
+        "home"
+    ) {
+
+        getSavedLocationWeather(
+
+            weatherSettings.home,
+
+            "自宅"
+
+        );
+
+
+        return;
+    }
+
+
+    // 職場
+    if (
+        selectedWeatherLocation ===
+        "work"
+    ) {
+
+        getSavedLocationWeather(
+
+            weatherSettings.work,
+
+            "職場"
+
+        );
+
+    }
+}
+
+
+// =============================
+// 現在地・自宅・職場切替
+// =============================
+
+weatherLocationButtons
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectedWeatherLocation =
+                        this.dataset
+                            .weatherLocation;
+
+
+                    updateWeather();
+                }
+            );
+
+        }
+    );
+
+
+// =============================
+// 天気 今日・明日切替
+// =============================
+
+weatherDayButtons
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectedWeatherDay =
+                        this.dataset
+                            .weatherDay;
+
+
+                    localStorage.setItem(
+
+                        "selectedWeatherDay",
+
+                        selectedWeatherDay
+
+                    );
+
+
+                    updateWeather();
+                }
+            );
+
+        }
+    );
+
+
+updateWeather();
+
+
+// =============================
+// スケジュール
+// =============================
+
+const SCHEDULE_STORAGE_KEY =
+    "aiSecretarySchedules";
+
+
+const scheduleList =
+    document.getElementById(
+        "scheduleList"
+    );
+
+
+const mainScheduleEmpty =
+    document.getElementById(
+        "mainScheduleEmpty"
+    );
+
+
+const mainScheduleEmptyText =
+    document.getElementById(
+        "mainScheduleEmptyText"
+    );
+
+
+const scheduleTabs =
+    document.querySelectorAll(
+        ".main-schedule-tab"
+    );
+
+
+const scheduleDetailButton =
+    document.getElementById(
+        "scheduleDetailButton"
+    );
+
+
+let selectedScheduleDay =
+    "today";
+
+
+// =============================
+// スケジュール読み込み
+// =============================
+
+function loadSchedules() {
+
+    const savedData =
+        localStorage.getItem(
+            SCHEDULE_STORAGE_KEY
+        );
+
+
+    if (!savedData) {
+
+        return [];
+    }
+
+
+    try {
+
+        const schedules =
+            JSON.parse(
+                savedData
+            );
+
+
+        return Array.isArray(
+            schedules
+        )
+            ? schedules
+            : [];
+
+    }
+    catch (error) {
+
+        console.error(
+            "予定の読み込みに失敗しました。",
+            error
+        );
+
+
+        return [];
+    }
+}
+
+
+// =============================
+// 表示対象の日付
+// =============================
+
+function getScheduleTargetDate() {
+
+    const targetDate =
+        new Date();
+
+
+    if (
+        selectedScheduleDay ===
+        "tomorrow"
+    ) {
+
+        targetDate.setDate(
+
+            targetDate.getDate()
+            +
+            1
+
+        );
+    }
+
+
+    return getLocalDateString(
+        targetDate
+    );
+}
+
+
+// =============================
+// スケジュール表示
+// =============================
+
+function renderSchedules() {
+
+    const targetDate =
+        getScheduleTargetDate();
+
+
+    const schedules =
+        loadSchedules()
+
+            .filter(
+                function (schedule) {
+
+                    return (
+                        schedule.date
+                        ===
+                        targetDate
+                    );
+
+                }
+            )
+
+            .sort(
+                function (a, b) {
+
+                    return String(
+                        a.startTime || ""
+                    ).localeCompare(
+                        String(
+                            b.startTime || ""
+                        )
+                    );
+
+                }
+            );
+
+
+    scheduleList.innerHTML =
+        "";
+
+
+    if (
+        schedules.length ===
+        0
+    ) {
+
+        mainScheduleEmpty.hidden =
+            false;
+
+
+        mainScheduleEmptyText.textContent =
+            selectedScheduleDay ===
+                "today"
+                ? "今日は予定がありません"
+                : "明日は予定がありません";
+
+
+        return;
+    }
+
+
+    mainScheduleEmpty.hidden =
+        true;
+
+
+    // メインでは最大5件表示
+    schedules
+        .slice(
+            0,
+            5
+        )
+        .forEach(
+            function (schedule) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "schedule-item";
+
+
+                const time =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                time.className =
+                    "schedule-time";
+
+
+                time.textContent =
+                    schedule.startTime
+                    ||
+                    "--:--";
+
+
+                const title =
+                    document.createElement(
+                        "p"
+                    );
+
+
+                title.className =
+                    "schedule-name";
+
+
+                title.textContent =
+                    schedule.title
+                    ||
+                    "予定";
+
+
+                item.appendChild(
+                    time
+                );
+
+
+                item.appendChild(
+                    title
+                );
+
+
+                scheduleList.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+    // 5件を超えた場合は件数のみ表示
+    if (
+        schedules.length >
+        5
+    ) {
+
+        const more =
+            document.createElement(
+                "p"
+            );
+
+
+        more.className =
+            "main-schedule-more";
+
+
+        more.textContent =
+            `ほか ${schedules.length - 5}件`;
+
+
+        scheduleList.appendChild(
+            more
+        );
+    }
+}
+
+
+// =============================
+// スケジュール 今日・明日
+// =============================
+
+scheduleTabs.forEach(
+    function (tab) {
+
+        tab.addEventListener(
+            "click",
+            function () {
+
+                selectedScheduleDay =
+                    this.dataset
+                        .scheduleDay;
+
+
+                scheduleTabs
+                    .forEach(
+                        function (item) {
+
+                            item.classList.remove(
+                                "is-active"
+                            );
+
+                        }
+                    );
+
+
+                this.classList.add(
+                    "is-active"
+                );
+
+
+                renderSchedules();
+            }
+        );
+
+    }
+);
+
+
+// =============================
+// カレンダーへ移動
+// =============================
+
+scheduleDetailButton
+    .addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "calendar.html";
+        }
+    );
+
+
+renderSchedules();
+
+
+// =============================
+// タスク
+// =============================
+
+const TASK_STORAGE_KEY =
+    "aiSecretaryTasks";
+
+
+const unfinishedTaskCount =
+    document.getElementById(
+        "unfinishedTaskCount"
+    );
+
+
+const todayTaskCount =
+    document.getElementById(
+        "todayTaskCount"
+    );
+
+
+const taskDetailButton =
+    document.getElementById(
+        "taskDetailButton"
+    );
+
+
+// =============================
+// タスク読み込み
+// =============================
+
+function loadTasks() {
+
+    const savedData =
+        localStorage.getItem(
+            TASK_STORAGE_KEY
+        );
+
+
+    if (!savedData) {
+
+        return [];
+    }
+
+
+    try {
+
+        const tasks =
+            JSON.parse(
+                savedData
+            );
+
+
+        return Array.isArray(
+            tasks
+        )
+            ? tasks
+            : [];
+
+    }
+    catch (error) {
+
+        console.error(
+            "タスクの読み込みに失敗しました。",
+            error
+        );
+
+
+        return [];
+    }
+}
+
+
+// =============================
+// タスク件数表示
+// =============================
+
+function renderTaskCounts() {
+
+    const tasks =
+        loadTasks();
+
+
+    const today =
+        getLocalDateString(
+            new Date()
+        );
+
+
+    // 未完了
+    const unfinishedTasks =
+        tasks.filter(
+            function (task) {
+
+                return (
+                    !task.completed
+                );
+
+            }
+        );
+
+
+    // 今日が期限の未完了タスク
+    const todayTasks =
+        unfinishedTasks.filter(
+            function (task) {
+
+                return (
+                    task.dueDate
+                    ===
+                    today
+                );
+
+            }
+        );
+
+
+    unfinishedTaskCount.textContent =
+        `${unfinishedTasks.length}件`;
+
+
+    todayTaskCount.textContent =
+        `${todayTasks.length}件`;
+}
+
+
+// =============================
+// タスク一覧へ移動
+// =============================
+
+taskDetailButton
+    .addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "task.html";
+        }
+    );
+
+
+renderTaskCounts();
+// =============================
+// AI秘書
+// 今日のブリーフィング・提案
+// =============================
+
+const briefingGreeting =
+    document.getElementById(
+        "briefingGreeting"
+    );
+
+
+const briefingText =
+    document.getElementById(
+        "briefingText"
+    );
+const briefingMoreButton =
+    document.getElementById(
+        "briefingMoreButton"
+    );
+
+
+const briefingModal =
+    document.getElementById(
+        "briefingModal"
+    );
+
+
+const briefingModalOverlay =
+    document.getElementById(
+        "briefingModalOverlay"
+    );
+
+
+const briefingModalClose =
+    document.getElementById(
+        "briefingModalClose"
+    );
+
+
+const briefingModalText =
+    document.getElementById(
+        "briefingModalText"
+    );
+
+const suggestionList =
+    document.getElementById(
+        "suggestionList"
+    );
+
+
+const suggestionCount =
+    document.getElementById(
+        "suggestionCount"
+    );
+
+
+// =============================
+// 今日の予定を取得
+// =============================
+
+function getTodaySchedules() {
+
+    const today =
+        getLocalDateString(
+            new Date()
+        );
+
+
+    return loadSchedules()
+
+        .filter(
+            function (schedule) {
+
+                return (
+                    schedule.date
+                    ===
+                    today
+                );
+
+            }
+        )
+
+        .sort(
+            function (a, b) {
+
+                return String(
+                    a.startTime || ""
+                ).localeCompare(
+                    String(
+                        b.startTime || ""
+                    )
+                );
+
+            }
+        );
+}
+
+
+// =============================
+// 今日のタスク情報を取得
+// =============================
+
+function getTodayTaskData() {
+
+    const tasks =
+        loadTasks();
+
+
+    const today =
+        getLocalDateString(
+            new Date()
+        );
+
+
+    const unfinishedTasks =
+        tasks.filter(
+            function (task) {
+
+                return !task.completed;
+
+            }
+        );
+
+
+    const todayTasks =
+        unfinishedTasks.filter(
+            function (task) {
+
+                return (
+                    task.dueDate
+                    ===
+                    today
+                );
+
+            }
+        );
+
+
+    return {
+
+        all: tasks,
+
+        unfinished:
+            unfinishedTasks,
+
+        today:
+            todayTasks
+
+    };
+}
+
+// =============================
+// ブリーフィング文章生成
+// =============================
+
+function createBriefingText() {
+
+    const schedules =
+        getTodaySchedules();
+
+
+    const taskData =
+        getTodayTaskData();
+
+
+    const messages = [];
+
+
+    // -----------------------------
+    // 今日の予定
+    // -----------------------------
+
+    if (schedules.length === 0) {
+
+        messages.push(
+            "今日は予定がありません。"
+        );
+
+    }
+    else {
+
+        const firstSchedule =
+            schedules[0];
+
+
+        if (
+            firstSchedule.startTime
+            &&
+            firstSchedule.title
+        ) {
+
+            messages.push(
+                `今日は${firstSchedule.startTime}から「${firstSchedule.title}」があります。`
+            );
+
+        }
+        else {
+
+            messages.push(
+                `今日は予定が${schedules.length}件あります。`
+            );
+
+        }
+
+
+        if (schedules.length >= 2) {
+
+            messages.push(
+                `全部で${schedules.length}件の予定が入っています。`
+            );
+
+        }
+
+    }
+
+
+    // -----------------------------
+    // 今日までのタスク
+    // -----------------------------
+
+    if (taskData.today.length > 0) {
+
+        messages.push(
+            `今日までのタスクが${taskData.today.length}件あります。`
+        );
+
+    }
+    else if (
+        taskData.unfinished.length > 0
+    ) {
+
+        messages.push(
+            `未完了のタスクは${taskData.unfinished.length}件です。`
+        );
+
+    }
+    else {
+
+        messages.push(
+            "未完了のタスクはありません。"
+        );
+
+    }
+
+
+    // -----------------------------
+    // 天気
+    // -----------------------------
+
+    if (
+        currentWeatherData.rain !== null
+        &&
+        currentWeatherData.rain >= 50
+    ) {
+
+        messages.push(
+            `降水確率は${currentWeatherData.rain}%なので、傘があると安心です。`
+        );
+
+    }
+
+
+    return messages.join(
+        " "
+    );
+}
+// =============================
+// ブリーフィング
+// もっと見る表示判定
+// =============================
+
+function updateBriefingMoreButton() {
+
+    if (
+        !briefingText
+        ||
+        !briefingMoreButton
+    ) {
+        return;
+    }
+
+
+    requestAnimationFrame(
+        function () {
+
+            const isOverflowing =
+                briefingText.scrollHeight >
+                briefingText.clientHeight + 1;
+
+
+            briefingMoreButton.hidden =
+                !isOverflowing;
+
+        }
+    );
+}
+
+
+// =============================
+// ブリーフィングモーダル
+// =============================
+
+function openBriefingModal() {
+
+    if (
+        !briefingModal
+        ||
+        !briefingModalText
+        ||
+        !briefingText
+    ) {
+        return;
+    }
+
+
+    briefingModalText.textContent =
+        briefingText.textContent;
+
+
+    briefingModal.hidden =
+        false;
+}
+
+
+function closeBriefingModal() {
+
+    if (!briefingModal) {
+        return;
+    }
+
+
+    briefingModal.hidden =
+        true;
+}
+
+
+if (briefingMoreButton) {
+
+    briefingMoreButton.addEventListener(
+        "click",
+        openBriefingModal
+    );
+}
+
+
+if (briefingModalClose) {
+
+    briefingModalClose.addEventListener(
+        "click",
+        closeBriefingModal
+    );
+}
+
+
+if (briefingModalOverlay) {
+
+    briefingModalOverlay.addEventListener(
+        "click",
+        closeBriefingModal
+    );
+}
+
+
+window.addEventListener(
+    "resize",
+    updateBriefingMoreButton
+);
+
+// =============================
+// 秘書からの提案を生成
+// =============================
+
+function createSecretarySuggestions() {
+
+    const schedules =
+        getTodaySchedules();
+
+
+    const taskData =
+        getTodayTaskData();
+
+
+    const suggestions = [];
+
+
+    // -----------------------------
+    // 雨
+    // -----------------------------
+
+    if (
+        currentWeatherData.rain !== null
+        &&
+        currentWeatherData.rain >= 50
+    ) {
+
+        suggestions.push({
+
+            icon:
+                "fa-umbrella",
+
+            title:
+                "傘を持って出かけると安心です",
+
+            text:
+                `今日の降水確率は${currentWeatherData.rain}%です。`
+
+        });
+
+    }
+
+
+    // -----------------------------
+    // 今日までのタスク
+    // -----------------------------
+
+    if (
+        taskData.today.length > 0
+    ) {
+
+        suggestions.push({
+
+            icon:
+                "fa-circle-check",
+
+            title:
+                `今日までのタスクが${taskData.today.length}件あります`,
+
+            text:
+                "空いている時間に確認してみましょう。"
+
+        });
+
+    }
+
+
+    // -----------------------------
+    // 予定が多い
+    // -----------------------------
+
+    if (
+        schedules.length >= 4
+    ) {
+
+        suggestions.push({
+
+            icon:
+                "fa-mug-hot",
+
+            title:
+                "今日は予定が多めです",
+
+            text:
+                "予定の間に少し休憩を入れるのがおすすめです。"
+
+        });
+
+    }
+
+
+    // -----------------------------
+    // 未完了タスクが多い
+    // -----------------------------
+
+    if (
+        taskData.unfinished.length >= 5
+    ) {
+
+        suggestions.push({
+
+            icon:
+                "fa-list-check",
+
+            title:
+                "タスクを少し整理しませんか？",
+
+            text:
+                `未完了のタスクが${taskData.unfinished.length}件あります。`
+
+        });
+
+    }
+
+
+    // -----------------------------
+    // 特に提案がない
+    // -----------------------------
+
+    if (
+        suggestions.length === 0
+    ) {
+
+        suggestions.push({
+
+            icon:
+                "fa-face-smile",
+
+            title:
+                "今日は大きな注意事項はありません",
+
+            text:
+                "自分のペースで進めていきましょう。"
+
+        });
+
+    }
+
+
+    // 最大3件
+    return suggestions.slice(
+        0,
+        3
+    );
+}
+
+
+// =============================
+// 提案を画面に表示
+// =============================
+
+function renderSecretarySuggestions() {
+
+    if (
+        !suggestionList
+        ||
+        !suggestionCount
+    ) {
+
+        return;
+    }
+
+
+    const suggestions =
+        createSecretarySuggestions();
+
+
+    suggestionList.innerHTML =
+        "";
+
+
+    suggestionCount.textContent =
+        `${suggestions.length}件`;
+
+
+    const visibleSuggestions =
+        window.innerWidth <= 550
+            ? []
+            : suggestions.slice(0, 2);
+
+
+    visibleSuggestions.forEach(
+        function (suggestion) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "suggestion-item";
+
+
+            const icon =
+                document.createElement(
+                    "span"
+                );
+
+
+            icon.className =
+                "suggestion-item-icon";
+
+
+            icon.innerHTML =
+                `<i class="fa-solid ${suggestion.icon}"></i>`;
+
+
+            const textArea =
+                document.createElement(
+                    "div"
+                );
+
+
+            textArea.className =
+                "suggestion-item-text";
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+
+            title.textContent =
+                suggestion.title;
+
+
+            const description =
+                document.createElement(
+                    "p"
+                );
+
+
+            description.textContent =
+                suggestion.text;
+
+
+            textArea.appendChild(
+                title
+            );
+
+
+            textArea.appendChild(
+                description
+            );
+
+
+            item.appendChild(
+                icon
+            );
+
+
+            item.appendChild(
+                textArea
+            );
+
+
+            suggestionList.appendChild(
+                item
+            );
+
+        }
+    );
+    if (
+        window.innerWidth > 550
+        &&
+        suggestions.length > 2
+    ) {
+
+        const moreButton =
+            document.createElement(
+                "button"
+            );
+
+
+        moreButton.className =
+            "suggestion-more-button";
+
+
+        moreButton.type =
+            "button";
+
+
+        moreButton.innerHTML =
+            `ほか${suggestions.length - 2}件を見る
+            <i class="fa-solid fa-chevron-right"></i>`;
+
+
+        moreButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                openSuggestionModal(
+                    true
+                );
+
+            }
+        );
+
+
+        suggestionList.appendChild(
+            moreButton
+        );
+
+    }
+}
+
+// =============================
+// スマホ用 秘書からの提案モーダル
+// =============================
+
+const secretarySuggestions =
+    document.getElementById(
+        "secretarySuggestions"
+    );
+
+const suggestionModal =
+    document.getElementById(
+        "suggestionModal"
+    );
+
+const suggestionModalOverlay =
+    document.getElementById(
+        "suggestionModalOverlay"
+    );
+
+const suggestionModalClose =
+    document.getElementById(
+        "suggestionModalClose"
+    );
+
+const suggestionModalList =
+    document.getElementById(
+        "suggestionModalList"
+    );
+
+
+function openSuggestionModal(forceOpen = false) {
+
+    if (
+        (
+            window.innerWidth > 550
+            &&
+            !forceOpen
+        )
+        ||
+        !suggestionModal
+        ||
+        !suggestionModalList
+    ) {
+        return;
+    }
+
+
+    const suggestions =
+        createSecretarySuggestions();
+
+
+    suggestionModalList.innerHTML =
+        "";
+
+
+    suggestions.forEach(
+        function (suggestion) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "suggestion-item";
+
+
+            item.innerHTML = `
+                <span class="suggestion-item-icon">
+                    <i class="fa-solid ${suggestion.icon}"></i>
                 </span>
 
-                <strong id="currentTime">
-                    --:--
-                </strong>
-
-            </div>
-
-
-            <!-- 天気 -->
-            <div class="weather-area">
-
-                <!-- 現在地・自宅・職場 -->
-                <div class="weather-location-tabs">
-
-                    <!-- 現在地 -->
-                    <button class="weather-location-button is-active tooltip-target" type="button"
-                        data-weather-location="current" data-tooltip="現在地の天気を表示" aria-label="現在地の天気">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>現在地</span>
-                    </button>
-
-
-                    <!-- 自宅 -->
-                    <button class="weather-location-button tooltip-target" type="button" data-weather-location="home"
-                        data-tooltip="自宅の天気を表示" aria-label="自宅の天気">
-                        <i class="fa-solid fa-house"></i>
-                        <span>自宅</span>
-                    </button>
-
-
-                    <!-- 職場 -->
-                    <button class="weather-location-button tooltip-target" type="button" data-weather-location="work"
-                        data-tooltip="職場の天気を表示" aria-label="職場の天気">
-                        <i class="fa-solid fa-building"></i>
-                        <span>職場</span>
-                    </button>
-
+                <div class="suggestion-item-text">
+                    <strong>${suggestion.title}</strong>
+                    <p>${suggestion.text}</p>
                 </div>
+            `;
 
 
-                <!-- 今日・明日 -->
-                <div class="weather-day-tabs">
+            suggestionModalList.appendChild(
+                item
+            );
+        }
+    );
 
-                    <button class="weather-day-button is-active" type="button" data-weather-day="today">
-                        今日
-                    </button>
 
-                    <button class="weather-day-button" type="button" data-weather-day="tomorrow">
-                        明日
-                    </button>
+    suggestionModal.hidden =
+        false;
+}
 
-                </div>
 
+function closeSuggestionModal() {
 
-                <!-- 天気情報 -->
-                <div class="weather-summary">
+    if (!suggestionModal) {
+        return;
+    }
 
-                    <span class="weather-icon" id="weatherIcon" aria-hidden="true">
-                        <i class="fa-solid fa-cloud-sun"></i>
-                    </span>
 
-                    <strong id="weatherTemperature">
-                        --℃
-                    </strong>
+    suggestionModal.hidden =
+        true;
+}
 
-                    <div class="rain-info">
 
-                        <i class="fa-solid fa-umbrella"></i>
+if (secretarySuggestions) {
 
-                        <strong id="weatherRain">
-                            --%
-                        </strong>
+    secretarySuggestions.addEventListener(
+        "click",
+        openSuggestionModal
+    );
+}
 
-                    </div>
 
-                </div>
+if (suggestionModalClose) {
 
-            </div>
+    suggestionModalClose.addEventListener(
+        "click",
+        closeSuggestionModal
+    );
+}
 
 
-            <!-- お知らせ・設定 -->
-            <div class="header-actions">
+if (suggestionModalOverlay) {
 
-                <!-- スマホ用 天気ボタン -->
-                <button class="header-icon-button mobile-weather-button" id="mobileWeatherButton" type="button"
-                    aria-label="天気を見る">
-                    <i class="fa-solid fa-cloud-sun"></i>
-                </button>
+    suggestionModalOverlay.addEventListener(
+        "click",
+        closeSuggestionModal
+    );
+}
+// =============================
+// AI秘書全体を更新
+// =============================
+function renderSecretaryAssistant() {
 
-                <!-- お知らせ -->
-                <button class="header-icon-button" id="notificationButton" type="button" aria-label="お知らせ">
-                    <i class="fa-regular fa-bell"></i>
+    /* =============================
+       ニックネーム付き挨拶
+    ============================= */
 
-                    <span class="notification-dot" aria-hidden="true"></span>
+    if (briefingGreeting) {
 
-                </button>
+        const nickname =
+            localStorage.getItem(
+                "aiSecretaryCurrentUser"
+            )
+            || "ゲスト";
 
 
-                <!-- 設定 -->
-                <button class="header-icon-button" id="settingsButton" type="button" aria-label="設定">
-                    <i class="fa-solid fa-gear"></i>
-                </button>
+        const hour =
+            new Date().getHours();
 
-            </div>
 
-        </header>
+        let greeting;
 
-        <!-- ============================= -->
-        <!-- PC用ナビゲーション -->
-        <!-- ============================= -->
 
-        <nav class="main-navigation" aria-label="PC用メインメニュー">
-            <button class="nav-item is-active" data-page="home" type="button">
-                <i class="fa-solid fa-house"></i>
-                <span>ホーム</span>
-            </button>
+        if (hour < 11) {
 
+            greeting =
+                "おはようございます！";
 
-            <button class="nav-item" data-page="task" type="button">
-                <i class="fa-solid fa-list-check"></i>
-                <span>タスク</span>
-            </button>
+        }
+        else if (hour < 18) {
 
+            greeting =
+                "こんにちは！";
 
-            <button class="nav-item" data-page="calendar" type="button">
-                <i class="fa-regular fa-calendar-days"></i>
-                <span>カレンダー</span>
-            </button>
+        }
+        else {
 
+            greeting =
+                "こんばんは！";
 
-            <button class="nav-item" data-page="diary" type="button">
-                <i class="fa-solid fa-book-open"></i>
-                <span>日記</span>
-            </button>
-        </nav>
+        }
 
 
-        <!-- ============================= -->
-        <!-- メインコンテンツ -->
-        <!-- ============================= -->
-        <main class="main-content">
+        briefingGreeting.textContent =
+            `${nickname}さん、${greeting}`;
 
-            <!-- ============================= -->
-            <!-- 左側 -->
-            <!-- ============================= -->
-            <div class="main-left-column">
+    }
 
-                <!-- ============================= -->
-                <!-- スケジュール -->
-                <!-- ============================= -->
-                <section class="common-card schedule-card">
 
-                    <div class="card-header">
+    /* =============================
+       ブリーフィング
+    ============================= */
 
-                        <div class="card-title">
+    if (briefingText) {
 
-                            <span class="card-title-icon schedule-icon">
-                                <i class="fa-regular fa-calendar"></i>
-                            </span>
+        briefingText.textContent =
+            createBriefingText();
 
-                            <h2>スケジュール</h2>
 
-                        </div>
-                        <button class="detail-icon-button" id="scheduleDetailButton" type="button">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
+        updateBriefingMoreButton();
 
+    }
 
-                    <!-- 今日・明日 -->
-                    <div class="main-schedule-tabs">
 
-                        <button class="main-schedule-tab is-active" type="button" data-schedule-day="today">
-                            今日
-                        </button>
+    /* =============================
+       秘書からの提案
+    ============================= */
 
+    renderSecretarySuggestions();
 
-                        <button class="main-schedule-tab" type="button" data-schedule-day="tomorrow">
-                            明日
-                        </button>
+}
 
-                    </div>
+// 初回表示
+renderSecretaryAssistant();
 
+// =============================
+// 週間レポート
+// =============================
 
-                    <!-- JavaScriptで予定を表示 -->
-                    <div class="schedule-list" id="scheduleList"></div>
+const weeklyReportButton =
+    document.getElementById(
+        "weeklyReportButton"
+    );
 
+const weeklyReportModal =
+    document.getElementById(
+        "weeklyReportModal"
+    );
 
-                    <!-- 予定なし -->
-                    <div class="schedule-empty" id="mainScheduleEmpty" hidden>
+const weeklyReportOverlay =
+    document.getElementById(
+        "weeklyReportOverlay"
+    );
 
-                        <i class="fa-regular fa-calendar-xmark"></i>
+const weeklyReportClose =
+    document.getElementById(
+        "weeklyReportClose"
+    );
 
-                        <span id="mainScheduleEmptyText">
-                            今日は予定がありません
-                        </span>
+const weeklyReportPeriod =
+    document.getElementById(
+        "weeklyReportPeriod"
+    );
 
-                    </div>
+const weeklyCompletedTasks =
+    document.getElementById(
+        "weeklyCompletedTasks"
+    );
 
-                </section>
+const weeklySchedules =
+    document.getElementById(
+        "weeklySchedules"
+    );
 
+const weeklyDiaryDays =
+    document.getElementById(
+        "weeklyDiaryDays"
+    );
 
-                <!-- ============================= -->
-                <!-- タスク -->
-                <!-- ============================= -->
-                <section class="common-card task-summary-card">
+const weeklyTopMood =
+    document.getElementById(
+        "weeklyTopMood"
+    );
 
-                    <div class="card-header">
+const weeklyChart =
+    document.getElementById(
+        "weeklyChart"
+    );
 
-                        <div class="card-title">
+const weeklyStreakText =
+    document.getElementById(
+        "weeklyStreakText"
+    );
 
-                            <span class="card-title-icon task-icon">
-                                <i class="fa-solid fa-list-check"></i>
-                            </span>
+const weeklyComment =
+    document.getElementById(
+        "weeklyComment"
+    );
 
-                            <h2>タスク</h2>
 
-                        </div>
+const DIARY_STORAGE_KEY =
+    "aiSecretaryDiary";
 
-                        <button class="detail-icon-button" id="taskDetailButton" type="button" data-tooltip="タスク一覧を見る">
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
 
+// =============================
+// 今週の月曜日〜日曜日を取得
+// =============================
 
-                    <!-- タスクは件数のみ表示 -->
-                    <div class="task-count-area">
+function getCurrentWeekRange() {
 
-                        <div class="task-count-row">
+    const now =
+        new Date();
 
-                            <span class="task-count-label">
+    const day =
+        now.getDay() === 0
+            ? 7
+            : now.getDay();
 
-                                <i class="fa-regular fa-circle"></i>
 
-                                未完了
+    const monday =
+        new Date(now);
 
-                            </span>
+    monday.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
-                            <strong id="unfinishedTaskCount">
-                                0件
-                            </strong>
+    monday.setDate(
+        now.getDate() - day + 1
+    );
 
-                        </div>
 
+    const sunday =
+        new Date(monday);
 
-                        <div class="task-count-row">
+    sunday.setDate(
+        monday.getDate() + 6
+    );
 
-                            <span class="task-count-label">
+    sunday.setHours(
+        23,
+        59,
+        59,
+        999
+    );
 
-                                <i class="fa-regular fa-clock"></i>
 
-                                今日中
+    return {
+        monday,
+        sunday
+    };
+}
 
-                            </span>
 
-                            <strong id="todayTaskCount">
-                                0件
-                            </strong>
+// =============================
+// YYYY-MM-DD → Date
+// =============================
 
-                        </div>
+function parseDateString(dateString) {
 
-                    </div>
+    if (!dateString) {
+        return null;
+    }
 
-                </section>
 
-            </div>
+    const parts =
+        String(dateString)
+            .slice(0, 10)
+            .split("-");
 
 
-            <!-- ============================= -->
-            <!-- AI秘書 -->
-            <!-- ============================= -->
-            <section class="assistant-section">
+    if (parts.length !== 3) {
+        return null;
+    }
 
-                <!-- AI秘書表示 -->
-                <div class="assistant-card">
 
-                    <div class="avatar-area" id="avatarArea">
+    const date =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
 
-                        <div class="background-decoration decoration-one"></div>
-                        <div class="background-decoration decoration-two"></div>
-                        <div class="background-decoration decoration-three"></div>
 
-                        <!-- 3Dアバター -->
-                        <div class="avatar-canvas" id="avatarCanvas"></div>
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return null;
+    }
 
 
-                        <!-- =============================
-                            右側：秘書情報
-                         ============================== -->
-                        <div class="secretary-info-area">
+    return date;
+}
 
-                            <!-- 今日の秘書ブリーフィング -->
-                            <section class="briefing-card">
 
-                                <p class="briefing-greeting" id="briefingGreeting">
-                                    おはようございます！
-                                </p>
+// =============================
+// 今週の日付か判定
+// =============================
 
-                                <p class="briefing-text" id="briefingText">
-                                    今日の予定やタスクを確認しています。
-                                </p>
+function isDateInCurrentWeek(
+    dateString,
+    weekRange
+) {
 
-                                <button class="briefing-more-button" id="briefingMoreButton" type="button" hidden>
-                                    もっと見る
-                                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                                </button>
+    const date =
+        parseDateString(
+            dateString
+        );
 
-                            </section>
 
+    if (!date) {
+        return false;
+    }
 
-                            <!-- 秘書からの提案 -->
-                            <section class="secretary-suggestions" id="secretarySuggestions">
-                                <div class="suggestion-header">
 
-                                    <div class="suggestion-title">
-                                        <span>秘書からの提案</span>
-                                    </div>
+    return (
+        date >= weekRange.monday
+        &&
+        date <= weekRange.sunday
+    );
+}
 
-                                    <span class="suggestion-count" id="suggestionCount">
-                                        0件
-                                    </span>
 
-                                </div>
+// =============================
+// 日記読み込み
+// =============================
 
-                                <div class="suggestion-list" id="suggestionList"></div>
+function loadDiaryData() {
 
-                            </section>
+    const savedData =
+        localStorage.getItem(
+            DIARY_STORAGE_KEY
+        );
 
 
-                            <!-- 今週のまとめ -->
-                            <button class="weekly-report-button" id="weeklyReportButton" type="button">
+    if (!savedData) {
+        return [];
+    }
 
-                                <span class="weekly-report-button-icon">
-                                    <i class="fa-solid fa-chart-column"></i>
-                                </span>
 
-                                <span class="weekly-report-button-text">
-                                    <strong>今週のまとめを見る</strong>
-                                </span>
+    try {
 
-                                <i class="fa-solid fa-chevron-right"></i>
+        return JSON.parse(
+            savedData
+        );
 
-                            </button>
+    }
+    catch (error) {
 
-                        </div>
-                        <!-- ↑ secretary-info-area はここで閉じる -->
+        console.error(
+            "日記データの読み込みに失敗しました。",
+            error
+        );
 
+        return [];
+    }
+}
 
-                        <!-- 下部3ボタン -->
-                        <div class="assistant-bottom-actions">
 
-                            <button class="assistant-action-button chat-action" id="helpButton" type="button">
-                                <span class="assistant-action-icon">
-                                    <i class="fa-regular fa-comment-dots"></i>
-                                </span>
+// =============================
+// 日記データを配列に変換
+// =============================
 
-                                <strong>チャット</strong>
-                            </button>
+function normalizeDiaryEntries() {
 
+    const rawData =
+        loadDiaryData();
 
-                            <button class="assistant-action-button register-action" id="registerModeButton"
-                                type="button">
-                                <span class="assistant-action-icon">
-                                    <i class="fa-solid fa-file-circle-plus"></i>
-                                </span>
 
-                                <strong>音声登録</strong>
-                            </button>
+    const entries = [];
 
 
-                            <button class="assistant-action-button conversation-action" id="conversationModeButton"
-                                type="button">
-                                <span class="assistant-action-icon">
-                                    <i class="fa-regular fa-comments"></i>
-                                </span>
+    // 普通の配列の場合
+    if (
+        Array.isArray(rawData)
+    ) {
 
-                                <strong>音声会話</strong>
-                            </button>
+        rawData.forEach(
+            function (item) {
 
-                        </div>
+                if (
+                    item
+                    &&
+                    typeof item ===
+                    "object"
+                ) {
 
-                    </div>
+                    entries.push(
+                        item
+                    );
+                }
 
-                </div>
-                <!-- assistant-card 終了 -->
+            }
+        );
 
-            </section>
-            <!-- assistant-section 終了 -->
 
-        </main>
-        <!-- main-content 終了 -->
+        return entries;
+    }
 
-    </div>
-    <!-- main-container 終了 -->
 
-    <!-- ============================= -->
-    <!-- スマホ用 天気ポップアップ -->
-    <!-- ============================= -->
+    // 日付をキーにして保存している場合
+    if (
+        rawData
+        &&
+        typeof rawData ===
+        "object"
+    ) {
 
-    <div class="mobile-weather-popup" id="mobileWeatherPopup" hidden>
+        Object.entries(
+            rawData
+        ).forEach(
+            function (
+                [key, value]
+            ) {
 
-        <div class="mobile-weather-overlay" id="mobileWeatherOverlay"></div>
+                if (
+                    /^\d{4}-\d{2}-\d{2}$/
+                        .test(key)
+                ) {
 
-        <section class="mobile-weather-dialog">
+                    if (
+                        value
+                        &&
+                        typeof value ===
+                        "object"
+                    ) {
 
-            <div class="mobile-weather-popup-header">
+                        entries.push({
+                            ...value,
+                            date:
+                                value.date
+                                ||
+                                key
+                        });
 
-                <div class="mobile-weather-main">
+                    }
 
-                    <span class="mobile-weather-main-icon" id="mobileWeatherIcon">
-                        <i class="fa-solid fa-cloud-sun"></i>
-                    </span>
+                }
 
-                    <div>
-                        <strong id="mobileWeatherTemperature">
-                            --℃
-                        </strong>
+            }
+        );
 
-                        <span id="mobileWeatherRain">
-                            降水確率 --%
-                        </span>
-                    </div>
+    }
 
-                </div>
 
-                <button class="mobile-weather-close" id="mobileWeatherClose" type="button" aria-label="閉じる">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+    return entries;
+}
 
-            </div>
 
+// =============================
+// 日記の日付を取得
+// =============================
 
-            <!-- 今日・明日 -->
-            <div class="mobile-weather-day-tabs">
+function getDiaryDate(entry) {
 
-                <button class="mobile-weather-day-button is-active" type="button" data-mobile-weather-day="today">
-                    今日
-                </button>
+    return (
+        entry.date
+        ||
+        entry.diaryDate
+        ||
+        entry.recordDate
+        ||
+        entry.createdDate
+        ||
+        ""
+    );
+}
 
-                <button class="mobile-weather-day-button" type="button" data-mobile-weather-day="tomorrow">
-                    明日
-                </button>
 
-            </div>
+// =============================
+// 日記の気持ちを取得
+// =============================
 
+function getDiaryMood(entry) {
 
-            <p class="mobile-weather-location-title">
-                場所を選択
-            </p>
+    return (
+        entry.mood
+        ||
+        entry.emotion
+        ||
+        entry.feeling
+        ||
+        entry.feelingName
+        ||
+        ""
+    );
+}
 
 
-            <!-- 場所 -->
-            <div class="mobile-weather-locations">
+// =============================
+// タスクの活動日を取得
+// =============================
 
-                <button class="mobile-weather-location-button is-active" type="button"
-                    data-mobile-weather-location="current">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>現在地</span>
-                    <i class="fa-solid fa-check mobile-weather-check"></i>
-                </button>
+function getTaskActivityDate(task) {
 
+    return (
+        task.completedDate
+        ||
+        task.completedAt
+        ||
+        task.doneDate
+        ||
+        task.updatedAt
+        ||
+        task.dueDate
+        ||
+        ""
+    );
+}
 
-                <button class="mobile-weather-location-button" type="button" data-mobile-weather-location="home">
-                    <i class="fa-solid fa-house"></i>
-                    <span>自宅</span>
-                    <i class="fa-solid fa-check mobile-weather-check"></i>
-                </button>
 
+// =============================
+// 曜日表示
+// =============================
 
-                <button class="mobile-weather-location-button" type="button" data-mobile-weather-location="work">
-                    <i class="fa-solid fa-building"></i>
-                    <span>職場</span>
-                    <i class="fa-solid fa-check mobile-weather-check"></i>
-                </button>
+function getWeekdayLabel(date) {
 
-            </div>
+    const labels = [
+        "日",
+        "月",
+        "火",
+        "水",
+        "木",
+        "金",
+        "土"
+    ];
 
-        </section>
 
-    </div>
-    <!-- ============================= -->
-    <!-- トーストメッセージ -->
-    <!-- ============================= -->
+    return labels[
+        date.getDay()
+    ];
+}
 
-    <div class="toast" id="toast" role="status" aria-live="polite">
-        <i class="fa-solid fa-circle-info"></i>
-        <span id="toastMessage"></span>
-    </div>
 
+// =============================
+// 今週のレポートデータ作成
+// =============================
 
-    <!-- ============================= -->
-    <!-- スマホ用固定ボトムナビ -->
-    <!-- ============================= -->
+function createWeeklyReportData() {
 
-    <nav class="mobile-bottom-nav">
+    const weekRange =
+        getCurrentWeekRange();
 
-        <a href="main.html" class="mobile-nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>ホーム</span>
-        </a>
 
-        <a href="task.html" class="mobile-nav-item">
-            <i class="fa-solid fa-list-check"></i>
-            <span>タスク</span>
-        </a>
+    const tasks =
+        loadTasks();
 
-        <a href="calendar.html" class="mobile-nav-item">
-            <i class="fa-regular fa-calendar"></i>
-            <span>カレンダー</span>
-        </a>
 
-        <a href="diary.html" class="mobile-nav-item">
-            <i class="fa-solid fa-book-open"></i>
-            <span>日記</span>
-        </a>
+    const schedules =
+        loadSchedules();
 
-    </nav>
-    <!-- ============================= -->
-    <!-- スマホ用 秘書からの提案モーダル -->
-    <!-- ============================= -->
 
-    <div class="suggestion-modal" id="suggestionModal" hidden>
+    const diaryEntries =
+        normalizeDiaryEntries();
 
-        <div class="suggestion-modal-overlay" id="suggestionModalOverlay"></div>
 
-        <section class="suggestion-modal-dialog">
+    // -------------------------
+    // 今週完了したタスク
+    // -------------------------
 
-            <header class="suggestion-modal-header">
+    const completedTasks =
+        tasks.filter(
+            function (task) {
 
-                <div>
-                    <h2>秘書からの提案</h2>
-                </div>
+                if (!task.completed) {
+                    return false;
+                }
 
-                <button class="suggestion-modal-close" id="suggestionModalClose" type="button" aria-label="閉じる">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
 
-            </header>
+                return isDateInCurrentWeek(
+                    getTaskActivityDate(task),
+                    weekRange
+                );
 
-            <div class="suggestion-modal-list" id="suggestionModalList"></div>
+            }
+        );
 
-        </section>
 
-    </div>
+    // -------------------------
+    // 今週の予定
+    // -------------------------
 
-    <!-- ============================= -->
-<!-- 今日のブリーフィングモーダル -->
-<!-- ============================= -->
+    const weekSchedules =
+        schedules.filter(
+            function (schedule) {
 
-<div class="briefing-modal" id="briefingModal" hidden>
+                return isDateInCurrentWeek(
+                    schedule.date,
+                    weekRange
+                );
 
-    <div class="briefing-modal-overlay" id="briefingModalOverlay"></div>
+            }
+        );
 
-    <section class="briefing-modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="briefingModalTitle">
 
-        <header class="briefing-modal-header">
+    // -------------------------
+    // 今週の日記
+    // -------------------------
 
-            <h2 id="briefingModalTitle">
-                今日のブリーフィング
-            </h2>
+    const weekDiaryEntries =
+        diaryEntries.filter(
+            function (entry) {
 
-            <button class="briefing-modal-close"
-                id="briefingModalClose"
-                type="button"
-                aria-label="閉じる">
+                return isDateInCurrentWeek(
+                    getDiaryDate(entry),
+                    weekRange
+                );
 
-                <i class="fa-solid fa-xmark"></i>
+            }
+        );
 
-            </button>
 
-        </header>
+    // 日記を記録した日数
+    const diaryDateSet =
+        new Set(
+            weekDiaryEntries.map(
+                function (entry) {
 
-        <p class="briefing-modal-text" id="briefingModalText"></p>
+                    return getDiaryDate(
+                        entry
+                    );
 
-    </section>
+                }
+            )
+        );
 
-</div>
-    <!-- ============================= -->
-    <!-- 週間レポートモーダル -->
-    <!-- ============================= -->
 
-    <div class="weekly-report-modal" id="weeklyReportModal" hidden>
+    // -------------------------
+    // 一番多かった気持ち
+    // -------------------------
 
-        <div class="weekly-report-overlay" id="weeklyReportOverlay"></div>
+    const moodCounts = {};
 
-        <section class="weekly-report-dialog" role="dialog" aria-modal="true" aria-labelledby="weeklyReportTitle">
 
-            <header class="weekly-report-header">
+    weekDiaryEntries.forEach(
+        function (entry) {
 
-                <div>
-                    <h2 id="weeklyReportTitle">
-                        今週のまとめ
-                    </h2>
+            const mood =
+                getDiaryMood(
+                    entry
+                );
 
-                    <p id="weeklyReportPeriod">
-                        --/-- ～ --/--
-                    </p>
 
-                </div>
+            if (!mood) {
+                return;
+            }
 
-                <button class="weekly-report-close" id="weeklyReportClose" type="button" aria-label="閉じる">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
 
-            </header>
+            moodCounts[mood] =
+                (
+                    moodCounts[mood]
+                    ||
+                    0
+                )
+                +
+                1;
 
+        }
+    );
 
-            <div class="weekly-stat-grid">
 
-                <div class="weekly-stat-card">
+    let topMood =
+        "記録なし";
 
-                    <span class="weekly-stat-icon task">
-                        <i class="fa-solid fa-check"></i>
-                    </span>
 
-                    <div>
-                        <small>完了タスク</small>
-                        <strong id="weeklyCompletedTasks">
-                            0件
-                        </strong>
-                    </div>
+    let topMoodCount =
+        0;
 
-                </div>
 
+    Object.entries(
+        moodCounts
+    ).forEach(
+        function (
+            [mood, count]
+        ) {
 
-                <div class="weekly-stat-card">
+            if (
+                count >
+                topMoodCount
+            ) {
 
-                    <span class="weekly-stat-icon schedule">
-                        <i class="fa-regular fa-calendar"></i>
-                    </span>
+                topMood =
+                    mood;
 
-                    <div>
-                        <small>予定</small>
-                        <strong id="weeklySchedules">
-                            0件
-                        </strong>
-                    </div>
+                topMoodCount =
+                    count;
 
-                </div>
+            }
 
+        }
+    );
 
-                <div class="weekly-stat-card">
 
-                    <span class="weekly-stat-icon diary">
-                        <i class="fa-solid fa-book-open"></i>
-                    </span>
+    return {
 
-                    <div>
-                        <small>日記</small>
-                        <strong id="weeklyDiaryDays">
-                            0日
-                        </strong>
-                    </div>
+        weekRange,
 
-                </div>
+        completedTasks,
 
+        schedules:
+            weekSchedules,
 
-                <div class="weekly-stat-card">
+        diaryEntries:
+            weekDiaryEntries,
 
-                    <span class="weekly-stat-icon mood">
-                        <i class="fa-regular fa-face-smile"></i>
-                    </span>
+        diaryDays:
+            diaryDateSet.size,
 
-                    <div>
-                        <small>多かった心</small>
-                        <strong id="weeklyTopMood">
-                            記録なし
-                        </strong>
-                    </div>
+        topMood
 
-                </div>
+    };
+}
 
-            </div>
 
+// =============================
+// 週間グラフ
+// =============================
 
-            <section class="weekly-chart-card">
+function renderWeeklyChart(
+    reportData
+) {
 
-                <h3>
-                    <i class="fa-solid fa-chart-simple"></i>
-                    今週の記録
-                </h3>
+    if (!weeklyChart) {
+        return;
+    }
 
-                <div class="weekly-chart" id="weeklyChart"></div>
 
-                <div class="weekly-chart-legend">
-                    <span>
-                        <i class="legend-task"></i>
-                        タスク
-                    </span>
+    weeklyChart.innerHTML =
+        "";
 
-                    <span>
-                        <i class="legend-schedule"></i>
-                        予定
-                    </span>
 
-                    <span>
-                        <i class="legend-diary"></i>
-                        日記
-                    </span>
-                </div>
+    const days = [];
 
-            </section>
 
+    for (
+        let i = 0;
+        i < 7;
+        i++
+    ) {
 
-            <div class="weekly-streak-card">
+        const date =
+            new Date(
+                reportData
+                    .weekRange
+                    .monday
+            );
 
-                <span>
-                    <i class="fa-solid fa-fire"></i>
-                </span>
 
-                <div>
-                    <small>連続記録</small>
+        date.setDate(
+            date.getDate() + i
+        );
 
-                    <strong id="weeklyStreakText">
-                        まだ記録がありません
-                    </strong>
-                </div>
 
-            </div>
+        const dateString =
+            getLocalDateString(
+                date
+            );
 
 
-            <section class="weekly-secretary-comment">
+        const taskCount =
+            reportData
+                .completedTasks
+                .filter(
+                    function (task) {
 
-                <strong>
-                    <i class="fa-solid fa-sparkles"></i>
-                    AI秘書から
-                </strong>
+                        return (
+                            String(
+                                getTaskActivityDate(
+                                    task
+                                )
+                            ).slice(
+                                0,
+                                10
+                            )
+                            ===
+                            dateString
+                        );
 
-                <p id="weeklyComment">
-                    今週の記録を確認しています。
-                </p>
+                    }
+                ).length;
 
-            </section>
 
-        </section>
+        const scheduleCount =
+            reportData
+                .schedules
+                .filter(
+                    function (schedule) {
 
-    </div>
+                        return (
+                            schedule.date
+                            ===
+                            dateString
+                        );
 
+                    }
+                ).length;
 
-    <script src="../js/main.js"></script>
-    <script type="module" src="../js/avatar.js"></script>
 
-</body>
+        const diaryCount =
+            reportData
+                .diaryEntries
+                .filter(
+                    function (entry) {
 
-</html>
+                        return (
+                            getDiaryDate(
+                                entry
+                            )
+                            ===
+                            dateString
+                        );
+
+                    }
+                ).length;
+
+
+        days.push({
+            date,
+            taskCount,
+            scheduleCount,
+            diaryCount
+        });
+
+    }
+
+
+    const maxValue =
+        Math.max(
+            1,
+            ...days.map(
+                function (day) {
+
+                    return (
+                        day.taskCount
+                        +
+                        day.scheduleCount
+                        +
+                        day.diaryCount
+                    );
+
+                }
+            )
+        );
+
+
+    days.forEach(
+        function (day) {
+
+            const column =
+                document.createElement(
+                    "div"
+                );
+
+
+            column.className =
+                "weekly-chart-day";
+
+
+            const bars =
+                document.createElement(
+                    "div"
+                );
+
+
+            bars.className =
+                "weekly-chart-bars";
+
+
+            const values = [
+                {
+                    type:
+                        "task",
+                    value:
+                        day.taskCount
+                },
+                {
+                    type:
+                        "schedule",
+                    value:
+                        day.scheduleCount
+                },
+                {
+                    type:
+                        "diary",
+                    value:
+                        day.diaryCount
+                }
+            ];
+
+
+            values.forEach(
+                function (item) {
+
+                    const bar =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    bar.className =
+                        `weekly-chart-bar ${item.type}`;
+
+
+                    const height =
+                        item.value === 0
+                            ? 4
+                            : Math.max(
+                                12,
+                                (
+                                    item.value
+                                    /
+                                    maxValue
+                                )
+                                *
+                                100
+                            );
+
+
+                    bar.style.height =
+                        `${height}%`;
+
+
+                    bar.title =
+                        `${item.value}件`;
+
+
+                    bars.appendChild(
+                        bar
+                    );
+
+                }
+            );
+
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+
+            label.className =
+                "weekly-chart-day-label";
+
+
+            label.textContent =
+                getWeekdayLabel(
+                    day.date
+                );
+
+
+            column.appendChild(
+                bars
+            );
+
+
+            column.appendChild(
+                label
+            );
+
+
+            weeklyChart.appendChild(
+                column
+            );
+
+        }
+    );
+}
+
+
+// =============================
+// 日記の連続記録
+// =============================
+
+function getDiaryStreak(
+    diaryEntries
+) {
+
+    const dateSet =
+        new Set(
+            diaryEntries.map(
+                function (entry) {
+
+                    return getDiaryDate(
+                        entry
+                    );
+
+                }
+            )
+        );
+
+
+    if (
+        dateSet.size === 0
+    ) {
+
+        return 0;
+    }
+
+
+    let streak = 0;
+
+
+    const date =
+        new Date();
+
+
+    while (true) {
+
+        const dateString =
+            getLocalDateString(
+                date
+            );
+
+
+        if (
+            !dateSet.has(
+                dateString
+            )
+        ) {
+            break;
+        }
+
+
+        streak++;
+
+
+        date.setDate(
+            date.getDate() - 1
+        );
+
+    }
+
+
+    return streak;
+}
+
+
+// =============================
+// 秘書コメント生成
+// =============================
+
+function createWeeklyComment(
+    reportData
+) {
+
+    const parts = [];
+
+
+    if (
+        reportData
+            .completedTasks
+            .length >= 5
+    ) {
+
+        parts.push(
+            "今週はタスクをたくさん完了できましたね。"
+        );
+
+    }
+    else if (
+        reportData
+            .completedTasks
+            .length > 0
+    ) {
+
+        parts.push(
+            "今週もタスクを着実に進められています。"
+        );
+
+    }
+    else {
+
+        parts.push(
+            "今週はまだ完了したタスクの記録がありません。"
+        );
+
+    }
+
+
+    if (
+        reportData
+            .schedules
+            .length >= 5
+    ) {
+
+        parts.push(
+            "予定も多めだったので、週末はゆっくり休む時間を作るのもおすすめです。"
+        );
+
+    }
+
+
+    if (
+        reportData.diaryDays >= 3
+    ) {
+
+        parts.push(
+            `日記は${reportData.diaryDays}日記録できました。`
+        );
+
+    }
+
+
+    if (
+        reportData.topMood !==
+        "記録なし"
+    ) {
+
+        parts.push(
+            `今週は「${reportData.topMood}」と感じる日が多かったようです。`
+        );
+
+    }
+
+
+    return parts.join(
+        " "
+    );
+}
+
+
+// =============================
+// 週間レポート表示
+// =============================
+
+function renderWeeklyReport() {
+
+    const reportData =
+        createWeeklyReportData();
+
+
+    const monday =
+        reportData
+            .weekRange
+            .monday;
+
+
+    const sunday =
+        reportData
+            .weekRange
+            .sunday;
+
+
+    if (weeklyReportPeriod) {
+
+        weeklyReportPeriod.textContent =
+            `${monday.getMonth() + 1}/${monday.getDate()}（${getWeekdayLabel(monday)}）`
+            +
+            " ～ "
+            +
+            `${sunday.getMonth() + 1}/${sunday.getDate()}（${getWeekdayLabel(sunday)}）`;
+
+    }
+
+
+    if (weeklyCompletedTasks) {
+
+        weeklyCompletedTasks.textContent =
+            `${reportData.completedTasks.length}件`;
+
+    }
+
+
+    if (weeklySchedules) {
+
+        weeklySchedules.textContent =
+            `${reportData.schedules.length}件`;
+
+    }
+
+
+    if (weeklyDiaryDays) {
+
+        weeklyDiaryDays.textContent =
+            `${reportData.diaryDays}日`;
+
+    }
+
+
+    if (weeklyTopMood) {
+
+        weeklyTopMood.textContent =
+            reportData.topMood;
+
+    }
+
+
+    const streak =
+        getDiaryStreak(
+            normalizeDiaryEntries()
+        );
+
+
+    if (weeklyStreakText) {
+
+        if (streak > 0) {
+
+            weeklyStreakText.textContent =
+                `${streak}日連続で記録しています`;
+
+        }
+        else {
+
+            weeklyStreakText.textContent =
+                "まだ連続記録はありません";
+
+        }
+
+    }
+
+
+    if (weeklyComment) {
+
+        weeklyComment.textContent =
+            createWeeklyComment(
+                reportData
+            );
+
+    }
+
+
+    renderWeeklyChart(
+        reportData
+    );
+}
+
+
+// =============================
+// モーダルを開く
+// =============================
+
+function openWeeklyReport() {
+
+    if (!weeklyReportModal) {
+        return;
+    }
+
+
+    renderWeeklyReport();
+
+
+    weeklyReportModal.hidden =
+        false;
+
+
+    document.body.classList.add(
+        "weekly-report-open"
+    );
+}
+
+
+// =============================
+// モーダルを閉じる
+// =============================
+
+function closeWeeklyReport() {
+
+    if (!weeklyReportModal) {
+        return;
+    }
+
+
+    weeklyReportModal.hidden =
+        true;
+
+
+    document.body.classList.remove(
+        "weekly-report-open"
+    );
+}
+
+
+// =============================
+// 週間レポートイベント
+// =============================
+
+if (weeklyReportButton) {
+
+    weeklyReportButton
+        .addEventListener(
+            "click",
+            openWeeklyReport
+        );
+
+}
+
+
+if (weeklyReportClose) {
+
+    weeklyReportClose
+        .addEventListener(
+            "click",
+            closeWeeklyReport
+        );
+
+}
+
+
+if (weeklyReportOverlay) {
+
+    weeklyReportOverlay
+        .addEventListener(
+            "click",
+            closeWeeklyReport
+        );
+
+}
+
+
+// Escキーでも閉じる
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key ===
+            "Escape"
+            &&
+            weeklyReportModal
+            &&
+            !weeklyReportModal.hidden
+        ) {
+
+            closeWeeklyReport();
+
+        }
+
+    }
+);
+// =============================
+// ナビゲーション
+// =============================
+
+const navigationButtons =
+    document.querySelectorAll(
+        ".nav-item[data-page], .more-menu-item[data-page]"
+    );
+
+
+navigationButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const page =
+                    this.dataset.page;
+
+
+                // ホーム
+                if (page === "home") {
+                    return;
+                }
+
+
+                // タスク
+                if (page === "task") {
+
+                    window.location.href =
+                        "task.html";
+
+                    return;
+                }
+
+
+                // カレンダー
+                if (page === "calendar") {
+
+                    window.location.href =
+                        "calendar.html";
+
+                    return;
+                }
+
+
+                // 日記
+                if (page === "diary") {
+
+                    window.location.href =
+                        "diary.html";
+
+                    return;
+                }
+            }
+        );
+
+    }
+);
+// =============================
+// お知らせ
+// =============================
+
+const notificationButton =
+    document.getElementById(
+        "notificationButton"
+    );
+
+
+notificationButton
+    .addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "news.html";
+        }
+    );
+
+
+// =============================
+// お知らせ未読マーク
+// =============================
+
+const notificationDot =
+    document.querySelector(
+        ".notification-dot"
+    );
+
+
+function updateNotificationDot() {
+
+    const unreadCount =
+        localStorage.getItem(
+            "aiSecretaryUnreadCount"
+        );
+
+
+    const hasUnread =
+        unreadCount === null
+        ||
+        Number(
+            unreadCount
+        ) > 0;
+
+
+    notificationDot.hidden =
+        !hasUnread;
+}
+
+
+updateNotificationDot();
+
+
+// =============================
+// 設定
+// =============================
+
+const settingsButton =
+    document.getElementById(
+        "settingsButton"
+    );
+
+
+settingsButton
+    .addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "settings.html";
+        }
+    );
+
+// =============================
+// AI秘書機能（準備中）
+// =============================
+
+// 音声登録
+const registerModeButton =
+    document.getElementById(
+        "registerModeButton"
+    );
+
+// 音声会話
+const conversationModeButton =
+    document.getElementById(
+        "conversationModeButton"
+    );
+
+// チャット
+const helpButton =
+    document.getElementById(
+        "helpButton"
+    );
+
+[
+    helpButton,
+    registerModeButton,
+    conversationModeButton
+].forEach(
+    function (button) {
+
+        if (!button) {
+            return;
+        }
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                showToast(
+                    "現在準備中です"
+                );
+
+            }
+        );
+    }
+);
+// =============================
+// 他ページから戻った時
+// 最新情報に更新
+// =============================
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        renderSchedules();
+
+        renderTaskCounts();
+
+        updateNotificationDot();
+
+        updateWeather();
+
+        renderSecretaryAssistant();
+
+    }
+);
+// =============================
+// スマホ用 天気ポップアップ
+// =============================
+
+const mobileWeatherButton =
+    document.getElementById(
+        "mobileWeatherButton"
+    );
+
+
+const mobileWeatherPopup =
+    document.getElementById(
+        "mobileWeatherPopup"
+    );
+
+
+const mobileWeatherOverlay =
+    document.getElementById(
+        "mobileWeatherOverlay"
+    );
+
+
+const mobileWeatherClose =
+    document.getElementById(
+        "mobileWeatherClose"
+    );
+
+
+const mobileWeatherTemperature =
+    document.getElementById(
+        "mobileWeatherTemperature"
+    );
+
+
+const mobileWeatherRain =
+    document.getElementById(
+        "mobileWeatherRain"
+    );
+
+
+const mobileWeatherIcon =
+    document.querySelector(
+        "#mobileWeatherIcon i"
+    );
+
+
+const mobileWeatherLocationButtons =
+    document.querySelectorAll(
+        ".mobile-weather-location-button"
+    );
+
+
+const mobileWeatherDayButtons =
+    document.querySelectorAll(
+        ".mobile-weather-day-button"
+    );
+
+
+// =============================
+// ポップアップを開く
+// =============================
+
+function openMobileWeather() {
+
+    mobileWeatherPopup.hidden =
+        false;
+
+
+    updateMobileWeatherButtons();
+
+
+    updateWeather();
+}
+
+
+// =============================
+// ポップアップを閉じる
+// =============================
+
+function closeMobileWeather() {
+
+    mobileWeatherPopup.hidden =
+        true;
+}
+
+
+// =============================
+// スマホ側ボタン状態
+// =============================
+
+function updateMobileWeatherButtons() {
+
+    mobileWeatherLocationButtons
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+
+                    "is-active",
+
+                    button.dataset
+                        .mobileWeatherLocation
+                    ===
+                    selectedWeatherLocation
+
+                );
+
+            }
+        );
+
+
+    mobileWeatherDayButtons
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+
+                    "is-active",
+
+                    button.dataset
+                        .mobileWeatherDay
+                    ===
+                    selectedWeatherDay
+
+                );
+
+            }
+        );
+}
+
+
+// =============================
+// スマホ天気表示を更新
+// PC側に表示された内容を利用
+// =============================
+
+function updateMobileWeatherDisplay() {
+
+    if (
+        !mobileWeatherTemperature
+        ||
+        !mobileWeatherRain
+        ||
+        !mobileWeatherIcon
+    ) {
+        return;
+    }
+
+
+    mobileWeatherTemperature.textContent =
+        weatherTemperature.textContent;
+
+
+    mobileWeatherRain.textContent =
+        `降水確率 ${weatherRain.textContent}`;
+
+
+    mobileWeatherIcon.className =
+        weatherIcon.className;
+}
+
+
+// =============================
+// 天気ボタン
+// =============================
+
+mobileWeatherButton
+    .addEventListener(
+        "click",
+        openMobileWeather
+    );
+
+
+mobileWeatherClose
+    .addEventListener(
+        "click",
+        closeMobileWeather
+    );
+
+
+mobileWeatherOverlay
+    .addEventListener(
+        "click",
+        closeMobileWeather
+    );
+
+
+// =============================
+// 場所切り替え
+// =============================
+
+mobileWeatherLocationButtons
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectedWeatherLocation =
+                        this.dataset
+                            .mobileWeatherLocation;
+
+
+                    updateWeather();
+
+
+                    updateMobileWeatherButtons();
+                }
+            );
+
+        }
+    );
+
+
+// =============================
+// 今日・明日切り替え
+// =============================
+
+mobileWeatherDayButtons
+    .forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectedWeatherDay =
+                        this.dataset
+                            .mobileWeatherDay;
+
+
+                    localStorage.setItem(
+
+                        "selectedWeatherDay",
+
+                        selectedWeatherDay
+
+                    );
+
+
+                    updateWeather();
+
+
+                    updateMobileWeatherButtons();
+                }
+            );
+
+        }
+    );

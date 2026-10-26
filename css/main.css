@@ -3934,6 +3934,11 @@ body.weekly-report-open {
         -webkit-overflow-scrolling: touch;
     }
 
+    .weekly-report-header > div {
+    min-width: 0;
+    flex: 1;
+}
+
     #weeklyReportPeriod {
         display: inline-block;
 
@@ -3947,4 +3952,5 @@ body.weekly-report-open {
         font-size: 13px;
         letter-spacing: -0.03em;
     }
+    
 }

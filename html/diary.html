@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- iPhone ホーム画面起動時にWebアプリとして表示 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="manifest" href="../manifest.json">
+
+  <meta name="theme-color" content="#fff8fb">
+
+  <title>日記 / こころのアクアリウム | AI Secretary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/diary.css">
+
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fff8fb">
+</head>
+
+<body class="app-page diary-page">
+  <main class="app-container diary-container">
+
+    <!-- ==================================================
+         ヘッダー
+    ================================================== -->
+    <header class="page-header diary-header" aria-label="日記ページ操作">
+      <button class="back-button" type="button" id="backButton" aria-label="戻る">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      </button>
+
+      <div class="diary-header-center">
+        <div class="diary-segment" role="tablist" aria-label="表示切り替え">
+
+
+          <button class="diary-segment-button" type="button" role="tab" aria-selected="false" data-view="diary">
+            日記
+          </button>
+
+          <button class="diary-segment-button is-active" type="button" role="tab" aria-selected="true"
+            data-view="aquarium">
+            アクアリウム
+          </button>
+        </div>
+      </div>
+
+      <button class="header-add-button" type="button" id="openDiarySheet">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        <span>追加</span>
+      </button>
+    </header>
+
+
+    <!-- ==================================================
+         日記
+    ================================================== -->
+    <section class="diary-view-panel" id="diaryPanel" data-panel="diary" role="tabpanel" hidden>
+      <div class="diary-month-switcher" aria-label="日記の月を変更">
+        <button type="button" class="month-arrow" id="diaryPrevMonth" aria-label="前月">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        </button>
+
+        <h2 id="diaryMonthHeading"></h2>
+
+        <button type="button" class="month-arrow" id="diaryNextMonth" aria-label="次月">
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="diary-list" id="diaryList" aria-live="polite"></div>
+
+      <div class="empty-state" id="diaryEmptyState" hidden>
+        <p>この月の日記はまだありません。</p>
+        <button type="button" class="empty-add-button" id="emptyAddButton">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          日記を追加する
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ==================================================
+         アクアリウム
+    ================================================== -->
+    <section class="diary-view-panel is-active" id="aquariumPanel" data-panel="aquarium" role="tabpanel">
+      <!-- 左：月切り替え + 水槽 -->
+      <div class="aquarium-left-column">
+        <div class="aquarium-month-switcher" aria-label="アクアリウムの月を変更">
+          <button type="button" class="month-arrow" id="prevMonth" aria-label="前月">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          <h2 id="aquariumMonthLabel"></h2>
+
+          <button type="button" class="month-arrow" id="nextMonth" aria-label="次月">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="aquarium-shell" id="aquariumShell">
+          <div class="aquarium-light" aria-hidden="true"></div>
+          <div class="aquarium-waterline" aria-hidden="true"></div>
+
+          <div class="aquarium-bubbles aquarium-bubbles-a" aria-hidden="true"></div>
+          <div class="aquarium-bubbles aquarium-bubbles-b" aria-hidden="true"></div>
+
+          <!-- 背景 / 季節装飾 -->
+          <div class="month-decoration" id="monthDecoration" aria-hidden="true"></div>
+
+          <!-- 魚 -->
+          <div class="aquarium-fish-layer" id="aquariumFishLayer" aria-hidden="true"></div>
+
+          <!-- 海藻 -->
+          <div class="aquarium-plants" aria-hidden="true">
+            <span class="plant plant-1"></span>
+            <span class="plant plant-2"></span>
+            <span class="plant plant-3"></span>
+            <span class="plant plant-4"></span>
+          </div>
+
+          <!-- 岩 -->
+          <div class="aquarium-rocks" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="aquarium-sand" aria-hidden="true"></div>
+          <div class="aquarium-glass-shine" aria-hidden="true"></div>
+
+          <!-- 日記追加時の水滴→魚演出 -->
+          <div class="drop-transition-layer" id="dropTransitionLayer" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- 右：情報カード -->
+      <aside class="aquarium-right-column">
+
+        <section class="common-card unlock-card">
+          <div class="unlock-card-heading">
+            <div>
+              <h3>今月のコレクション</h3>
+            </div>
+
+            <strong id="unlockProgressText">0 / 6</strong>
+          </div>
+
+          <div class="unlock-progress-track" aria-hidden="true">
+            <span id="unlockProgressBar"></span>
+          </div>
+
+          <div class="unlock-badges" id="unlockBadges"></div>
+        </section>
+
+        <section class="common-card monthly-summary-card" aria-labelledby="monthlySummaryTitle">
+          <div class="card-heading-row">
+            <h3 id="monthlySummaryTitle">
+              <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+              今月のこころ
+            </h3>
+          </div>
+
+          <div class="summary-overview">
+            <div class="summary-big-number">
+              <span>記録した日数</span>
+              <strong><b id="recordedDays">0</b>日</strong>
+            </div>
+
+            <div class="summary-most-common">
+              <span>一番多かった気持ち</span>
+              <strong id="mostCommonMood">まだありません</strong>
+            </div>
+          </div>
+
+          <div class="mood-chart-area">
+
+            <div class="mood-pie-chart" id="moodPieChart" aria-label="今月の気持ちの割合">
+              <div class="mood-pie-center">
+                <strong id="moodPieTotal">0</strong>
+                <span>日</span>
+              </div>
+            </div>
+
+            <div class="mood-chart-legend" id="moodStats"></div>
+
+          </div>
+        </section>
+
+        <section class="common-card ai-comment-card" aria-labelledby="aiCommentTitle">
+          <h3 id="aiCommentTitle">
+            <i class="fa-solid fa-robot" aria-hidden="true"></i>
+            AI秘書から
+          </h3>
+
+          <p id="monthlyComment">
+            日記を記録すると、今月のこころを振り返ります。
+          </p>
+        </section>
+
+      </aside>
+    </section>
+  </main>
+
+
+  <!-- ==================================================
+       日記追加シート
+  ================================================== -->
+  <div class="diary-sheet-backdrop" id="diarySheetBackdrop" hidden>
+    <section class="diary-sheet" role="dialog" aria-modal="true" aria-labelledby="diarySheetTitle">
+      <div class="sheet-handle" aria-hidden="true"></div>
+
+      <div class="sheet-title-row">
+        <h2 id="diarySheetTitle">今日のこころを記録しよう</h2>
+
+        <button type="button" class="sheet-close-button" id="closeDiarySheet" aria-label="閉じる">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <textarea class="diary-textarea" id="diaryText" maxlength="1000"
+        placeholder="今日あったこと、予定、好きなこと、気づいたことなど…"></textarea>
+
+      <div class="mood-picker-heading">
+        <strong>今日のこころ</strong>
+        <span>1つ選べます</span>
+      </div>
+
+      <div class="mood-picker" id="moodPicker" role="radiogroup" aria-label="今日の気持ち"></div>
+
+      <p class="sheet-note">
+        同じ気持ちを記録すると、その気持ちの生き物が少しずつ大きくなります。
+      </p>
+
+      <label class="diary-database-option">
+        <div class="database-option-text">
+          <strong>AI秘書にも覚えてもらう</strong>
+          <span>
+            予定や趣味など、今後のサポートに使える情報として保存します
+          </span>
+        </div>
+
+        <input type="checkbox" id="saveToDatabase">
+
+        <span class="database-toggle" aria-hidden="true"></span>
+      </label>
+
+      <button type="button" class="save-diary-button" id="saveDiaryButton" disabled>
+        アクアリウムに追加する
+      </button>
+    </section>
+  </div>
+
+
+  <!-- ==================================================
+       アイテム獲得
+  ================================================== -->
+  <div class="reward-backdrop" id="rewardBackdrop" hidden>
+    <section class="reward-dialog" role="dialog" aria-modal="true" aria-labelledby="rewardTitle">
+      <div class="reward-sparkles">✦ ✧ ✦</div>
+
+      <div class="reward-icon" id="rewardIcon"></div>
+
+      <p class="reward-kicker">NEW ITEM</p>
+      <h2 id="rewardTitle">新しい飾りを獲得しました</h2>
+
+      <p id="rewardDescription"></p>
+
+      <button type="button" class="reward-close-button" id="rewardCloseButton">
+        水槽を見る
+      </button>
+    </section>
+  </div>
+
+
+  <!-- ==================================================
+       トースト
+  ================================================== -->
+  <div class="diary-toast" id="diaryToast" hidden>
+    <i class="fa-solid fa-check" aria-hidden="true"></i>
+    <span id="diaryToastText"></span>
+  </div>
+
+  <script src="../js/diary.js"></script>
+
+  <nav class="mobile-bottom-nav">
+
+    <a href="main.html" class="mobile-nav-item">
+      <i class="fa-solid fa-house"></i>
+      <span>ホーム</span>
+    </a>
+
+    <a href="task.html" class="mobile-nav-item">
+      <i class="fa-solid fa-list-check"></i>
+      <span>タスク</span>
+    </a>
+
+    <a href="calendar.html" class="mobile-nav-item">
+      <i class="fa-regular fa-calendar"></i>
+      <span>カレンダー</span>
+    </a>
+
+    <a href="diary.html" class="mobile-nav-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>日記</span>
+    </a>
+
+  </nav>
+</body>
+
+</html>

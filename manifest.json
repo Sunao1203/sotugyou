@@ -1,0 +1,8 @@
+{
+  "name": "AI Secretary",
+  "short_name": "AI Secretary",
+  "start_url": "./html/index.html",
+  "display": "standalone",
+  "background_color": "#fff8fb",
+  "theme_color": "#fff8fb"
+}

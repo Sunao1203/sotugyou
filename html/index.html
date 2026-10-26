@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- iPhone ホーム画面起動時にWebアプリとして表示 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
+  <title>対話型パーソナルAI秘書</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  >
+
+  <!-- 共通CSSを先に -->
+  <link rel="stylesheet" href="../css/common.css">
+
+  <!-- topページ固有CSSを後に -->
+  <link rel="stylesheet" href="../css/index.css">
+
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fff8fb">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark"><i class="fa-solid fa-sparkles"></i></span>
+      <span class="logo-text"><small>あなたの仕事をサポートする</small><strong>AI Secretary</strong></span>
+    </a>
+    <nav class="desktop-nav">
+      <a href="#about">サービスについて</a><a href="#features">できること</a><a href="#scenes">活用シーン</a>
+      <button class="login-link js-open-login" type="button">ログイン</button>
+    </nav>
+    <button class="menu-button" id="menuButton" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#about">サービスについて</a><a href="#features">できること</a><a href="#scenes">活用シーン</a><button class="js-open-login" type="button">ログイン</button>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <img src="../assets/Image1.png" alt="AI秘書のイメージ" class="hero-image">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">PERSONAL AI ASSISTANT</p>
+      <h1>話すだけで、<br>仕事が整う。</h1>
+      <p class="hero-lead">予定管理、タスク整理、文章作成、PC操作まで。<br>あなた専用の対話型AI秘書が、毎日の仕事をサポートします。</p>
+      <div class="hero-actions"><button class="primary-button js-open-login" type="button">今すぐ使う</button><a href="#about" class="secondary-button">
+            <i class="fa-solid fa-circle-info"></i>
+            詳しく見る
+          </a></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-inner two-column">
+      <div class="text-block">
+        <p class="section-label">ABOUT</p>
+        <h2>あなた専用の、<br>仕事を支えるAI秘書。</h2>
+        <p>AI Secretaryは、会話をきっかけに予定やToDoの確認、プレゼン、文章作成などをサポートするWebサービスです。</p>
+        <p>難しい操作を覚えなくても、話しかけるだけ。必要な情報をまとめ、次に何をすればいいかを分かりやすく案内します。</p>
+      </div>
+      <div class="image-card"><img src="../assets/Image2.png" alt="AI秘書を利用しているイメージ"></div>
+    </div>
+  </section>
+
+  <section class="section features-section" id="features">
+    <div class="section-inner">
+      <p class="section-label center">FEATURES</p><h2 class="section-title center">できること</h2>
+      <p class="section-intro center">シンプルで、わかりやすく、仕事にすぐ使える機能をまとめました。</p>
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-comments"></i></div><h3>対話で操作</h3><p>「今日の予定は？」「プレゼンお願い」など、普段の言葉でAI秘書に話しかけられます。</p></article>
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-calendar-days"></i></div><h3>予定・ToDo管理</h3><p>今日・今週・今月の予定確認や、締切が近いタスクの確認をひとつの画面で行えます。</p></article>
+        <article class="feature-card"><div class="feature-icon"><i class="fa-solid fa-laptop"></i></div><h3>仕事をサポート</h3><p>PowerPointの操作や、メール文章・要約などの日常業務を支援します。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section scenes-section" id="scenes">
+    <div class="section-inner two-column reverse-mobile">
+      <div class="scene-image-wrap"><img src="../assets/Image3.png" alt="AI秘書が活躍する場面のイメージ"></div>
+      <div class="text-block"><p class="section-label">SCENES</p><h2>こんな場面で活躍</h2>
+        <ul class="scene-list"><li><i class="fa-solid fa-sun"></i><span>朝、その日の予定とToDoを確認したいとき</span></li><li><i class="fa-solid fa-bell"></i><span>締切が近い仕事を忘れずに進めたいとき</span></li><li><i class="fa-solid fa-window-maximize"></i><span>WordやPowerPointをすぐ起動したいとき</span></li><li><i class="fa-solid fa-pen"></i><span>メールや文章を短時間で整えたいとき</span></li><li><i class="fa-solid fa-person-chalkboard"></i><span>プレゼン準備や発表をサポートしてほしいとき</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section"><div class="cta-inner"><h2>あなた専用のAI秘書を、<br>今日から。</h2><p>話しかけるだけで、毎日の仕事をもっとスムーズに。</p><button class="primary-button large js-open-login" type="button">ログインしてはじめる</button></div></section>
+</main>
+
+<footer class="site-footer">
+
+  <!-- =============================
+     ログイン / 新規登録モーダル
+============================= -->
+
+<div
+  class="modal"
+  id="loginModal"
+  aria-hidden="true"
+>
+
+  <!-- 背景 -->
+  <div
+    class="modal-backdrop js-close-login"
+  ></div>
+
+
+  <!-- モーダル本体 -->
+  <div
+    class="modal-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loginModalTitle"
+  >
+
+    <!-- 閉じる -->
+    <button
+      class="modal-close js-close-login"
+      type="button"
+      aria-label="閉じる"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+
+    <!-- ログイン / 新規登録切り替え -->
+    <div class="modal-tabs">
+
+      <button
+        class="tab-button active"
+        type="button"
+        data-tab="login"
+      >
+        ログイン
+      </button>
+
+      <button
+        class="tab-button"
+        type="button"
+        data-tab="register"
+      >
+        新規登録
+      </button>
+
+    </div>
+
+
+    <!-- =============================
+         ログイン
+    ============================== -->
+
+    <div
+      class="tab-content active"
+      id="loginTab"
+    >
+
+      <h2 id="loginModalTitle">
+        おかえりなさい
+      </h2>
+
+      <p class="modal-description">
+        ニックネームとパスワードを入力してください。
+      </p>
+
+
+      <form id="loginForm">
+
+        <!-- ニックネーム -->
+        <label class="form-group">
+
+          <span>
+            ニックネーム
+          </span>
+
+          <input
+            type="text"
+            id="loginNickname"
+            maxlength="20"
+            autocomplete="username"
+            placeholder="ニックネーム"
+          >
+
+          <small
+            class="error-message"
+            id="loginNicknameError"
+          ></small>
+
+        </label>
+
+
+        <!-- パスワード -->
+        <label class="form-group">
+
+          <span>
+            パスワード
+          </span>
+
+          <div class="password-wrap">
+
+            <input
+              type="password"
+              id="loginPassword"
+              autocomplete="current-password"
+              placeholder="パスワード"
+            >
+
+            <button
+              class="password-toggle"
+              type="button"
+              data-target="loginPassword"
+              aria-label="パスワードを表示"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+          </div>
+
+          <small
+            class="error-message"
+            id="loginPasswordError"
+          ></small>
+
+        </label>
+
+
+        <p
+          class="form-status"
+          id="loginStatus"
+        ></p>
+
+
+        <button
+          class="primary-button form-submit"
+          type="submit"
+        >
+          ログイン
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- =============================
+         新規登録
+    ============================== -->
+
+    <div
+      class="tab-content"
+      id="registerTab"
+    >
+
+      <h2>
+        新規登録
+      </h2>
+
+      <p class="modal-description">
+        AI Secretaryを利用するための情報を登録します。
+      </p>
+
+
+      <form id="registerForm">
+
+        <!-- ニックネーム -->
+        <label class="form-group">
+
+          <span>
+            ニックネーム
+          </span>
+
+          <input
+            type="text"
+            id="registerNickname"
+            maxlength="20"
+            autocomplete="username"
+            placeholder="ニックネーム"
+          >
+
+          <small
+            class="error-message"
+            id="registerNicknameError"
+          ></small>
+
+        </label>
+
+
+        <!-- パスワード -->
+        <label class="form-group">
+
+          <span>
+            パスワード
+          </span>
+
+          <div class="password-wrap">
+
+            <input
+              type="password"
+              id="registerPassword"
+              autocomplete="new-password"
+              placeholder="パスワード"
+            >
+
+            <button
+              class="password-toggle"
+              type="button"
+              data-target="registerPassword"
+              aria-label="パスワードを表示"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+          </div>
+
+        </label>
+
+
+        <!-- パスワード条件 -->
+        <ul class="password-rules">
+
+          <li data-rule="length">
+            8文字以上
+          </li>
+
+          <li data-rule="upper">
+            英大文字
+          </li>
+
+          <li data-rule="lower">
+            英小文字
+          </li>
+
+          <li data-rule="number">
+            数字
+          </li>
+
+        </ul>
+
+
+        <!-- パスワード確認 -->
+        <label class="form-group">
+
+          <span>
+            パスワード確認
+          </span>
+
+          <div class="password-wrap">
+
+            <input
+              type="password"
+              id="registerPasswordConfirm"
+              autocomplete="new-password"
+              placeholder="もう一度入力"
+            >
+
+            <button
+              class="password-toggle"
+              type="button"
+              data-target="registerPasswordConfirm"
+              aria-label="パスワードを表示"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+          </div>
+
+
+          <small
+            class="error-message"
+            id="registerPasswordError"
+          ></small>
+
+        </label>
+
+
+        <p
+          class="form-status"
+          id="registerStatus"
+        ></p>
+
+
+        <button
+          class="primary-button form-submit"
+          type="submit"
+        >
+          新規登録
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+  <div class="footer-inner">
+
+    <div class="footer-brand">
+  <div class="footer-logo">AI Secretary</div>
+  <p>
+    対話を通して、予定管理・タスク整理・プレゼンなどを支援する パーソナルAI秘書システムです。
+  </p>
+</div>
+
+    <div class="footer-links">
+      <a href="#about">サービスについて</a>
+      <a href="#features">できること</a>
+      <a href="#scenes">活用シーン</a>
+      <button class="js-open-login" type="button">
+        ログイン
+      </button>
+    </div>
+
+  </div>
+
+  <p class="copyright">
+    © 2026 AI Secretary Project
+  </p>
+</footer>
+<script src="../js/index.js"></script>
+</body>
+</html>

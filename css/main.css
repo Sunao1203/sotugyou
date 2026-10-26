@@ -1,0 +1,3902 @@
+/* ============================= */
+/* メイン画面 */
+/* ============================= */
+
+.main-page {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main-container {
+    width: calc(100% - 180px);
+    max-width: none;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+    padding: 10px 0 12px;
+}
+
+
+/* ============================= */
+/* ヘッダー */
+/* ============================= */
+
+.main-header {
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+    padding: 5px 3px;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================= */
+/* 日付・時刻 */
+/* ============================= */
+
+.datetime-area {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    flex-shrink: 0;
+
+    padding-right: 20px;
+
+    border-right: 1px solid var(--border);
+}
+
+.datetime-area span {
+    color: var(--muted);
+
+    font-size: 33px;
+    font-weight: 630;
+
+    white-space: nowrap;
+}
+
+.datetime-area strong {
+    color: var(--text);
+
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 700;
+
+    letter-spacing: 0.03em;
+
+    white-space: nowrap;
+}
+
+
+/* ============================= */
+/* 天気 */
+/* ============================= */
+
+.weather-area {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+
+/* ============================= */
+/* 現在地・自宅・職場 */
+/* ============================= */
+
+.weather-location-tabs {
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+    padding: 3px;
+
+    border: 1px solid rgba(234, 217, 226, 0.72);
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.weather-location-button {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+    padding: 7px 9px;
+
+    border: none;
+    border-radius: 10px;
+
+    color: var(--muted);
+    background: transparent;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+.weather-location-button i {
+    font-size: 14px;
+}
+
+.weather-location-button:hover {
+    color: var(--pink2);
+    background: rgba(253, 240, 246, 0.75);
+}
+
+.weather-location-button.is-active {
+    color: var(--pink2);
+
+    background:
+        linear-gradient(135deg,
+            #fff0f6,
+            #f3edff);
+
+    box-shadow:
+        0 3px 9px rgba(105, 82, 98, 0.06);
+}
+
+
+/* ============================= */
+/* 今日・明日 */
+/* ============================= */
+
+.weather-day-tabs {
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+    padding: 3px;
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.weather-day-button {
+    min-width: 45px;
+
+    padding: 7px 9px;
+
+    border: none;
+    border-radius: 8px;
+
+    color: var(--muted);
+    background: transparent;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+.weather-day-button:hover {
+    color: var(--pink2);
+}
+
+.weather-day-button.is-active {
+    color: var(--pink2);
+    background: white;
+
+    box-shadow:
+        0 3px 10px rgba(105, 82, 98, 0.07);
+}
+
+
+/* ============================= */
+/* 天気表示 */
+/* ============================= */
+
+.weather-summary {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+.weather-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+
+    color: #987fce;
+
+    background:
+        linear-gradient(145deg,
+            #fff1d9,
+            #ece5ff);
+
+    font-size: 23px;
+}
+
+.weather-summary>strong {
+    min-width: 55px;
+
+    color: var(--text);
+
+    font-size: 24px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.rain-info {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+    padding-left: 11px;
+
+    border-left: 1px solid var(--border);
+
+    color: #8774bd;
+}
+
+.rain-info i {
+    font-size: 17px;
+}
+
+.rain-info strong {
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* ============================= */
+/* お知らせ・設定 */
+/* ============================= */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+.header-icon-button {
+    position: relative;
+
+    width: 75px;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(234, 217, 226, 0.82);
+    border-radius: 20px;
+
+    color: #72656d;
+
+    background: rgba(255, 255, 255, 0.86);
+
+    box-shadow:
+        0 6px 16px rgba(105, 82, 98, 0.06);
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        transform 0.2s,
+        background-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.header-icon-button:hover {
+    color: var(--pink2);
+
+    transform: translateY(-2px);
+
+    background: white;
+
+    box-shadow:
+        0 8px 20px rgba(105, 82, 98, 0.09);
+}
+
+.notification-dot {
+    position: absolute;
+
+    top: 9px;
+    right: 9px;
+
+    width: 10px;
+    height: 10px;
+
+    border: 2px solid white;
+    border-radius: 50%;
+
+    background: var(--pink);
+}
+
+.notification-dot[hidden] {
+    display: none;
+}
+
+
+/* ============================= */
+/* ナビゲーション */
+/* ============================= */
+
+.main-navigation {
+    width: fit-content;
+
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+    flex-shrink: 0;
+
+    margin: 3px 0 10px;
+    padding: 5px;
+
+    border: 1px solid rgba(234, 217, 226, 0.72);
+    border-radius: 15px;
+
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 11px;
+
+    color: var(--muted);
+    background: transparent;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+.nav-item:hover {
+    color: var(--text);
+    background: var(--soft);
+}
+
+.nav-item.is-active {
+    color: var(--pink2);
+
+    background:
+        linear-gradient(135deg,
+            #fff0f6,
+            #f4efff);
+}
+
+.nav-item i {
+    font-size: 14px;
+}
+
+/* ============================= */
+/* メインレイアウト */
+/* ============================= */
+
+.main-content {
+    min-height: 0;
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(200px, 250px) minmax(0, 1fr);
+
+    gap: 16px;
+
+    overflow: hidden;
+}
+
+.main-left-column {
+    min-width: 0;
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-rows:
+        minmax(0, 1fr) auto;
+
+    gap: 13px;
+}
+
+
+/* ============================= */
+/* カードヘッダー */
+/* ============================= */
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.card-title h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.card-title-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+}
+
+.schedule-icon {
+    color: var(--pink2);
+    background: var(--soft);
+}
+
+.task-icon {
+    color: #8e75c9;
+    background: var(--lav-light);
+}
+
+.detail-icon-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    color: var(--muted);
+    background: transparent;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+.detail-icon-button:hover {
+    color: var(--pink2);
+    background: var(--soft);
+}
+
+
+/* ============================= */
+/* スケジュール */
+/* ============================= */
+
+.schedule-card {
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    padding: 17px 18px;
+}
+
+.main-schedule-tabs {
+    display: flex;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+}
+
+.main-schedule-tab {
+    padding: 6px 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    color: var(--muted);
+    background: var(--surface);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        border-color 0.2s,
+        background 0.2s;
+}
+
+.main-schedule-tab.is-active {
+    color: var(--pink2);
+
+    border-color: var(--pink-light);
+
+    background:
+        linear-gradient(135deg,
+            var(--pink-light),
+            var(--lav-light));
+}
+
+.schedule-list {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.schedule-item {
+    min-height: 43px;
+
+    display: grid;
+
+    grid-template-columns:
+        60px minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 9px;
+    padding: 8px 2px;
+
+    border-bottom:
+        1px solid #f1e9ed;
+}
+
+.schedule-item:last-child {
+    border-bottom: none;
+}
+
+.schedule-time {
+    color: #75636e;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.schedule-name {
+    overflow: hidden;
+
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.schedule-empty {
+    flex: 1;
+
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.schedule-empty[hidden] {
+    display: none;
+}
+
+.schedule-empty i {
+    color: #c3b4bd;
+
+    font-size: 16px;
+}
+
+
+/* ============================= */
+/* タスク */
+/* ============================= */
+
+.task-summary-card {
+    padding: 16px 18px 18px;
+}
+
+.task-summary-card .card-header {
+    margin-bottom: 10px;
+}
+
+.task-count-area {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+}
+
+.task-count-row {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+    padding: 12px 13px;
+
+    border:
+        1px solid rgba(234, 217, 226, 0.48);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(135deg,
+            #fff9fb,
+            #faf7ff);
+}
+
+.task-count-label {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: #6f626a;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.task-count-label i {
+    color: #9c85d1;
+
+    font-size: 13px;
+}
+
+.task-count-row strong {
+    color: var(--text);
+
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* ============================= */
+/* AI秘書 */
+/* ============================= */
+
+.assistant-section {
+    min-width: 0;
+    min-height: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.assistant-card {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 0;
+
+    border:
+        1px solid rgba(234, 217, 226, 0.8);
+
+    border-radius: 30px;
+
+    background: white;
+
+    box-shadow: var(--shadow);
+}
+
+.assistant-top-label {
+    position: absolute;
+
+    z-index: 30;
+
+    top: 1px;
+    left: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+    padding: 8px 12px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.85);
+
+    border-radius: 13px;
+
+    color: #766974;
+
+    background:
+        rgba(255, 255, 255, 0.7);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #77c3a3;
+
+    box-shadow:
+        0 0 0 4px rgba(119, 195, 163, 0.14);
+}
+
+
+/* ============================= */
+/* アバターエリア */
+/* ============================= */
+
+.avatar-area {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    background:
+        linear-gradient(135deg,
+            #fffafb 0%,
+            #faf7ff 48%,
+            #fff7fa 100%);
+}
+
+
+/* ============================= */
+/* 背景装飾 */
+/* ============================= */
+
+.background-decoration {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.decoration-one {
+    width: 350px;
+    height: 350px;
+
+    top: -140px;
+    left: -100px;
+
+    background:
+        rgba(244, 194, 215, 0.23);
+}
+
+.decoration-two {
+    width: 440px;
+    height: 440px;
+
+    right: -130px;
+    bottom: -220px;
+
+    background:
+        rgba(199, 185, 238, 0.26);
+}
+
+.decoration-three {
+    width: 190px;
+    height: 190px;
+
+    top: 90px;
+    right: 25%;
+
+    background:
+        rgba(255, 255, 255, 0.65);
+}
+
+
+/* ============================= */
+/* Three.js 3Dアバター */
+/* ============================= */
+.avatar-canvas {
+    position: absolute;
+    z-index: 5;
+
+    top: 0;
+    left: -8%;
+
+    width: 70%;
+    height: 100%;
+
+    pointer-events: none;
+}
+
+.avatar-canvas canvas {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ============================= */
+/* AI秘書メッセージ */
+/* ============================= */
+
+.assistant-message {
+    position: absolute;
+
+    z-index: 20;
+
+    top: 25%;
+    right: 8%;
+
+    max-width: 280px;
+
+    color: #786e8d;
+}
+
+.assistant-message .hello {
+    margin-bottom: 10px;
+
+    color: #665876;
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.assistant-message p {
+    margin: 0;
+
+    font-size: 19px;
+
+    line-height: 1.75;
+
+    letter-spacing: 0.03em;
+}
+
+/* ============================= */
+/* 秘書情報エリア */
+/* ============================= */
+
+.secretary-info-area {
+    position: absolute;
+    z-index: 20;
+
+    top: 45px;
+    right: 28px;
+    left: auto;
+
+    width: 44%;
+    max-width: 440px;
+    min-width: 360px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+/* ============================= */
+/* 今日の秘書ブリーフィング */
+/* ============================= */
+
+.briefing-card {
+    position: relative;
+
+    padding: 17px 21px;
+
+    border: 1px solid rgba(236, 205, 220, 0.85);
+    border-radius: 22px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    box-shadow:
+        0 10px 30px rgba(105, 82, 98, 0.10);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* アバター側に向いた吹き出し */
+.briefing-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 38px;
+    left: -13px;
+
+    width: 24px;
+    height: 24px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border-left: 1px solid rgba(236, 205, 220, 0.85);
+    border-bottom: 1px solid rgba(236, 205, 220, 0.85);
+
+    transform: rotate(45deg);
+}
+
+
+.briefing-label-icon {
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    color: #9478ca;
+
+    background:
+        linear-gradient(135deg,
+            #ffe8f1,
+            #eee7ff);
+}
+
+.briefing-greeting {
+    margin: 0 0 6px;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.briefing-text {
+    margin: 0;
+
+    color: #746771;
+
+    font-size: 15px;
+    line-height: 1.7;
+
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+
+.briefing-more-button {
+    align-self: flex-end;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin: 7px 0 0 auto;
+    padding: 2px 0;
+
+    border: none;
+
+    color: #9b7488;
+    background: transparent;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.briefing-more-button[hidden] {
+    display: none;
+}
+
+.briefing-more-button i {
+    font-size: 9px;
+}
+
+
+/* ============================= */
+/* 秘書からの提案 */
+/* ============================= */
+
+.secretary-suggestions {
+    padding: 12px 14px;
+
+    border: 1px solid rgba(234, 217, 226, 0.78);
+    border-radius: 19px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 7px 20px rgba(105, 82, 98, 0.07);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.suggestion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.suggestion-title {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.suggestion-title i {
+    color: #9278c9;
+}
+
+.suggestion-count {
+    padding: 4px 8px;
+
+    border-radius: 999px;
+
+    color: var(--pink2);
+    background: var(--soft);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.suggestion-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.suggestion-more-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    padding: 5px 4px 1px;
+
+    border: none;
+
+    color: #9278c9;
+    background: transparent;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.suggestion-more-button i {
+    font-size: 9px;
+}
+
+
+/* JavaScriptで追加する提案1件 */
+
+.suggestion-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 9px 10px;
+
+    border: 1px solid rgba(234, 217, 226, 0.55);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(135deg,
+            #fffafb,
+            #faf8ff);
+}
+
+.suggestion-item-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    color: #8d77c5;
+    background: #f0ebff;
+
+    font-size: 12px;
+}
+
+.suggestion-item-text {
+    min-width: 0;
+}
+
+.suggestion-item-text strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.suggestion-item-text p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ============================= */
+/* 週間レポートボタン */
+/* ============================= */
+
+.weekly-report-button {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) 20px;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(219, 207, 238, 0.8);
+    border-radius: 17px;
+
+    color: var(--text);
+
+    background:
+        linear-gradient(135deg,
+            rgba(249, 246, 255, 0.96),
+            rgba(255, 247, 251, 0.96));
+
+    box-shadow:
+        0 7px 20px rgba(105, 82, 98, 0.07);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.weekly-report-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(105, 82, 98, 0.11);
+}
+
+.weekly-report-button-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: #8b73c7;
+
+    background:
+        linear-gradient(135deg,
+            #eee8ff,
+            #ffeaf2);
+}
+
+.weekly-report-button-text {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.weekly-report-button-text strong {
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.weekly-report-button-text small {
+    overflow: hidden;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.weekly-report-button>i {
+    color: #a99cab;
+
+    font-size: 11px;
+}
+
+/* ============================= */
+/* アバター下部 3ボタン */
+/* ============================= */
+
+.assistant-bottom-actions {
+    position: absolute;
+
+    z-index: 30;
+
+    left: 24px;
+    right: 24px;
+    bottom: 22px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.assistant-action-button {
+    min-width: 0;
+    min-height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    padding: 12px 16px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.85);
+
+    border-radius: 18px;
+
+    color: var(--text);
+
+    box-shadow:
+        0 8px 24px rgba(91, 70, 83, 0.10);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        background-color 0.2s;
+}
+
+.assistant-action-button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(91, 70, 83, 0.14);
+}
+
+.chat-action {
+    background:
+        rgba(255, 255, 255, 0.72);
+}
+
+.register-action {
+    background:
+        rgba(251, 226, 236, 0.74);
+}
+
+.conversation-action {
+    background:
+        rgba(238, 232, 251, 0.74);
+}
+
+.assistant-action-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        0 4px 12px rgba(105, 82, 98, 0.05);
+
+    font-size: 17px;
+}
+
+.chat-action .assistant-action-icon {
+    color: #8871cb;
+}
+
+.register-action .assistant-action-icon {
+    color: var(--pink2);
+}
+
+.conversation-action .assistant-action-icon {
+    color: #8871cb;
+}
+
+.assistant-action-button strong {
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 15px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ============================= */
+/* 週間レポート モーダル */
+/* ============================= */
+
+.weekly-report-modal {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+
+/* hidden のときは完全に非表示 */
+.weekly-report-modal[hidden] {
+    display: none !important;
+}
+
+
+/* 背景 */
+.weekly-report-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(62, 49, 59, 0.34);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* モーダル本体 */
+.weekly-report-dialog {
+    position: relative;
+    z-index: 1;
+
+    width: min(680px, calc(100vw - 48px));
+    max-height: none;
+
+    overflow: hidden;
+
+    padding: 28px;
+
+    border: 1px solid rgba(234, 217, 226, 0.9);
+    border-radius: 28px;
+
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #fffafd);
+
+    box-shadow:
+        0 24px 70px rgba(75, 55, 68, 0.22);
+}
+
+
+/* ============================= */
+/* ヘッダー */
+/* ============================= */
+
+.weekly-report-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.weekly-report-header h2 {
+    margin: 0 0 5px;
+
+    color: var(--text);
+
+    font-size: 28px;
+    font-weight: 700;
+}
+
+#weeklyReportPeriod {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.weekly-report-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 12px;
+
+    color: #8c7d87;
+
+    background: #f8f3f6;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
+}
+
+
+.weekly-report-close:hover {
+    background: #f3e9ef;
+
+    transform: scale(1.05);
+}
+
+
+/* ============================= */
+/* 4つの集計カード */
+/* ============================= */
+
+.weekly-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+
+.weekly-stat-card {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 13px;
+
+    border: 1px solid rgba(234, 217, 226, 0.7);
+    border-radius: 17px;
+
+    background:
+        linear-gradient(135deg,
+            #fffafb,
+            #faf8ff);
+}
+
+
+.weekly-stat-icon {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    font-size: 14px;
+}
+
+
+.weekly-stat-icon.task {
+    color: #d1749b;
+    background: #ffeaf2;
+}
+
+
+.weekly-stat-icon.schedule {
+    color: #8871cb;
+    background: #eee9ff;
+}
+
+
+.weekly-stat-icon.diary {
+    color: #b07e51;
+    background: #fff0dc;
+}
+
+
+.weekly-stat-icon.mood {
+    color: #cf7fa5;
+    background: #ffedf5;
+}
+
+
+.weekly-stat-card>div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.weekly-stat-card small {
+    overflow: hidden;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.weekly-stat-card strong {
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 20px;
+    font-weight: 700;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* ============================= */
+/* 週間グラフ */
+/* ============================= */
+
+.weekly-chart-card {
+    margin-bottom: 13px;
+    padding: 16px 18px;
+
+    border: 1px solid rgba(234, 217, 226, 0.7);
+    border-radius: 19px;
+
+    background: rgba(255, 255, 255, 0.88);
+}
+
+
+.weekly-chart-card h3 {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    margin: 0 0 14px;
+
+    color: var(--text);
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+.weekly-chart-card h3 i {
+    color: #9278c9;
+}
+
+
+.weekly-chart {
+    height: 130px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+    align-items: end;
+
+    gap: 10px;
+
+    padding-top: 8px;
+}
+
+
+.weekly-chart-day {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 7px;
+}
+
+
+.weekly-chart-bars {
+    width: 100%;
+    height: 100px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 3px;
+}
+
+
+.weekly-chart-bar {
+    width: 7px;
+    min-height: 4px;
+
+    border-radius: 999px 999px 3px 3px;
+}
+
+
+.weekly-chart-bar.task {
+    background: #e8a2bd;
+}
+
+
+.weekly-chart-bar.schedule {
+    background: #a896da;
+}
+
+
+.weekly-chart-bar.diary {
+    background: #e9bf8d;
+}
+
+
+.weekly-chart-day-label {
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* 凡例 */
+.weekly-chart-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+.weekly-chart-legend span {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+}
+
+
+.weekly-chart-legend i {
+    width: 8px;
+    height: 8px;
+
+    display: block;
+
+    border-radius: 50%;
+}
+
+
+.legend-task {
+    background: #e8a2bd;
+}
+
+
+.legend-schedule {
+    background: #a896da;
+}
+
+
+.legend-diary {
+    background: #e9bf8d;
+}
+
+
+/* ============================= */
+/* 連続記録 */
+/* ============================= */
+
+.weekly-streak-card {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 10px;
+    padding: 12px 14px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(135deg,
+            #fff4e8,
+            #fff9f2);
+}
+
+
+.weekly-streak-card>span {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    color: #df8c53;
+
+    background: #ffe5cb;
+}
+
+
+.weekly-streak-card>div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.weekly-streak-card small {
+    color: #9b7b67;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.weekly-streak-card strong {
+    color: #6e5749;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* ============================= */
+/* AI秘書コメント */
+/* ============================= */
+
+.weekly-secretary-comment {
+    padding: 14px 16px;
+
+    border: 1px solid rgba(219, 207, 238, 0.72);
+    border-radius: 17px;
+
+    background:
+        linear-gradient(135deg,
+            #f9f5ff,
+            #fff5f9);
+}
+
+
+.weekly-secretary-comment strong {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 5px;
+
+    color: #7d68b3;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.weekly-secretary-comment p {
+    margin: 0;
+
+    color: #70636c;
+
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+
+/* モーダル表示中 */
+body.weekly-report-open {
+    overflow: hidden;
+}
+
+/* ============================= */
+/* ブリーフィング モーダル */
+/* ============================= */
+
+.briefing-modal {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+.briefing-modal[hidden] {
+    display: none !important;
+}
+
+.briefing-modal-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(62, 49, 59, 0.30);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.briefing-modal-dialog {
+    position: relative;
+    z-index: 1;
+
+    width: min(520px, calc(100vw - 40px));
+
+    padding: 24px;
+
+    border: 1px solid rgba(234, 217, 226, 0.9);
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    box-shadow:
+        0 18px 50px rgba(75, 55, 68, 0.20);
+}
+
+.briefing-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 14px;
+}
+
+.briefing-modal-header h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.briefing-modal-close {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    color: var(--muted);
+    background: #f8f3f6;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.briefing-modal-text {
+    margin: 0;
+
+    color: #665b62;
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* ============================= */
+/* スマホ用天気 */
+/* PCでは非表示 */
+/* ============================= */
+
+.mobile-weather-button,
+.mobile-weather-popup {
+    display: none;
+}
+
+/* ============================= */
+/* PC：秘書からの提案モーダル */
+/* ============================= */
+
+@media (min-width: 551px) {
+
+    .suggestion-modal {
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 24px;
+    }
+
+    .suggestion-modal[hidden] {
+        display: none !important;
+    }
+
+    .suggestion-modal-overlay {
+        position: absolute;
+        inset: 0;
+
+        background: rgba(62, 49, 59, 0.30);
+
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .suggestion-modal-dialog {
+        position: relative;
+        z-index: 1;
+
+        width: min(520px, calc(100vw - 48px));
+
+        padding: 24px;
+
+        border: 1px solid rgba(234, 217, 226, 0.9);
+        border-radius: 24px;
+
+        background: rgba(255, 255, 255, 0.98);
+
+        box-shadow:
+            0 18px 50px rgba(75, 55, 68, 0.20);
+    }
+
+    .suggestion-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 16px;
+    }
+
+    .suggestion-modal-header h2 {
+        margin: 0;
+
+        color: var(--text);
+
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .suggestion-modal-close {
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border: none;
+        border-radius: 10px;
+
+        color: var(--muted);
+        background: #f8f3f6;
+
+        cursor: pointer;
+    }
+
+    .suggestion-modal-list {
+        display: flex;
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+}
+
+/* ================================================= */
+/* スマートフォン */
+/* ================================================= */
+
+@media (max-width: 550px) {
+
+    /* ============================= */
+    /* ページ全体 */
+    /* ============================= */
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+
+        overflow: hidden;
+    }
+
+
+    .main-page {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+
+    .main-container {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        min-height: 0;
+
+        padding:
+            max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+
+        overflow: hidden;
+    }
+
+    /* ============================= */
+    /* ヘッダー */
+    /* ============================= */
+    .main-header {
+        min-height: 58px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+
+        gap: 10px;
+        padding: 2px 2px 8px;
+    }
+
+    /* ============================= */
+    /* 日付 */
+    /* ============================= */
+
+    .datetime-area {
+        width: auto;
+
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        padding: 0;
+
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .datetime-area span {
+        color: var(--text);
+
+        font-size: 20px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+
+    /* スマホでは時刻を表示しない */
+    .datetime-area strong {
+        display: none;
+    }
+
+
+    /* スマホではPC版の天気表示を隠す */
+    .weather-area {
+        display: none;
+    }
+
+
+    /* ============================= */
+    /* お知らせ・設定 */
+    /* ============================= */
+
+    .header-actions {
+        width: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 7px;
+    }
+
+    .header-icon-button {
+        width: 60px;
+        height: 60px;
+
+        flex-shrink: 0;
+
+        border-radius: 14px;
+
+        font-size: 21px;
+    }
+
+    .mobile-weather-button {
+        display: flex;
+    }
+
+    .notification-dot {
+        top: 6px;
+        right: 6px;
+
+        width: 8px;
+        height: 8px;
+    }
+
+    /* ============================= */
+    /* メインレイアウト */
+    /* ============================= */
+
+    .main-content {
+        min-height: 0;
+
+        flex: 1;
+
+        display: block;
+
+        overflow: hidden;
+    }
+
+
+    /* スマホでは予定・タスクを表示しない */
+    .main-left-column {
+        display: none;
+    }
+
+    /* ============================= */
+    /* カード */
+    /* ============================= */
+
+    .card-header {
+        margin-bottom: 10px;
+    }
+
+    .card-title {
+        gap: 7px;
+    }
+
+    .card-title h2 {
+        font-size: 16px;
+    }
+
+    .card-title-icon {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 11px;
+
+        font-size: 14px;
+    }
+
+    .detail-icon-button {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    /* ============================= */
+    /* スケジュール */
+    /* ============================= */
+
+    .schedule-card {
+        min-height: 270px;
+
+        overflow: visible;
+
+        padding: 15px 14px;
+    }
+
+    .main-schedule-tabs {
+        margin-bottom: 8px;
+    }
+
+    .main-schedule-tab {
+        padding: 6px 13px;
+
+        font-size: 11px;
+    }
+
+    .schedule-list {
+        overflow: visible;
+    }
+
+    .schedule-item {
+        grid-template-columns:
+            53px minmax(0, 1fr);
+
+        gap: 7px;
+
+        padding: 8px 0;
+    }
+
+    .schedule-time {
+        font-size: 11px;
+    }
+
+    .schedule-name {
+        font-size: 12px;
+    }
+
+
+    /* ============================= */
+    /* タスク */
+    /* ============================= */
+
+    .task-summary-card {
+        padding: 15px 14px;
+    }
+
+    .task-count-area {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+    .task-count-row {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 7px;
+
+        padding: 11px 10px;
+    }
+
+    .task-count-label {
+        font-size: 11px;
+    }
+
+    .task-count-row strong {
+        align-self: flex-end;
+
+        font-size: 20px;
+    }
+
+
+    /* ============================= */
+    /* AI秘書 */
+    /* ============================= */
+
+    .assistant-section {
+        width: 100%;
+        height: calc(100% - 16px);
+
+        min-height: 0;
+
+        margin-top: 10px;
+    }
+
+
+    .assistant-card {
+        width: 100%;
+        height: 100%;
+
+        min-height: 0;
+
+        overflow: hidden;
+
+        border: none;
+        border-radius: 0;
+
+        background: transparent;
+
+        box-shadow: none;
+    }
+
+
+    /* ============================= */
+    /* 3Dアバター */
+    /* ============================= */
+    .avatar-area {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
+
+    .background-decoration {
+        display: none;
+    }
+
+    .avatar-canvas {
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        transform:
+            translateY(70px) scale(0.9);
+
+        transform-origin: center center;
+
+        pointer-events: none;
+    }
+
+    .secretary-info-area {
+        top: 7px;
+        right: 16px;
+        left: 16px;
+
+        width: auto;
+        max-width: none;
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+    /* スマホだけ表示順を変更 */
+    .secretary-suggestions {
+        order: 1;
+
+        padding: 12px 14px;
+
+        cursor: pointer;
+    }
+
+    .secretary-suggestions .suggestion-header {
+        margin-bottom: 0;
+    }
+
+    .secretary-suggestions .suggestion-list {
+        display: none;
+    }
+
+    .secretary-suggestions .suggestion-header::after {
+        content: "\f054";
+
+        margin-left: 4px;
+
+        color: #a99cab;
+
+        font-family: "Font Awesome 6 Free";
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .secretary-suggestions .suggestion-count {
+        margin-left: auto;
+    }
+
+    .weekly-report-button {
+        order: 2;
+    }
+
+    .briefing-card {
+        order: 3;
+    }
+
+    .briefing-card {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 9px 14px;
+
+        border-radius: 16px;
+    }
+
+    .briefing-text {
+        -webkit-line-clamp: 2;
+    }
+
+    .briefing-more-button {
+        margin-top: 4px;
+        font-size: 11px;
+    }
+
+    .briefing-card::before {
+        top: auto;
+        bottom: -11px;
+        left: 25%;
+
+        width: 22px;
+        height: 22px;
+
+        border-left: none;
+        border-bottom: 1px solid rgba(236, 205, 220, 0.85);
+        border-right: 1px solid rgba(236, 205, 220, 0.85);
+
+        transform:
+            translateX(-50%) rotate(45deg);
+    }
+
+    /* ============================= */
+    /* AIメッセージ */
+    /* ============================= */
+
+    .assistant-message {
+        top: 61%;
+
+        right: auto;
+        left: 50%;
+
+        width: calc(100% - 40px);
+        max-width: none;
+
+        text-align: center;
+
+        transform: translateX(-50%);
+    }
+
+    .assistant-message .hello {
+        margin-bottom: 4px;
+
+        font-size: 19px;
+    }
+
+    .assistant-message p {
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    /* ============================= */
+    /* 下部3ボタン */
+    /* ============================= */
+
+    .assistant-bottom-actions {
+        left: 7px;
+        right: 7px;
+
+        /* 会話開始ボタンのスペースを確保 */
+        bottom: calc(70px + env(safe-area-inset-bottom));
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 5px;
+    }
+
+
+    .assistant-action-button {
+        min-width: 0;
+        min-height: 65px;
+
+        flex-direction: column;
+
+        gap: 2px;
+        padding: 5px 4px;
+
+        border-radius: 12px;
+    }
+
+
+    .assistant-action-icon {
+        width: 31px;
+        height: 31px;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+    }
+
+
+    .assistant-action-button strong {
+        width: 100%;
+
+        font-size: 17px;
+        font-weight: 500;
+        text-align: center;
+
+        white-space: nowrap;
+    }
+
+
+    .assistant-action-button:hover {
+        transform: none;
+    }
+
+
+
+    /* ============================= */
+    /* 天気ポップアップ */
+    /* ============================= */
+
+    .mobile-weather-popup {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 1000;
+    }
+
+    .mobile-weather-popup:not([hidden]) {
+        display: block;
+    }
+
+
+    /* 背景 */
+    .mobile-weather-overlay {
+        position: absolute;
+
+        inset: 0;
+
+        background:
+            rgba(70, 55, 65, 0.18);
+
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+    }
+
+
+    /* ポップアップ本体 */
+    .mobile-weather-dialog {
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+        right: auto;
+
+        transform: translate(-50%, -50%);
+
+        width:
+            min(310px,
+                calc(100% - 24px));
+
+        padding:
+            18px;
+
+        border:
+            1px solid rgba(234, 217, 226, 0.9);
+
+        border-radius: 24px;
+
+        background:
+            rgba(255, 255, 255, 0.97);
+
+        box-shadow:
+            0 16px 40px rgba(91, 70, 83, 0.18);
+    }
+
+
+    /* ============================= */
+    /* ポップアップ上部 */
+    /* ============================= */
+
+    .mobile-weather-popup-header {
+        display: flex;
+
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        padding-bottom: 14px;
+
+        border-bottom:
+            1px solid rgba(234, 217, 226, 0.7);
+    }
+
+
+    .mobile-weather-main {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+
+    .mobile-weather-main-icon {
+        width: 54px;
+        height: 54px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border-radius: 17px;
+
+        color: #987fce;
+
+        background:
+            linear-gradient(145deg,
+                #fff1d9,
+                #ece5ff);
+
+        font-size: 25px;
+    }
+
+
+    .mobile-weather-main>div {
+        display: flex;
+        flex-direction: column;
+
+        gap: 2px;
+    }
+
+
+    #mobileWeatherTemperature {
+        color: var(--text);
+
+        font-size: 27px;
+        line-height: 1.1;
+    }
+
+
+    #mobileWeatherRain {
+        color: var(--muted);
+
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+
+    .mobile-weather-close {
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        padding: 0;
+
+        border: none;
+        border-radius: 10px;
+
+        color: var(--muted);
+        background: transparent;
+
+        font-size: 17px;
+
+        cursor: pointer;
+    }
+
+
+    /* ============================= */
+    /* 今日・明日 */
+    /* ============================= */
+
+    .mobile-weather-day-tabs {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 5px;
+
+        margin-top: 14px;
+
+        padding: 4px;
+
+        border-radius: 13px;
+
+        background: #f8f4f7;
+    }
+
+
+    .mobile-weather-day-button {
+        min-height: 36px;
+
+        border: none;
+        border-radius: 10px;
+
+        color: var(--muted);
+        background: transparent;
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .mobile-weather-day-button.is-active {
+        color: var(--pink2);
+
+        background: white;
+
+        box-shadow:
+            0 3px 10px rgba(105, 82, 98, 0.07);
+    }
+
+    /* ============================= */
+    /* 秘書からの提案モーダル */
+    /* ============================= */
+
+    .suggestion-modal {
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+    }
+
+    .suggestion-modal[hidden] {
+        display: none !important;
+    }
+
+    .suggestion-modal-overlay {
+        position: absolute;
+        inset: 0;
+
+        background: rgba(62, 49, 59, 0.28);
+
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .suggestion-modal-dialog {
+        position: relative;
+        z-index: 1;
+
+        width: 100%;
+        max-width: 350px;
+
+        padding: 20px;
+
+        border: 1px solid rgba(234, 217, 226, 0.9);
+        border-radius: 24px;
+
+        background: rgba(255, 255, 255, 0.98);
+
+        box-shadow:
+            0 18px 50px rgba(75, 55, 68, 0.2);
+    }
+
+    .suggestion-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 16px;
+    }
+
+    .suggestion-modal-header>div {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+    }
+
+    .suggestion-modal-header h2 {
+        margin: 0;
+
+        color: var(--text);
+
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .suggestion-modal-header>div>i {
+        color: #9278c9;
+    }
+
+    .suggestion-modal-close {
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+
+        border: none;
+        border-radius: 10px;
+
+        color: var(--muted);
+        background: #f8f3f6;
+
+        font-size: 16px;
+
+        cursor: pointer;
+    }
+
+    .suggestion-modal-list {
+        display: flex;
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+    .suggestion-modal-list .suggestion-item {
+        padding: 12px;
+    }
+
+    .suggestion-modal-list .suggestion-item-text strong {
+        font-size: 14px;
+    }
+
+    .suggestion-modal-list .suggestion-item-text p {
+        font-size: 13px;
+    }
+
+    /* ============================= */
+    /* 場所 */
+    /* ============================= */
+
+    .mobile-weather-location-title {
+        margin:
+            16px 0 8px;
+
+        color: var(--text);
+
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    .mobile-weather-locations {
+        display: grid;
+
+        gap: 7px;
+    }
+
+
+    .mobile-weather-location-button {
+        width: 100%;
+        min-height: 48px;
+
+        display: grid;
+
+        grid-template-columns:
+            28px minmax(0, 1fr) 22px;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding:
+            8px 12px;
+
+        border:
+            1px solid rgba(234, 217, 226, 0.7);
+
+        border-radius: 14px;
+
+        color: #70646c;
+        background: #ffffff;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        text-align: left;
+
+        cursor: pointer;
+    }
+
+
+    .mobile-weather-location-button>i:first-child {
+        color: #9b88c8;
+
+        font-size: 15px;
+
+        text-align: center;
+    }
+
+
+    .mobile-weather-location-button.is-active {
+        color: var(--pink2);
+
+        border-color:
+            rgba(236, 157, 190, 0.35);
+
+        background:
+            linear-gradient(135deg,
+                #fff1f6,
+                #faf5ff);
+    }
+
+
+    .mobile-weather-location-button.is-active>i:first-child {
+        color: var(--pink2);
+    }
+
+
+    .mobile-weather-check {
+        display: none;
+
+        color: var(--pink2);
+
+        font-size: 12px;
+    }
+
+    .mobile-weather-location-button.is-active .mobile-weather-check {
+        display: block;
+    }
+
+    /* ============================= */
+    /* スマホではPC用ナビを隠す */
+    /* ============================= */
+
+    .main-navigation {
+        display: none;
+    }
+
+    /* =============================
+   スマホ：トースト
+============================= */
+
+    .toast {
+        position: fixed !important;
+
+        z-index: 9999 !important;
+
+        left: 50% !important;
+        right: auto !important;
+
+        bottom: calc(90px + env(safe-area-inset-bottom)) !important;
+
+        transform:
+            translateX(-50%) translateY(10px);
+
+        width: max-content;
+        max-width: calc(100% - 32px);
+
+        opacity: 0;
+
+        pointer-events: none;
+    }
+
+    .toast.show {
+        opacity: 1;
+
+        transform:
+            translateX(-50%) translateY(0);
+    }
+
+    .weekly-report-button {
+        order: 2;
+
+        border: 1px solid rgba(234, 217, 226, 0.78);
+
+        background: rgba(255, 255, 255, 0.94);
+
+        box-shadow:
+            0 7px 20px rgba(105, 82, 98, 0.07);
+    }
+
+    /* ============================= */
+    /* スマホ：提案・週間まとめを統一 */
+    /* ============================= */
+
+    .secretary-suggestions,
+    .weekly-report-button {
+        width: 100%;
+        min-height: 46px;
+
+        padding: 12px 14px;
+
+        border: 1px solid rgba(234, 217, 226, 0.78);
+        border-radius: 19px;
+
+        background: rgba(255, 255, 255, 0.94);
+
+        box-shadow:
+            0 7px 20px rgba(105, 82, 98, 0.07);
+    }
+
+    /* 今週のまとめの左アイコンはスマホでは非表示 */
+    .weekly-report-button-icon {
+        display: none;
+    }
+
+
+    /* 今週のまとめ */
+    .weekly-report-button {
+        grid-template-columns: minmax(0, 1fr) 20px;
+        gap: 10px;
+    }
+
+
+    /* 今週のまとめの文字 */
+    .weekly-report-button-text strong {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    /* 秘書からの提案の文字 */
+    .secretary-suggestions .suggestion-title {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .briefing-modal {
+        padding: 20px;
+    }
+
+    .briefing-modal-dialog {
+        width: 100%;
+        max-width: 350px;
+
+        padding: 20px;
+
+        border-radius: 24px;
+    }
+
+    .briefing-modal-header h2 {
+        font-size: 18px;
+    }
+
+    .briefing-modal-text {
+        font-size: 14px;
+        line-height: 1.75;
+    }
+
+    /* ============================= */
+    /* スマホ：週間レポート上部4カード */
+    /* ============================= */
+
+    .weekly-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+    .weekly-stat-card {
+        min-height: 68px;
+
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr);
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 10px;
+    }
+
+    .weekly-stat-icon {
+        width: 34px;
+        height: 34px;
+
+        font-size: 13px;
+    }
+
+    .weekly-stat-card>div {
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 2px;
+    }
+
+    .weekly-stat-card small {
+        display: block;
+
+        overflow: visible;
+
+        font-size: 10px;
+        line-height: 1.2;
+        font-weight: 600;
+
+        white-space: normal;
+        text-overflow: clip;
+    }
+
+    .weekly-stat-card strong {
+        display: block;
+
+        overflow: visible;
+
+        font-size: 16px;
+        line-height: 1.2;
+
+        white-space: normal;
+        text-overflow: clip;
+    }
+}
+/* ==================================================
+   スマートフォン横画面
+   ================================================== */
+
+@media (orientation: landscape) and (max-height: 550px) {
+
+    /* ============================= */
+    /* ページ全体 */
+    /* ============================= */
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .main-page {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+    .main-container {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        min-height: 0;
+
+        margin: 0;
+
+        padding:
+            max(5px, env(safe-area-inset-top))
+            max(10px, env(safe-area-inset-right))
+            max(5px, env(safe-area-inset-bottom))
+            max(10px, env(safe-area-inset-left));
+
+        overflow: hidden;
+    }
+
+
+    /* ============================= */
+    /* ヘッダー */
+    /* ============================= */
+
+    .main-header {
+        min-height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 8px;
+
+        padding: 0 2px 5px;
+    }
+
+    .datetime-area {
+        width: auto;
+
+        flex: 1;
+
+        padding: 0;
+
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .datetime-area span {
+        color: var(--text);
+
+        font-size: 16px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+    .datetime-area strong {
+        display: none;
+    }
+
+
+    /* PC天気は非表示 */
+    .weather-area {
+        display: none;
+    }
+
+
+    /* ============================= */
+    /* ヘッダー右側 */
+    /* ============================= */
+
+    .header-actions {
+        width: auto;
+
+        display: flex;
+        align-items: center;
+
+        gap: 5px;
+    }
+
+    .header-icon-button {
+        width: 38px;
+        height: 38px;
+
+        flex-shrink: 0;
+
+        border-radius: 11px;
+
+        font-size: 15px;
+    }
+
+    .mobile-weather-button {
+        display: flex;
+    }
+
+    .notification-dot {
+        top: 4px;
+        right: 4px;
+
+        width: 7px;
+        height: 7px;
+    }
+
+
+    /* ============================= */
+    /* PCナビ・予定・タスク非表示 */
+    /* ============================= */
+
+    .main-navigation {
+        display: none;
+    }
+
+    .main-left-column {
+        display: none;
+    }
+
+
+    /* ============================= */
+    /* メイン */
+    /* ============================= */
+
+    .main-content {
+        min-height: 0;
+
+        flex: 1;
+
+        display: block;
+
+        overflow: hidden;
+    }
+
+    .assistant-section {
+        width: 100%;
+        height: 100%;
+
+        min-height: 0;
+
+        margin: 0;
+    }
+
+    .assistant-card {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        min-height: 0;
+
+        overflow: hidden;
+
+        border: none;
+        border-radius: 0;
+
+        background: transparent;
+
+        box-shadow: none;
+    }
+
+
+    /* ============================= */
+    /* アバター */
+    /* ============================= */
+
+    .avatar-area {
+        width: 100%;
+        height: 100%;
+
+        background: transparent;
+    }
+
+    .background-decoration {
+        display: none;
+    }
+
+    .avatar-canvas {
+        inset: 0 auto 0 0;
+
+        width: 52%;
+        height: 100%;
+
+        transform:
+            translateY(25px) scale(0.82);
+
+        transform-origin: center center;
+
+        pointer-events: none;
+    }
+
+
+    /* ============================= */
+    /* 秘書情報
+       横画面では右側
+    /* ============================= */
+
+    .secretary-info-area {
+        position: absolute;
+
+        top: 4px;
+        right: 8px;
+        bottom: 70px;
+        left: auto;
+
+        width: 47%;
+        max-width: none;
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 4px;
+
+        overflow: hidden;
+    }
+
+
+    /* ============================= */
+    /* 秘書からの提案 */
+    /* ============================= */
+
+    .secretary-suggestions {
+        order: 1;
+
+        width: 100%;
+        min-height: 36px;
+
+        padding: 7px 10px;
+
+        border-radius: 13px;
+
+        cursor: pointer;
+    }
+
+    .secretary-suggestions .suggestion-header {
+        margin-bottom: 0;
+    }
+
+    .secretary-suggestions .suggestion-list {
+        display: none;
+    }
+
+    .secretary-suggestions .suggestion-title {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .secretary-suggestions .suggestion-count {
+        margin-left: auto;
+
+        padding: 3px 6px;
+
+        font-size: 9px;
+    }
+
+    .secretary-suggestions .suggestion-header::after {
+        content: "\f054";
+
+        margin-left: 3px;
+
+        color: #a99cab;
+
+        font-family: "Font Awesome 6 Free";
+        font-size: 9px;
+        font-weight: 900;
+    }
+
+
+    /* ============================= */
+    /* 今週のまとめ */
+    /* ============================= */
+
+    .weekly-report-button {
+        order: 2;
+
+        width: 100%;
+        min-height: 36px;
+
+        grid-template-columns:
+            minmax(0, 1fr) 16px;
+
+        gap: 6px;
+
+        padding: 7px 10px;
+
+        border: 1px solid rgba(234, 217, 226, 0.78);
+        border-radius: 13px;
+
+        background: rgba(255, 255, 255, 0.94);
+
+        box-shadow:
+            0 5px 14px rgba(105, 82, 98, 0.06);
+    }
+
+    .weekly-report-button-icon {
+        display: none;
+    }
+
+    .weekly-report-button-text strong {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .weekly-report-button-text small {
+        display: none;
+    }
+
+
+    /* ============================= */
+    /* ブリーフィング */
+    /* ============================= */
+
+    .briefing-card {
+        order: 3;
+
+        width: 100%;
+
+        min-height: 0;
+
+        flex: 1;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 8px 11px;
+
+        border-radius: 14px;
+
+        overflow: hidden;
+    }
+
+    .briefing-greeting {
+        margin-bottom: 3px;
+
+        font-size: 13px;
+    }
+
+    .briefing-text {
+        font-size: 10px;
+        line-height: 1.45;
+
+        -webkit-line-clamp: 3;
+    }
+
+    .briefing-more-button {
+        margin-top: 2px;
+
+        font-size: 9px;
+    }
+
+    /* 横画面では吹き出しを左向き */
+    .briefing-card::before {
+        top: 50%;
+        bottom: auto;
+        left: -8px;
+
+        width: 16px;
+        height: 16px;
+
+        border-left:
+            1px solid rgba(236, 205, 220, 0.85);
+
+        border-bottom:
+            1px solid rgba(236, 205, 220, 0.85);
+
+        border-right: none;
+
+        transform:
+            translateY(-50%) rotate(45deg);
+    }
+
+
+    /* ============================= */
+    /* AIメッセージ */
+    /* ============================= */
+
+    .assistant-message {
+        top: auto;
+        right: auto;
+        bottom: 76px;
+        left: 4%;
+
+        width: 42%;
+        max-width: none;
+
+        text-align: center;
+
+        transform: none;
+    }
+
+    .assistant-message .hello {
+        margin-bottom: 2px;
+
+        font-size: 14px;
+    }
+
+    .assistant-message p {
+        overflow: hidden;
+
+        font-size: 9px;
+        line-height: 1.35;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+
+    /* ============================= */
+    /* 下部3ボタン */
+    /* ============================= */
+
+    .assistant-bottom-actions {
+        left: 8px;
+        right: 8px;
+        bottom: 5px;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 6px;
+    }
+
+    .assistant-action-button {
+        min-width: 0;
+        min-height: 54px;
+
+        flex-direction: row;
+
+        gap: 6px;
+
+        padding: 6px 8px;
+
+        border-radius: 12px;
+    }
+
+    .assistant-action-icon {
+        width: 29px;
+        height: 29px;
+
+        flex-shrink: 0;
+
+        border-radius: 9px;
+
+        font-size: 12px;
+    }
+
+    .assistant-action-button strong {
+        width: auto;
+
+        font-size: 12px;
+        font-weight: 500;
+
+        text-align: left;
+
+        white-space: nowrap;
+    }
+
+    .assistant-action-button:hover {
+        transform: none;
+    }
+
+
+    /* ============================= */
+    /* 天気ポップアップ */
+    /* ============================= */
+
+    .mobile-weather-popup {
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 1000;
+    }
+
+    .mobile-weather-popup:not([hidden]) {
+        display: block;
+    }
+
+    .mobile-weather-dialog {
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+
+        width: min(420px, calc(100% - 40px));
+        max-height: calc(100dvh - 24px);
+
+        overflow-y: auto;
+
+        padding: 14px;
+
+        transform: translate(-50%, -50%);
+
+        border-radius: 18px;
+    }
+
+
+    /* ============================= */
+    /* 提案モーダル */
+    /* ============================= */
+
+    .suggestion-modal {
+        padding: 12px;
+    }
+
+    .suggestion-modal-dialog {
+        width: min(480px, calc(100% - 24px));
+        max-width: none;
+        max-height: calc(100dvh - 24px);
+
+        overflow-y: auto;
+
+        padding: 16px;
+
+        border-radius: 18px;
+    }
+
+
+    /* ============================= */
+    /* ブリーフィングモーダル */
+    /* ============================= */
+
+    .briefing-modal {
+        padding: 12px;
+    }
+
+    .briefing-modal-dialog {
+        width: min(480px, calc(100% - 24px));
+        max-width: none;
+        max-height: calc(100dvh - 24px);
+
+        overflow-y: auto;
+
+        padding: 16px;
+
+        border-radius: 18px;
+    }
+
+
+    /* ============================= */
+    /* 週間レポート */
+    /* ============================= */
+
+    .weekly-report-modal {
+        padding: 10px;
+    }
+
+    .weekly-report-dialog {
+        width: min(650px, calc(100vw - 20px));
+        max-height: calc(100dvh - 20px);
+
+        overflow-y: auto;
+
+        padding: 16px;
+
+        border-radius: 20px;
+    }
+
+    .weekly-report-header {
+        margin-bottom: 12px;
+    }
+
+    .weekly-report-header h2 {
+        font-size: 19px;
+    }
+
+    #weeklyReportPeriod {
+        font-size: 12px;
+    }
+
+    .weekly-stat-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 6px;
+
+        margin-bottom: 10px;
+    }
+
+    .weekly-stat-card {
+        min-height: 54px;
+
+        display: grid;
+
+        grid-template-columns:
+            28px minmax(0, 1fr);
+
+        gap: 6px;
+
+        padding: 7px;
+    }
+
+    .weekly-stat-icon {
+        width: 28px;
+        height: 28px;
+
+        font-size: 11px;
+    }
+
+    .weekly-stat-card small {
+        font-size: 8px;
+
+        white-space: normal;
+    }
+
+    .weekly-stat-card strong {
+        font-size: 13px;
+
+        white-space: normal;
+    }
+
+
+    /* ============================= */
+    /* トースト */
+    /* ============================= */
+
+    .toast {
+        bottom:
+            calc(64px + env(safe-area-inset-bottom)) !important;
+    }
+}

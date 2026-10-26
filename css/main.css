@@ -1483,16 +1483,19 @@
 
 
 /* モーダル本体 */
+
 .weekly-report-dialog {
     position: relative;
     z-index: 1;
 
-    width: min(680px, calc(100vw - 48px));
-    max-height: none;
+    /* 680px → 900px に拡大 */
+    width: min(900px, calc(100vw - 64px));
+    max-height: calc(100dvh - 48px);
 
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-    padding: 28px;
+    padding: 30px;
 
     border: 1px solid rgba(234, 217, 226, 0.9);
     border-radius: 28px;
@@ -1504,8 +1507,9 @@
 
     box-shadow:
         0 24px 70px rgba(75, 55, 68, 0.22);
-}
 
+    overscroll-behavior: contain;
+}
 
 /* ============================= */
 /* ヘッダー */
@@ -1583,23 +1587,25 @@
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(4, minmax(170px, 1fr));
 
-    gap: 10px;
+    gap: 14px;
 
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
+
 
 
 .weekly-stat-card {
     min-width: 0;
+    min-height: 86px;
 
     display: flex;
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
 
-    padding: 13px;
+    padding: 15px 17px;
 
     border: 1px solid rgba(234, 217, 226, 0.7);
     border-radius: 17px;
@@ -1609,7 +1615,6 @@
             #fffafb,
             #faf8ff);
 }
-
 
 .weekly-stat-icon {
     width: 36px;
@@ -1673,7 +1678,7 @@
 }
 
 .weekly-stat-card strong {
-    overflow: hidden;
+    overflow: visible;
 
     color: var(--text);
 
@@ -1681,7 +1686,7 @@
     font-weight: 700;
 
     white-space: nowrap;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 
@@ -3254,6 +3259,7 @@ body.weekly-report-open {
         text-overflow: clip;
     }
 }
+
 /* ==================================================
    スマートフォン横画面
    ================================================== */
@@ -3291,10 +3297,7 @@ body.weekly-report-open {
         margin: 0;
 
         padding:
-            max(5px, env(safe-area-inset-top))
-            max(10px, env(safe-area-inset-right))
-            max(5px, env(safe-area-inset-bottom))
-            max(10px, env(safe-area-inset-left));
+            max(5px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
 
         overflow: hidden;
     }
@@ -3898,5 +3901,50 @@ body.weekly-report-open {
     .toast {
         bottom:
             calc(64px + env(safe-area-inset-bottom)) !important;
+    }
+
+    /* =============================
+   スマホ：週間まとめモーダル
+   ============================= */
+
+    .weekly-report-modal {
+        align-items: center;
+
+        padding:
+            max(12px, env(safe-area-inset-top)) 10px max(12px, env(safe-area-inset-bottom));
+    }
+
+    .weekly-report-dialog {
+        width: 100%;
+        max-width: 390px;
+
+        /* 画面からはみ出さない */
+        max-height: calc(100dvh - 24px);
+
+        /* 中身だけ縦スクロール */
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        padding: 22px 20px;
+
+        border-radius: 24px;
+
+        overscroll-behavior: contain;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #weeklyReportPeriod {
+        display: inline-block;
+
+        width: max-content;
+        max-width: 100%;
+
+        white-space: nowrap !important;
+        word-break: keep-all;
+        overflow-wrap: normal;
+
+        font-size: 13px;
+        letter-spacing: -0.03em;
     }
 }

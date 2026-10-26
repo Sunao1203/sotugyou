@@ -1792,3 +1792,27 @@ button {
       0
     );
 }
+
+/* =================================
+   CTA PC / スマホ文章切り替え
+================================= */
+
+.cta-pc-text {
+  display: inline;
+}
+
+.cta-sp-text {
+  display: none;
+}
+
+@media (max-width: 540px) {
+
+  .cta-pc-text {
+    display: none;
+  }
+
+  .cta-sp-text {
+    display: inline;
+  }
+
+}

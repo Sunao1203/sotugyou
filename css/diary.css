@@ -1,3188 +1,804 @@
-/* ==================================================
-   日記 / こころのアクアリウム
-   diary.css
-================================================== */
+/* ============================= */
+/* 共通カラー */
+/* ============================= */
+
+:root {
+    --bg: #fff6fa;
+    --surface: #ffffff;
+    --soft: #fdf0f6;
+
+    --pink: #e86fa3;
+    --pink2: #cf4f89;
+    --pink-light: #f9dbe8;
+
+    --lav: #bba9e9;
+    --lav-light: #eee9fb;
+
+    --text: #4b4147;
+    --muted: #7f7179;
+    --border: #ead9e2;
+    --heading: #5e5368;
+
+    --shadow:
+        0 15px 40px rgba(105, 82, 98, 0.07);
+
+    --shadow-hover:
+        0 18px 45px rgba(105, 82, 98, 0.12);
+}
+
+
+/* ============================= */
+/* 基本設定 */
+/* ============================= */
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
-.diary-page {
-  position: relative;
-  overflow-x: hidden;
 
-  background-attachment: fixed;
-  background-size: 100vw 100vh;
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
-.diary-container {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-}
-
-
-/* ==================================================
-   ヘッダー
-================================================== */
-
-.diary-header {
-  position: relative;
-  z-index: 30;
-
-  display: grid;
-
-  grid-template-columns:
-    120px minmax(320px, 620px) 120px;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 20px;
-
-  min-height: 58px;
-
-  margin-bottom: 24px;
-}
-
-.diary-header-center {
-  min-width: 0;
-}
-
-.diary-segment {
-  width: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  padding: 5px;
-
-  border:
-    1px solid rgba(234, 217, 226, 0.92);
-
-  border-radius: 999px;
-
-  background:
-    rgba(255, 255, 255, 0.77);
-
-  box-shadow:
-    0 9px 28px rgba(105, 82, 98, 0.08);
-
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.diary-segment-button {
-  min-height: 44px;
-
-  border: 0;
-  border-radius: 999px;
-
-  color:
-    var(--muted, #8a8390);
-
-  background: transparent;
-
-  font: inherit;
-  font-size: 15px;
-  font-weight: 800;
-
-  cursor: pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.diary-segment-button:hover {
-  transform:
-    translateY(-1px);
-}
-
-.diary-segment-button.is-active {
-  color:
-    var(--pink2, #d94e8b);
-
-  background:
-    linear-gradient(135deg,
-      #fff,
-      #fff0f7);
-
-  box-shadow:
-    0 6px 20px rgba(207, 79, 137, 0.13);
-}
-
-.header-add-button {
-  justify-self: end;
-}
-
-
-/* ==================================================
-   共通パネル
-================================================== */
-
-.diary-view-panel[hidden] {
-  display: none !important;
-}
-
-.month-arrow {
-  width: 40px;
-  height: 40px;
-
-  display: grid;
-  place-items: center;
-
-  border:
-    1px solid rgba(234, 217, 226, 0.78);
-
-  border-radius: 50%;
-
-  color: #40537a;
-
-  background:
-    rgba(255, 255, 255, 0.9);
-
-  cursor: pointer;
-
-  box-shadow:
-    0 5px 15px rgba(84, 70, 93, 0.06);
-}
-
-.month-arrow:hover {
-  background: #fff;
-
-  transform:
-    translateY(-1px);
-}
-
-
-/* ==================================================
-   日記一覧
-================================================== */
-
-#diaryPanel:not([hidden]) {
-  min-height: 0;
-
-  overflow-y: auto;
-
-  padding:
-    2px 4px 18px;
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-}
-
-#diaryPanel:not([hidden])::-webkit-scrollbar {
-  display: none;
-}
-
-.diary-month-switcher,
-.aquarium-month-switcher {
-  width:
-    min(430px, 100%);
-
-  display: grid;
-
-  grid-template-columns:
-    42px minmax(140px, 1fr) 42px;
-
-  align-items: center;
-
-  gap: 12px;
-}
-
-.diary-month-switcher {
-  margin:
-    4px auto 16px;
-}
-
-.diary-month-switcher h2,
-.aquarium-month-switcher h2 {
-  margin: 0;
-
-  color: #273a5e;
-
-  font-size: 21px;
-  font-weight: 800;
-
-  text-align: center;
-}
-
-.diary-list {
-  display: grid;
-
-  gap: 14px;
-}
-
-.diary-card {
-  padding:
-    19px 22px;
-
-  border:
-    1px solid rgba(234, 217, 226, 0.78);
-
-  border-radius: 23px;
-
-  background:
-    rgba(255, 255, 255, 0.94);
-
-  box-shadow:
-    0 12px 32px rgba(105, 82, 98, 0.07);
-
-  backdrop-filter: blur(10px);
-}
-
-.diary-card-date {
-  margin:
-    0 0 8px;
-
-  color: #2a3a60;
-
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.diary-card-text {
-  margin: 0;
-
-  color: #5d6881;
-
-  font-size: 14px;
-
-  line-height: 1.75;
-
-  white-space: pre-wrap;
-}
-
-.diary-card-footer {
-  display: flex;
-
-  align-items: center;
-
-  justify-content:
-    space-between;
-
-  gap: 12px;
-
-  margin-top: 13px;
-}
-
-.diary-mood-chip {
-  display: inline-flex;
-
-  align-items: center;
-
-  min-height: 30px;
-
-  padding:
-    4px 13px;
-
-  border-radius: 999px;
-
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.delete-entry-button {
-  width: 34px;
-  height: 34px;
-
-  display: grid;
-
-  place-items: center;
-
-  border: 0;
-
-  border-radius: 11px;
-
-  color: #9a8b95;
-
-  background:
-    transparent;
-
-  cursor: pointer;
-}
-
-.delete-entry-button:hover {
-  color:
-    var(--pink2, #d94e8b);
-
-  background:
-    rgba(255, 232, 243, 0.8);
-}
-
-.empty-state {
-  margin-top: 16px;
-
-  padding:
-    52px 24px;
-
-  border:
-    1px dashed rgba(207, 79, 137, 0.26);
-
-  border-radius: 24px;
-
-  text-align: center;
-
-  background:
-    rgba(255, 255, 255, 0.70);
-}
-
-.empty-state p {
-  margin:
-    0 0 16px;
-
-  color:
-    var(--muted, #8a8390);
-}
-
-.empty-add-button {
-  padding:
-    11px 18px;
-
-  border: 0;
-
-  border-radius: 14px;
-
-  color: #fff;
-
-  background:
-    linear-gradient(135deg,
-      var(--pink, #ef7fb0),
-      #d98bbd);
-
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-
-/* ==================================================
-   気分カラー
-================================================== */
-
-.mood-excited {
-  color: #d88718;
-  background: #fff0b9;
-}
-
-.mood-happy {
-  color: #d84d84;
-  background: #ffdce9;
-}
-
-.mood-calm {
-  color: #45988f;
-  background: #d9f3ef;
-}
-
-.mood-tired {
-  color: #7d68bc;
-  background: #e9e1fb;
-}
-
-.mood-cloudy {
-  color: #647293;
-  background: #e4e9f6;
-}
-
-.mood-sad {
-  color: #4683ad;
-  background: #dcefff;
-}
-
-
-/* ==================================================
-   魚
-================================================== */
-
-.mood-fish,
-.aquarium-fish {
-  --fish-main: #f7bc42;
-  --fish-accent: #f18e32;
-
-  position: relative;
-
-  width: 84px;
-  height: 58px;
-
-  display: block;
-}
-
-.fish-graphic {
-  position: absolute;
-
-  inset: 0;
-
-  filter:
-    drop-shadow(0 8px 8px rgba(45, 58, 92, 0.13));
-}
-
-.fish-body {
-  position: absolute;
-
-  left: 16px;
-  top: 10px;
-
-  width: 54px;
-  height: 38px;
-
-  border-radius:
-    52% 48% 48% 52%;
-
-  background:
-    radial-gradient(circle at 30% 25%,
-      rgba(255, 255, 255, 0.56),
-      transparent 18%),
-    linear-gradient(150deg,
-      rgba(255, 255, 255, 0.32),
-      transparent 45%),
-    var(--fish-main);
-}
-
-.fish-tail {
-  position: absolute;
-
-  left: 0;
-  top: 18px;
-
-  width: 26px;
-  height: 28px;
-
-  background:
-    var(--fish-accent);
-
-  clip-path:
-    polygon(0 0,
-      100% 50%,
-      0 100%,
-      18% 50%);
-}
-
-.fish-fin {
-  position: absolute;
-
-  left: 39px;
-  top: 35px;
-
-  width: 20px;
-  height: 12px;
-
-  border-radius: 50%;
-
-  background:
-    var(--fish-accent);
-
-  transform:
-    rotate(-18deg);
-
-  opacity: 0.85;
-}
-
-.fish-eye {
-  position: absolute;
-
-  left: 55px;
-  top: 21px;
-
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #27324a;
-
-  box-shadow:
-    2px -2px 0 0 white;
-}
-
-.fish-mouth {
-  position: absolute;
-
-  left: 63px;
-  top: 33px;
-
-  width: 8px;
-  height: 5px;
-
-  border-bottom:
-    2px solid #784f55;
-
-  border-radius:
-    0 0 50% 50%;
-}
-
-.fish-extra {
-  position: absolute;
-
-  inset: 0;
-
-  pointer-events: none;
-}
-
-.fish-excited {
-  --fish-main: #ffd45a;
-  --fish-accent: #ff9637;
-}
-
-.fish-happy {
-  --fish-main: #ff9eb5;
-  --fish-accent: #ff6f91;
-}
-
-.fish-calm {
-  --fish-main: #78d4d0;
-  --fish-accent: #4eb9bf;
-}
-
-.fish-tired {
-  --fish-main: #b8a9e9;
-  --fish-accent: #8f80d1;
-}
-
-.fish-cloudy {
-  --fish-main: #8793b9;
-  --fish-accent: #68759d;
-}
-
-.fish-sad {
-  --fish-main: #77b9e5;
-  --fish-accent: #4c91ca;
-}
-
-.fish-excited .fish-extra::after {
-  content: "✦";
-
-  position: absolute;
-
-  right: -2px;
-  top: -4px;
-
-  color: #fff4a9;
-
-  font-size: 19px;
-}
-
-.fish-calm .fish-eye,
-.fish-tired .fish-eye {
-  height: 3px;
-
-  top: 25px;
-
-  border-radius: 10px;
-
-  box-shadow: none;
-}
-
-.fish-tired .fish-extra::after {
-  content: "Z";
-
-  position: absolute;
-
-  right: -2px;
-  top: 0;
-
-  color: #9586da;
-
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.fish-cloudy .fish-mouth,
-.fish-sad .fish-mouth {
-  border-bottom: 0;
-
-  border-top:
-    2px solid #4c5368;
-
-  border-radius:
-    50% 50% 0 0;
-}
-
-
-/* ==================================================
-   アクアリウム
-================================================== */
-
-#aquariumPanel:not([hidden]) {
-  min-height: 0;
-}
-
-.aquarium-left-column,
-.aquarium-right-column {
-  min-width: 0;
-  min-height: 0;
-}
-
-.aquarium-left-column {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 10px;
-}
-
-.aquarium-right-column {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 10px;
-}
-
-.aquarium-month-switcher {
-  flex: 0 0 auto;
-
-  margin:
-    0 auto;
-}
-
-.aquarium-shell {
-  --season-top: #7cb9f2;
-  --season-bottom: #3867a2;
-
-  position: relative;
-
-  flex: 1;
-
-  min-height: 410px;
-
-  overflow: hidden;
-
-  border:
-    5px solid rgba(238, 245, 255, 0.82);
-
-  border-radius:
-    38px 38px 30px 30px;
-
-  background:
-    radial-gradient(circle at 50% 3%,
-      rgba(255, 255, 255, 0.78),
-      transparent 15%),
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.11),
-      transparent 26%),
-    linear-gradient(180deg,
-      var(--season-top),
-      var(--season-bottom));
-
-  box-shadow:
-    inset 0 0 38px rgba(255, 255, 255, 0.23),
-
-    inset 0 -22px 44px rgba(19, 55, 100, 0.14),
-
-    0 18px 42px rgba(81, 88, 126, 0.14);
-}
-
-.aquarium-shell.season-spring {
-  --season-top: #a8dcf1;
-  --season-bottom: #7e8fd0;
-}
-
-.aquarium-shell.season-summer {
-  --season-top: #63cef1;
-  --season-bottom: #3978b8;
-}
-
-.aquarium-shell.season-autumn {
-  --season-top: #8b78bf;
-  --season-bottom: #485884;
-}
-
-.aquarium-shell.season-winter {
-  --season-top: #a6d0ea;
-  --season-bottom: #5d78a4;
-}
-
-.aquarium-glass-shine {
-  position: absolute;
-
-  z-index: 20;
-
-  inset: 8px;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.34);
-
-  border-radius: 30px;
-
-  box-shadow:
-    inset 22px 0 30px rgba(255, 255, 255, 0.09),
-
-    inset -14px 0 28px rgba(255, 255, 255, 0.07);
-
-  pointer-events: none;
-}
-
-.aquarium-waterline {
-  position: absolute;
-
-  z-index: 12;
-
-  top: 20px;
-  left: 4%;
-  right: 4%;
-
-  height: 16px;
-
-  border-top:
-    2px solid rgba(255, 255, 255, 0.72);
-
-  border-radius: 50%;
-}
-
-.aquarium-light {
-  position: absolute;
-
-  z-index: 1;
-
-  top: -15%;
-  left: 36%;
-
-  width: 28%;
-  height: 78%;
-
-  background:
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.38),
-      transparent);
-
-  filter: blur(7px);
-
-  transform:
-    rotate(10deg);
-}
-
-.aquarium-bubbles::before,
-.aquarium-bubbles::after {
-  content: "";
-
-  position: absolute;
-
-  z-index: 9;
-
-  border:
-    2px solid rgba(255, 255, 255, 0.42);
-
-  border-radius: 50%;
-
-  animation:
-    bubbleRise 8s linear infinite;
-}
-
-.aquarium-bubbles-a::before {
-  width: 14px;
-  height: 14px;
-
-  left: 12%;
-  bottom: 18%;
-
-  animation-delay: -2s;
-}
-
-.aquarium-bubbles-a::after {
-  width: 8px;
-  height: 8px;
-
-  left: 19%;
-  bottom: 7%;
-
-  animation-delay: -5s;
-}
-
-.aquarium-bubbles-b::before {
-  width: 11px;
-  height: 11px;
-
-  right: 16%;
-  bottom: 13%;
-
-  animation-delay: -3s;
-}
-
-.aquarium-bubbles-b::after {
-  width: 18px;
-  height: 18px;
-
-  right: 8%;
-  bottom: 4%;
-
-  animation-delay: -6s;
-}
-
-@keyframes bubbleRise {
-
-  0% {
-    transform:
-      translateY(0) scale(.7);
-
-    opacity: 0;
-  }
-
-  18% {
-    opacity: .8;
-  }
-
-  100% {
-    transform:
-      translateY(-350px) scale(1.1);
-
-    opacity: 0;
-  }
-}
-
-
-/* ==================================================
-   水槽の魚
-================================================== */
-
-.aquarium-fish-layer {
-  position: absolute;
-
-  z-index: 15;
-
-  inset:
-    34px 20px 72px;
-
-  overflow: hidden;
-
-  pointer-events: none;
-}
-
-.aquarium-fish {
-  position: absolute;
-
-  width: 72px;
-  height: 50px;
-
-  transform-origin: center;
-
-  animation:
-    swimRight linear infinite;
-}
-
-.aquarium-fish .fish-body {
-  left: 14px;
-  top: 9px;
-
-  width: 47px;
-  height: 33px;
-}
-
-.aquarium-fish .fish-tail {
-  top: 16px;
-
-  width: 23px;
-  height: 25px;
-}
-
-.aquarium-fish .fish-fin {
-  left: 34px;
-  top: 30px;
-
-  width: 17px;
-  height: 10px;
-}
-
-.aquarium-fish .fish-eye {
-  left: 48px;
-  top: 18px;
-}
-
-.aquarium-fish .fish-mouth {
-  left: 56px;
-  top: 28px;
-}
-
-.aquarium-fish.swim-left {
-  animation-name:
-    swimLeft;
-}
-
-.aquarium-fish.swim-left .fish-graphic {
-  transform:
-    scaleX(-1);
-}
-
-@keyframes swimRight {
-
-  from {
-    transform:
-      translateX(-120px) translateY(0);
-  }
-
-  45% {
-    transform:
-      translateX(430px) translateY(-9px);
-  }
-
-  to {
-    transform:
-      translateX(980px) translateY(3px);
-  }
-}
-
-@keyframes swimLeft {
-
-  from {
-    transform:
-      translateX(980px) translateY(0);
-  }
-
-  55% {
-    transform:
-      translateX(420px) translateY(9px);
-  }
-
-  to {
-    transform:
-      translateX(-130px) translateY(-2px);
-  }
-}
-
-
-/* ==================================================
-   海藻・岩・砂
-================================================== */
-
-.aquarium-plants {
-  position: absolute;
-
-  z-index: 4;
-
-  left: 3%;
-  right: 3%;
-
-  bottom: 38px;
-
-  height: 112px;
-
-  pointer-events: none;
-}
-
-.plant {
-  position: absolute;
-
-  bottom: 0;
-
-  width: 22px;
-
-  border-radius:
-    60% 20% 60% 20%;
-
-  transform-origin: bottom;
-
-  background:
-    linear-gradient(#70c7b6,
-      #2d887e);
-
-  opacity: .88;
-
-  animation:
-    plantSway 4s ease-in-out infinite alternate;
-}
-
-.plant-1 {
-  left: 1%;
-  height: 90px;
-
-  transform:
-    rotate(-9deg);
-}
-
-.plant-2 {
-  left: 7%;
-
-  height: 65px;
-
-  animation-delay: -1s;
-}
-
-.plant-3 {
-  right: 4%;
-
-  height: 98px;
-
-  background:
-    linear-gradient(#956bc3,
-      #654d9b);
-
-  animation-delay: -2s;
-}
-
-.plant-4 {
-  right: 11%;
-
-  height: 74px;
-
-  background:
-    linear-gradient(#f19bc1,
-      #bd6797);
-
-  animation-delay: -1.4s;
-}
-
-@keyframes plantSway {
-
-  to {
-    transform:
-      rotate(7deg);
-  }
-}
-
-.aquarium-rocks {
-  position: absolute;
-
-  z-index: 5;
-
-  right: 7%;
-
-  bottom: 30px;
-
-  display: flex;
-
-  align-items:
-    flex-end;
-
-  gap: 4px;
-}
-
-.aquarium-rocks span {
-  width: 34px;
-  height: 24px;
-
-  border-radius:
-    50% 55% 35% 40%;
-
-  background:
-    linear-gradient(#68819a,
-      #4b5f73);
-}
-
-.aquarium-rocks span:nth-child(2) {
-  width: 46px;
-  height: 32px;
-}
-
-.aquarium-rocks span:nth-child(3) {
-  width: 28px;
-  height: 19px;
-}
-
-.aquarium-rocks span:nth-child(4) {
-  width: 22px;
-  height: 15px;
-}
-
-.aquarium-sand {
-  position: absolute;
-
-  z-index: 3;
-
-  left: -2%;
-  right: -2%;
-
-  bottom: -10px;
-
-  height: 66px;
-
-  border-radius:
-    50% 50% 0 0;
-
-  background:
-    linear-gradient(#f1d49c,
-      #dcb77c);
-
-  box-shadow:
-    inset 0 12px 18px rgba(255, 255, 255, 0.18);
-}
-
-
-/* ==================================================
-   月ごとの飾り
-================================================== */
-
-.month-decoration {
-  position: absolute;
-
-  inset:
-    42px 24px 58px;
-
-  pointer-events: none;
-}
-
-.month-deco-item {
-  position: absolute;
-
-  z-index:
-    var(--deco-z, 5);
-
-  width:
-    var(--deco-width, 60px);
-
-  height:
-    var(--deco-height, 60px);
-
-  display: grid;
-
-  place-items: center;
-
-  opacity:
-    var(--deco-opacity, 1);
-
-  transform-origin: center;
-
-  pointer-events: none;
-}
-
-.deco-image {
-  width: 100%;
-  height: 100%;
-
-  display: block;
-
-  object-fit: contain;
-
-  user-select: none;
-
-  pointer-events: none;
-
-  filter:
-    drop-shadow(0 6px 8px rgba(27, 37, 69, 0.13));
-}
-
-.deco-background {
-  left:
-    var(--deco-x);
-
-  top:
-    var(--deco-y);
-
-  transform:
-    translate(-50%, -50%);
-}
-
-.deco-background .deco-image {
-  filter:
-    drop-shadow(0 5px 8px rgba(27, 37, 69, 0.06));
-}
-
-.deco-floor {
-  left:
-    var(--deco-x);
-
-  bottom:
-    calc(var(--deco-y) - 18px);
-
-  transform:
-    translateX(-50%);
-
-  animation:
-    decoFloorAppear .42s ease both;
-}
-
-.deco-floating {
-  left:
-    var(--deco-x);
-
-  top:
-    var(--deco-y);
-
-  transform:
-    translate(-50%, -50%);
-
-  animation:
-    decoFloat 4.8s ease-in-out var(--deco-delay, 0s) infinite alternate;
-}
-
-.deco-top {
-  left:
-    var(--deco-x);
-
-  top:
-    var(--deco-y);
-
-  transform:
-    translate(-50%, -50%);
-
-  animation:
-    decoTopFloat 5.2s ease-in-out var(--deco-delay, 0s) infinite alternate;
-}
-
-.deco-hanging {
-  left:
-    var(--deco-x);
-
-  top:
-    var(--deco-y);
-
-  transform:
-    translateX(-50%);
-
-  transform-origin:
-    top center;
-
-  animation:
-    decoSwing 4.2s ease-in-out var(--deco-delay, 0s) infinite alternate;
-}
-
-@keyframes decoFloorAppear {
-
-  from {
-    opacity: 0;
-
-    transform:
-      translateX(-50%) translateY(10px) scale(.92);
-  }
-
-  to {
-    opacity:
-      var(--deco-opacity, 1);
-
-    transform:
-      translateX(-50%) translateY(0) scale(1);
-  }
-}
-
-@keyframes decoFloat {
-
-  from {
-    transform:
-      translate(-50%, -50%) translateY(3px) rotate(-2deg);
-  }
-
-  to {
-    transform:
-      translate(-50%, -50%) translateY(-8px) rotate(2deg);
-  }
-}
-
-@keyframes decoTopFloat {
-
-  from {
-    transform:
-      translate(-50%, -50%) translateY(0);
-  }
-
-  to {
-    transform:
-      translate(-50%, -50%) translateY(-5px);
-  }
-}
-
-@keyframes decoSwing {
-
-  from {
-    transform:
-      translateX(-50%) rotate(-3deg);
-  }
-
-  to {
-    transform:
-      translateX(-50%) rotate(3deg);
-  }
-}
-
-.deco-fa {
-  color:
-    var(--deco-color, #fff);
-
-  font-size:
-    var(--deco-font-size, 34px);
-
-  filter:
-    drop-shadow(0 5px 7px rgba(27, 37, 69, .16));
-}
-
-
-/* ==================================================
-   コレクション
-================================================== */
-
-.common-card {
-  border:
-    1px solid rgba(234, 217, 226, 0.75);
-
-  background:
-    rgba(255, 255, 255, 0.92);
-
-  box-shadow:
-    0 10px 30px rgba(90, 74, 95, 0.06);
-
-  backdrop-filter:
-    blur(10px);
-}
-
-.unlock-card,
-.monthly-summary-card,
-.ai-comment-card {
-  border-radius: 21px;
-}
-
-.unlock-card {
-  padding:
-    15px 17px;
-}
-
-.unlock-card-heading {
-  display: flex;
-
-  align-items: flex-end;
-
-  justify-content:
-    space-between;
-
-  gap: 12px;
-}
-
-.unlock-kicker {
-  margin:
-    0 0 3px;
-
-  color:
-    var(--pink2, #d94e8b);
-
-  font-size: 11px;
-
-  font-weight: 900;
-}
-
-.unlock-card h3 {
-  margin: 0;
-
-  color: #34405d;
-
-  font-size: 16px;
-}
-
-#unlockProgressText {
-  color: #59657b;
-
-  font-size: 13px;
-}
-
-.unlock-progress-track {
-  height: 8px;
-
-  margin:
-    11px 0 10px;
-
-  overflow: hidden;
-
-  border-radius: 999px;
-
-  background: #eeeef4;
-}
-
-.unlock-progress-track span {
-  display: block;
-
-  width: 0;
-  height: 100%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(90deg,
-      #f594bd,
-      #bca8ea);
-
-  transition:
-    width .35s ease;
-}
-
-.unlock-badges {
-  display: grid;
-
-  grid-template-columns:
-    repeat(6, minmax(0, 1fr));
-
-  gap: 5px;
-}
-
-.unlock-badge {
-  min-width: 0;
-
-  padding:
-    6px 2px;
-
-  border-radius: 11px;
-
-  text-align: center;
-
-  background: #f7f4f7;
-
-  opacity: .45;
-}
-
-.unlock-badge.is-unlocked {
-  background:
-    linear-gradient(145deg,
-      #fff7fb,
-      #f3edff);
-
-  box-shadow:
-    0 5px 14px rgba(106, 82, 98, 0.08);
-
-  opacity: 1;
-}
-
-.unlock-badge-icon {
-  width: 32px;
-  height: 32px;
-
-  margin:
-    0 auto;
-
-  display: grid;
-
-  place-items: center;
-}
-
-.unlock-badge-icon .deco-image {
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  filter: none;
-}
-
-.unlock-badge-icon .deco-fa {
-  color:
-    var(--deco-color, #8a8390);
-
-  font-size:
-    min(var(--deco-font-size, 21px),
-      26px);
-
-  filter: none;
-}
-
-.unlock-lock {
-  color: #a8a1ad;
-
-  font-size: 17px;
-}
-
-.unlock-badge-label {
-  display: block;
-
-  margin-top: 2px;
-
-  color: #6a6372;
-
-  font-size: 8px;
-  font-weight: 800;
-}
-
-
-/* ==================================================
-   今月のこころ
-================================================== */
-
-.monthly-summary-card {
-  padding:
-    15px 17px;
-}
-
-.card-heading-row h3,
-.ai-comment-card h3 {
-  margin: 0;
-
-  color: #34405d;
-
-  font-size: 17px;
-}
-
-.card-heading-row h3 i,
-.ai-comment-card h3 i {
-  margin-right: 7px;
-
-  color: #8a6cc8;
-}
-
-.summary-overview {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 12px;
-
-  margin-top: 11px;
-
-  padding-bottom: 11px;
-
-  border-bottom:
-    1px solid rgba(234, 217, 226, 0.74);
-}
-
-.summary-overview>div {
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 3px;
-}
-
-.summary-overview span {
-  color:
-    var(--muted, #8a8390);
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.summary-overview strong {
-  overflow: hidden;
-
-  color: #25324f;
-
-  font-size: 16px;
-  font-weight: 800;
-
-  white-space: nowrap;
-
-  text-overflow:
-    ellipsis;
-}
-
-.summary-big-number strong b {
-  font-size: 27px;
-
-  line-height: 1;
-}
-
-
-/* ==================================================
-   今月のこころ：円グラフ
-================================================== */
-
-.mood-chart-area {
-  display: grid;
-
-  grid-template-columns:
-    145px minmax(0, 1fr);
-
-  align-items: center;
-
-  gap: 18px;
-
-  margin-top: 16px;
-}
-
-.mood-pie-chart {
-  position: relative;
-
-  width: 140px;
-  height: 140px;
-
-  flex-shrink: 0;
-
-  border-radius: 50%;
-
-  background: #eeeef2;
-
-  box-shadow:
-    0 8px 20px rgba(72, 75, 110, 0.08);
-}
-
-.mood-pie-chart::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 30px;
-
-  border-radius: 50%;
-
-  background: #fff;
-
-  box-shadow:
-    0 2px 10px rgba(60, 65, 90, 0.07);
-}
-
-.mood-pie-center {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 2;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-.mood-pie-center strong {
-  color: #34405d;
-
-  font-size: 27px;
-  font-weight: 800;
-
-  line-height: 1;
-}
-
-.mood-pie-center span {
-  margin-top: 4px;
-
-  color: #8a8390;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.mood-chart-legend {
-  min-width: 0;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap:
-    9px 13px;
-}
-
-.mood-legend-row {
-  min-width: 0;
-
-  display: grid;
-
-  grid-template-columns:
-    10px minmax(0, 1fr) auto;
-
-  align-items: center;
-
-  gap: 6px;
-}
-
-.mood-legend-color {
-  width: 9px;
-  height: 9px;
-
-  border-radius: 50%;
-}
-
-.mood-legend-name {
-  overflow: hidden;
-
-  color: #59657b;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  white-space: nowrap;
-
-  text-overflow:
-    ellipsis;
-}
-
-.mood-legend-value {
-  color: #34405d;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  white-space: nowrap;
-}
-
-.mood-legend-value small {
-  margin-left: 2px;
-
-  color: #9993a0;
-
-  font-size: 9px;
-  font-weight: 700;
-}
-
-
-/* ==================================================
-   AIコメント
-================================================== */
-
-.ai-comment-card {
-  padding:
-    14px 17px;
-}
-
-.ai-comment-card p {
-  margin:
-    7px 0 0;
-
-  color: #6a6372;
-
-  font-size: 12px;
-
-  line-height: 1.55;
-
-  white-space: pre-line;
-}
-
-
-/* ==================================================
-   日記追加シート
-================================================== */
-
-.diary-sheet-backdrop {
-  position: fixed;
-
-  z-index: 5000;
-
-  inset: 0;
-
-  display: flex;
-
-  align-items: flex-end;
-
-  justify-content: center;
-
-  padding: 20px;
-
-  background:
-    rgba(50, 47, 56, 0.42);
-
-  backdrop-filter:
-    blur(6px);
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition:
-    opacity .24s ease;
-}
-
-.diary-sheet-backdrop[hidden] {
-  display: none !important;
-}
-
-.diary-sheet-backdrop.is-open {
-  opacity: 1;
-
-  pointer-events: auto;
-}
-
-.diary-sheet {
-  width:
-    min(760px, 100%);
-
-  max-height: none;
-
-  overflow: visible;
-
-  padding:
-    13px 24px 22px;
-
-  border-radius:
-    30px 30px 20px 20px;
-
-  background:
-    rgba(255, 255, 255, .985);
-
-  box-shadow:
-    0 -18px 60px rgba(49, 40, 48, .20);
-
-  transform:
-    translateY(110%);
-
-  transition:
-    transform .34s cubic-bezier(.2, .8, .2, 1);
-}
-
-.diary-sheet-backdrop.is-open .diary-sheet {
-  transform:
-    translateY(0);
-}
-
-.sheet-handle {
-  width: 56px;
-  height: 5px;
-
-  margin:
-    0 auto 10px;
-
-  border-radius: 999px;
-
-  background: #bbb7c5;
-}
-
-.sheet-title-row {
-  display: flex;
-
-  align-items: center;
-
-  justify-content:
-    space-between;
-
-  gap: 18px;
-}
-
-.sheet-title-row h2 {
-  margin: 0;
-
-  color: #27324b;
-
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.sheet-close-button {
-  width: 38px;
-  height: 38px;
-
-  flex-shrink: 0;
-
-  border:
-    1px solid rgba(234, 217, 226, .80);
-
-  border-radius: 50%;
-
-  color: #4d4a56;
-
-  background: white;
-
-  cursor: pointer;
-}
-
-.diary-textarea {
-  width: 100%;
-
-  height: 92px;
-
-  min-height: 92px;
-
-  margin-top: 13px;
-
-  resize: none;
-
-  padding:
-    13px 15px;
-
-  border:
-    1px solid rgba(234, 217, 226, .88);
-
-  border-radius: 18px;
-
-  color: #525b70;
-
-  background: #fff;
-
-  font: inherit;
-  font-size: 14px;
-
-  line-height: 1.65;
-}
-
-.diary-textarea::placeholder {
-  color: #aaa7b5;
-}
-
-.mood-picker-heading {
-  display: flex;
-
-  align-items: baseline;
-
-  gap: 8px;
-
-  margin:
-    14px 0 8px;
-}
-
-.mood-picker-heading strong {
-  color: #293550;
-
-  font-size: 16px;
-}
-
-.mood-picker-heading span {
-  color:
-    var(--muted, #8a8390);
-
-  font-size: 12px;
-}
-
-.mood-picker {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 9px;
-}
-
-.mood-choice {
-  position: relative;
-
-  min-height: 98px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 3px;
-
-  padding:
-    5px 4px;
-
-  border:
-    1px solid rgba(234, 217, 226, .92);
+body {
+    margin: 0;
 
-  border-radius: 18px;
+    color: var(--text);
 
-  color: #5a5360;
-
-  background:
-    linear-gradient(145deg,
-      #fff,
-      #fffafd);
-
-  cursor: pointer;
-
-  transition:
-    .18s ease;
-}
-
-.mood-choice:hover {
-  transform:
-    translateY(-2px);
-}
-
-.mood-choice.is-selected {
-  border:
-    2px solid rgba(232, 111, 163, .75);
-
-  background:
-    linear-gradient(145deg,
-      #fff,
-      #fff0f7);
-
-  box-shadow:
-    0 8px 22px rgba(232, 111, 163, .13);
-}
-
-.mood-choice-check {
-  position: absolute;
-
-  top: 7px;
-  right: 7px;
-
-  width: 22px;
-  height: 22px;
-
-  display: none;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 50%;
-
-  color: white;
-
-  background:
-    var(--pink, #ef7fb0);
-
-  font-size: 10px;
-}
-
-.mood-choice.is-selected .mood-choice-check {
-  display: flex;
-}
-
-.mood-choice .mood-fish {
-  transform:
-    scale(.72);
-
-  margin:
-    -8px 0;
-}
-
-.mood-choice-label {
-  font-size: 12px;
-
-  font-weight: 800;
-}
-
-.sheet-note {
-  margin:
-    10px 0 0;
-
-  color: #777080;
-
-  font-size: 11px;
-
-  text-align: center;
-
-  line-height: 1.5;
-}
-
-
-/* ==================================================
-   AI秘書へ保存
-================================================== */
-
-.diary-database-option {
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  margin-top: 9px;
-
-  padding:
-    9px 12px;
-
-  border:
-    1px solid rgba(234, 217, 226, .88);
-
-  border-radius: 15px;
-
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, .96),
-      rgba(250, 246, 255, .96));
-
-  cursor: pointer;
-}
-
-.database-option-text {
-  flex: 1;
-
-  min-width: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 2px;
-}
-
-.database-option-text strong {
-  color: #34405d;
-
-  font-size: 13px;
-}
-
-.database-option-text span {
-  color: #8a8390;
-
-  font-size: 10px;
-
-  line-height: 1.4;
-}
-
-.diary-database-option input {
-  position: absolute;
-
-  opacity: 0;
-
-  pointer-events: none;
-}
-
-.database-toggle {
-  position: relative;
-
-  width: 42px;
-  height: 24px;
-
-  flex-shrink: 0;
-
-  border-radius: 999px;
-
-  background: #dedce5;
-
-  transition:
-    .2s ease;
-}
-
-.database-toggle::after {
-  content: "";
-
-  position: absolute;
-
-  top: 3px;
-  left: 3px;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background: #fff;
-
-  box-shadow:
-    0 2px 7px rgba(73, 63, 74, .18);
-
-  transition:
-    .2s ease;
-}
-
-.diary-database-option input:checked+.database-toggle {
-  background:
-    linear-gradient(135deg,
-      #f08bb8,
-      #bca9e9);
-}
-
-.diary-database-option input:checked+.database-toggle::after {
-  transform:
-    translateX(18px);
-}
-
-.save-diary-button {
-  width: 100%;
-
-  min-height: 48px;
-
-  margin-top: 10px;
-
-  border: 0;
-
-  border-radius: 16px;
-
-  color: white;
-
-  background:
-    linear-gradient(135deg,
-      #f47fb1,
-      #ef4f95);
-
-  box-shadow:
-    0 10px 24px rgba(239, 79, 149, .22);
-
-  font: inherit;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-.save-diary-button:disabled {
-  opacity: .42;
-
-  cursor: not-allowed;
-
-  box-shadow: none;
-}
-
-
-/* ==================================================
-   水滴 → 魚
-================================================== */
-
-.drop-transition-layer {
-  position: absolute;
-
-  z-index: 30;
-
-  inset: 0;
-
-  pointer-events: none;
-}
-
-.magic-drop {
-  position: absolute;
-
-  left: 50%;
-  top: -30px;
-
-  width: 22px;
-  height: 30px;
-
-  border-radius:
-    55% 55% 62% 62%;
-
-  background:
-    rgba(209, 239, 255, .92);
-
-  box-shadow:
-    0 0 18px rgba(219, 243, 255, .8);
-
-  transform:
-    translateX(-50%) rotate(45deg);
-
-  animation:
-    dropToWater 1s cubic-bezier(.35, .05, .8, .4) forwards;
-}
-
-.magic-drop.is-transforming {
-  animation:
-    dropPuff .55s ease forwards;
-}
-
-.magic-fish {
-  position: absolute;
-
-  left: 50%;
-  top: 26%;
-
-  opacity: 0;
-
-  transform:
-    translate(-50%, -50%) scale(.25);
-
-  animation:
-    fishAppear .7s ease forwards;
-}
-
-@keyframes dropToWater {
-
-  to {
-    top: 26%;
-  }
-}
-
-@keyframes dropPuff {
-
-  0% {
-    top: 26%;
-
-    transform:
-      translateX(-50%) rotate(45deg) scale(1);
-  }
-
-  50% {
-    transform:
-      translateX(-50%) rotate(45deg) scale(1.8);
-  }
-
-  100% {
-    transform:
-      translateX(-50%) rotate(45deg) scale(.2);
-
-    opacity: 0;
-  }
-}
-
-@keyframes fishAppear {
-
-  to {
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%) scale(1);
-  }
-}
-
-
-/* ==================================================
-   アイテム獲得
-================================================== */
-
-.reward-backdrop {
-  position: fixed;
-
-  z-index: 7000;
-
-  inset: 0;
-
-  display: grid;
-
-  place-items: center;
-
-  padding: 24px;
-
-  background:
-    rgba(52, 46, 58, .44);
-
-  backdrop-filter:
-    blur(7px);
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition:
-    opacity .22s ease;
-}
-
-.reward-backdrop[hidden] {
-  display: none !important;
-}
-
-.reward-backdrop.is-open {
-  opacity: 1;
-
-  pointer-events: auto;
-}
-
-.reward-dialog {
-  width:
-    min(390px, 100%);
-
-  padding:
-    28px 24px 24px;
-
-  border:
-    1px solid rgba(255, 255, 255, .75);
-
-  border-radius: 28px;
-
-  text-align: center;
-
-  background:
-    radial-gradient(circle at 50% 10%,
-      rgba(255, 220, 237, .9),
-      transparent 32%),
-    linear-gradient(145deg,
-      #fff,
-      #f9f3ff);
-
-  box-shadow:
-    0 25px 70px rgba(57, 45, 61, .24);
-
-  transform:
-    translateY(18px) scale(.96);
-
-  transition:
-    transform .24s ease;
-}
-
-.reward-backdrop.is-open .reward-dialog {
-  transform:
-    translateY(0) scale(1);
-}
-
-.reward-sparkles {
-  color: #d59b34;
-
-  letter-spacing: 8px;
-}
-
-.reward-icon {
-  width: 100px;
-  height: 100px;
-
-  margin:
-    8px auto 0;
-
-  display: grid;
-
-  place-items: center;
-}
-
-.reward-icon .deco-image {
-  filter: none;
-}
-
-.reward-icon .deco-fa {
-  font-size: 58px;
-}
-
-.reward-kicker {
-  margin:
-    8px 0 4px;
-
-  color:
-    var(--pink2, #d94e8b);
-
-  font-size: 11px;
-  font-weight: 900;
-
-  letter-spacing:
-    .12em;
-}
-
-.reward-dialog h2 {
-  margin: 0;
-
-  color: #293550;
-
-  font-size: 20px;
-}
-
-.reward-dialog p {
-  color: #6f6772;
-
-  font-size: 13px;
-
-  line-height: 1.65;
-}
-
-.reward-close-button {
-  width: 100%;
-
-  min-height: 46px;
-
-  border: 0;
-
-  border-radius: 15px;
-
-  color: #fff;
-
-  background:
-    linear-gradient(135deg,
-      var(--pink, #ef7fb0),
-      #bba9e9);
-
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-
-/* ==================================================
-   トースト
-================================================== */
-
-.diary-toast {
-  position: fixed;
-
-  z-index: 8000;
-
-  left: 50%;
-  bottom: 28px;
-
-  transform:
-    translateX(-50%);
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  padding:
-    11px 16px;
-
-  border-radius: 999px;
-
-  color: #4b5368;
-
-  background:
-    rgba(255, 255, 255, .96);
-
-  box-shadow:
-    0 12px 34px rgba(55, 48, 60, .18);
-
-  font-size: 13px;
-  font-weight: 700;
+    font-family:
+        "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
 }
 
-.diary-toast[hidden] {
-  display: none !important;
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
 }
-
-
-/* ==================================================
-   PC
-================================================== */
-
-@media (min-width: 900px) {
-
-  .diary-page {
-    height: 100vh;
-
-    overflow: hidden;
-  }
 
-
-  .diary-container {
-    height: 100vh;
-
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    padding-top: 32px;
-    padding-bottom: 24px;
-  }
-
-
-  #diaryPanel:not([hidden]) {
-    flex: 1;
-  }
-
-
-  #aquariumPanel:not([hidden]) {
-    flex: 1;
-
-    display: grid;
-
-    grid-template-columns:
-      minmax(0, 1.75fr) minmax(330px, .82fr);
-
-    gap: 20px;
-
-    overflow: hidden;
-  }
-
-
-  .aquarium-left-column,
-  .aquarium-right-column {
-    height: 100%;
-  }
-
-
-  .aquarium-left-column {
-    gap: 26px;
-  }
-
-
-  .aquarium-shell {
-    min-height: 0;
-  }
-
-
-  .aquarium-right-column {
-    height: 100%;
-
-    display: grid;
-
-    grid-template-rows:
-      auto 1fr auto;
-
-    gap: 10px;
-  }
-
-
-  .unlock-card,
-  .monthly-summary-card,
-  .ai-comment-card {
-    min-height: 0;
-  }
-
-
-  .monthly-summary-card {
-    height: 100%;
-  }
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(187, 169, 233, 0.35);
+    outline-offset: 2px;
 }
-
-/* ==================================================
-   スマホ
-================================================== */
-
-@media (max-width: 550px) {
-
-  /* ==================================================
-     画面全体
-  ================================================== */
-
-  .diary-page {
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
-
-  .diary-container {
-    width: 100%;
-    min-width: 0;
 
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-bottom:
-      calc(60px + 12px + env(safe-area-inset-bottom));
-  }
 
+/* ============================= */
+/* ログイン後ページ共通背景 */
+/* ============================= */
 
-  /* ==================================================
-     ヘッダー
-  ================================================== */
+.app-page {
+    min-height: 100vh;
 
-  .diary-header {
     position: relative;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow-x: hidden;
 
-    min-height: 50px;
+    background:
 
-    margin-bottom: 14px;
+        /* 左上：大きなピンク */
+        radial-gradient(
+            circle at 5% 9%,
+            rgba(255, 183, 214, 0.23) 0 145px,
+            transparent 148px
+        ),
 
-    gap: 0;
-  }
+        /* 右上：ラベンダー */
+        radial-gradient(
+            circle at 96% 10%,
+            rgba(206, 190, 242, 0.20) 0 165px,
+            transparent 168px
+        ),
 
-  /* スマホでは戻るボタンを非表示 */
-  #backButton {
-    display: none !important;
-  }
+        /* 左下 */
+        radial-gradient(
+            circle at 11% 79%,
+            rgba(255, 208, 225, 0.18) 0 125px,
+            transparent 128px
+        ),
 
-  /* 日記 / アクアリウム切り替え */
-  .diary-header-center {
-    width: min(300px, calc(100% - 40px));
-    min-width: 0;
+        /* 右下 */
+        radial-gradient(
+            circle at 91% 83%,
+            rgba(222, 202, 243, 0.18) 0 175px,
+            transparent 178px
+        ),
+
+        /* 中央付近のかなり薄い丸 */
+        radial-gradient(
+            circle at 49% 44%,
+            rgba(255, 214, 231, 0.13) 0 205px,
+            transparent 208px
+        ),
+
+        /* 下中央 */
+        radial-gradient(
+            circle at 57% 97%,
+            rgba(238, 214, 245, 0.13) 0 170px,
+            transparent 173px
+        ),
+
+        /* ベース */
+        var(--bg);
+}
+
+
+/* ============================= */
+/* ログイン後ページ共通レイアウト */
+/* ============================= */
+
+.app-container {
+    width: min(
+        1240px,
+        calc(100% - 64px)
+    );
 
     margin: 0 auto;
-  }
 
-  .diary-segment {
-    width: 100%;
+    padding:
+        42px
+        0
+        56px;
 
-    padding: 4px;
-  }
-
-  .diary-segment-button {
-    min-height: 40px;
-
-    font-size: 12px;
-  }
+    position: relative;
+    z-index: 1;
+}
 
 
-  /* ==================================================
-     追加ボタン
-     スマホでは右下固定
-  ================================================== */
+/* ============================= */
+/* 共通ページヘッダー */
+/* ============================= */
 
-  #openDiarySheet {
-    position: fixed !important;
-
-    left: auto !important;
-    right: 16px !important;
-
-    bottom:
-      calc(88px + env(safe-area-inset-bottom)) !important;
-
-    z-index: 300;
-
-    width: 58px;
-    height: 58px;
-
-    min-width: 58px;
+.page-header {
     min-height: 58px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
-    padding: 0;
-    margin: 0;
+    gap: 20px;
 
-    border: none;
-    border-radius: 18px;
+    margin-bottom: 32px;
+}
 
-    color: #ffffff;
-
-    background:
-      var(--pink2, #d94e8b);
-
-    box-shadow:
-      0 6px 18px rgba(80, 65, 75, 0.20);
-
-    font-size: 0;
-  }
-
-  #openDiarySheet i {
-    margin: 0;
-
-    font-size: 25px;
-  }
-
-  #openDiarySheet span {
-    display: none;
-  }
-
-
-  /* ==================================================
-     月切り替え
-  ================================================== */
-
-  .diary-month-switcher,
-  .aquarium-month-switcher {
-    width: 100%;
-
-    grid-template-columns:
-      36px minmax(0, 1fr) 36px;
-
-    gap: 7px;
-  }
-
-  .diary-month-switcher {
-    margin:
-      2px auto 12px;
-  }
-
-  .aquarium-month-switcher {
-    margin:
-      0 auto;
-  }
-
-  .month-arrow {
-    width: 34px;
-    height: 34px;
-  }
-
-  .diary-month-switcher h2,
-  .aquarium-month-switcher h2 {
-    font-size: 17px;
-  }
-
-
-  /* ==================================================
-     日記一覧
-  ================================================== */
-
-  #diaryPanel:not([hidden]) {
-    padding:
-      0 0 18px;
-  }
-
-  .diary-list {
-    gap: 10px;
-  }
-
-  .diary-card {
-    padding:
-      15px 16px;
-
-    border-radius: 18px;
-  }
-
-  .diary-card-date {
-    margin-bottom: 6px;
-
-    font-size: 14px;
-  }
-
-  .diary-card-text {
-    font-size: 13px;
-
-    line-height: 1.65;
-  }
-
-  .diary-card-footer {
-    margin-top: 10px;
-  }
-
-  .diary-mood-chip {
-    min-height: 28px;
-
-    padding:
-      3px 11px;
-
-    font-size: 11px;
-  }
-
-  .delete-entry-button {
-    width: 32px;
-    height: 32px;
-  }
-
-  .empty-state {
-    padding:
-      40px 18px;
-
-    border-radius: 20px;
-  }
-
-
-  /* ==================================================
-     アクアリウム
-  ================================================== */
-
-  #aquariumPanel:not([hidden]) {
-    width: 100%;
-
-    display: block;
-  }
-
-  .aquarium-left-column {
-    width: 100%;
-
-    gap: 9px;
-  }
-
-  .aquarium-shell {
-    width: 100%;
-
-    height: 350px;
-    min-height: 350px;
-
-    flex: none;
-
-    border-width: 4px;
-
-    border-radius:
-      27px 27px 23px 23px;
-  }
-
-  .aquarium-glass-shine {
-    inset: 6px;
-
-    border-radius: 22px;
-  }
-
-  .aquarium-fish-layer {
-    inset:
-      32px 10px 65px;
-  }
-
-
-  /* ==================================================
-     水槽の月装飾
-  ================================================== */
-
-  .month-decoration {
-    inset:
-      40px 10px 54px;
-  }
-
-  .month-deco-item {
-    width:
-      calc(var(--deco-width, 60px) * .72);
-
-    height:
-      calc(var(--deco-height, 60px) * .72);
-  }
-
-
-  /* ==================================================
-     右側情報カード
-     スマホでは水槽の下
-  ================================================== */
-
-  .aquarium-right-column {
-    width: 100%;
-
-    margin-top: 12px;
-
-    gap: 10px;
-  }
-
-  .unlock-card,
-  .monthly-summary-card,
-  .ai-comment-card {
-    border-radius: 18px;
-  }
-
-
-  /* ==================================================
-     今月のコレクション
-  ================================================== */
-
-  .unlock-card {
-    padding:
-      13px 14px;
-  }
-
-  .unlock-card h3 {
-    font-size: 14px;
-  }
-
-  #unlockProgressText {
-    font-size: 12px;
-  }
-
-  .unlock-progress-track {
-    height: 7px;
-
-    margin:
-      9px 0 8px;
-  }
-
-  .unlock-badges {
-    grid-template-columns:
-      repeat(6, minmax(0, 1fr));
-
-    gap: 3px;
-  }
-
-  .unlock-badge {
-    padding:
-      5px 1px;
-
-    border-radius: 9px;
-  }
-
-  .unlock-badge-icon {
-    width: 27px;
-    height: 27px;
-  }
-
-  .unlock-badge-label {
-    font-size: 7px;
-  }
-
-
-  /* ==================================================
-     今月のこころ
-  ================================================== */
-
-  .monthly-summary-card {
-    padding: 14px;
-  }
-
-  .card-heading-row h3,
-  .ai-comment-card h3 {
-    font-size: 15px;
-  }
-
-  .summary-overview {
-    gap: 8px;
-
-    margin-top: 10px;
-
-    padding-bottom: 10px;
-  }
-
-  .summary-overview span {
-    font-size: 10px;
-  }
-
-  .summary-overview strong {
-    font-size: 14px;
-  }
-
-  .summary-big-number strong b {
-    font-size: 23px;
-  }
-
-
-  /* ==================================================
-     円グラフ
-  ================================================== */
-
-  .mood-chart-area {
-    grid-template-columns:
-      110px minmax(0, 1fr);
-
+.page-header-left {
+    display: flex;
     align-items: center;
 
     gap: 12px;
-
-    margin-top: 13px;
-  }
-
-  .mood-pie-chart {
-    width: 108px;
-    height: 108px;
-  }
-
-  .mood-pie-chart::after {
-    inset: 24px;
-  }
-
-  .mood-pie-center strong {
-    font-size: 22px;
-  }
-
-  .mood-pie-center span {
-    font-size: 10px;
-  }
-
-  .mood-chart-legend {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap:
-      7px 8px;
-  }
-
-  .mood-legend-row {
-    grid-template-columns:
-      8px minmax(0, 1fr) auto;
-
-    gap: 4px;
-  }
-
-  .mood-legend-color {
-    width: 8px;
-    height: 8px;
-  }
-
-  .mood-legend-name,
-  .mood-legend-value {
-    font-size: 9px;
-  }
-
-  .mood-legend-value small {
-    font-size: 8px;
-  }
+}
 
 
-  /* ==================================================
-     AI秘書から
-  ================================================== */
+/* ============================= */
+/* 戻るボタン */
+/* ============================= */
 
-  .ai-comment-card {
-    padding:
-      13px 14px;
-  }
+.back-button {
+    width: 46px;
+    height: 46px;
 
-  .ai-comment-card p {
-    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size: 11px;
+    flex-shrink: 0;
 
-    line-height: 1.5;
-  }
-
-
-  /* ==================================================
-     日記追加シート
-  ================================================== */
-
-  .diary-sheet-backdrop {
     padding: 0;
-  }
 
-  .diary-sheet {
-    width: 100%;
+    border:
+        1px solid rgba(234, 217, 226, 0.85);
 
-    max-height: 94dvh;
+    border-radius: 16px;
 
-    overflow-y: auto;
+    color: var(--text);
 
-    padding:
-      10px 13px calc(16px + env(safe-area-inset-bottom));
+    background:
+        rgba(255, 255, 255, 0.8);
 
-    border-radius:
-      24px 24px 0 0;
-  }
+    box-shadow:
+        0 7px 20px rgba(105, 82, 98, 0.05);
 
-  .sheet-title-row h2 {
-    font-size: 16px;
-  }
+    font-size: 14px;
 
-  .sheet-close-button {
-    width: 36px;
-    height: 36px;
-  }
+    cursor: pointer;
 
-  .diary-textarea {
-    height: 78px;
-    min-height: 78px;
+    transition:
+        transform 0.2s,
+        background-color 0.2s,
+        box-shadow 0.2s;
+}
 
-    margin-top: 9px;
+.back-button:hover {
+    transform: translateX(-2px);
 
-    padding:
-      11px 12px;
+    background: white;
+
+    box-shadow:
+        0 9px 24px rgba(105, 82, 98, 0.08);
+}
+
+
+/* ============================= */
+/* 共通ページタイトル */
+/* ============================= */
+
+.page-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.page-heading-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
 
     border-radius: 15px;
+
+    color: #987bcf;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f9eff7,
+            #eee8fb
+        );
+
+    font-size: 18px;
+}
+
+.page-heading h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.page-heading p {
+    margin:
+        5px 0 0;
+
+    color: var(--muted);
 
     font-size: 13px;
-  }
 
-  .mood-picker-heading {
-    margin:
-      11px 0 7px;
-  }
+    line-height: 1.6;
+}
 
-  .mood-picker-heading strong {
-    font-size: 14px;
-  }
 
-  .mood-picker-heading span {
-    font-size: 10px;
-  }
+/* ============================= */
+/* 共通カード */
+/* ============================= */
 
-  .mood-picker {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+.common-card {
+    border:
+        1px solid rgba(234, 217, 226, 0.78);
 
-    gap: 6px;
-  }
+    border-radius: 28px;
 
-  .mood-choice {
-    min-height: 86px;
+    background:
+        rgba(255, 255, 255, 0.88);
 
-    padding:
-      4px 2px;
+    box-shadow: var(--shadow);
 
-    border-radius: 15px;
-  }
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
 
-  .mood-choice .mood-fish {
-    transform:
-      scale(.60);
 
-    margin:
-      -11px 0;
-  }
+/* ============================= */
+/* 共通トースト */
+/* ============================= */
 
-  .mood-choice-label {
-    font-size: 11px;
-  }
+.toast {
+    position: fixed;
 
-  .sheet-note {
-    margin-top: 8px;
+    z-index: 1000;
 
-    font-size: 10px;
-  }
+    left: 50%;
+    bottom: 30px;
 
-  .diary-database-option {
+    display: flex;
+    align-items: center;
+
     gap: 9px;
 
-    margin-top: 8px;
-
     padding:
-      8px 10px;
+        13px 20px;
 
-    border-radius: 14px;
-  }
+    border:
+        1px solid rgba(234, 217, 226, 0.85);
 
-  .database-option-text strong {
-    font-size: 12px;
-  }
+    border-radius: 16px;
 
-  .database-option-text span {
-    font-size: 9px;
-  }
+    color: var(--text);
 
-  .save-diary-button {
-    min-height: 46px;
+    background:
+        rgba(255, 255, 255, 0.95);
 
-    margin-top: 9px;
-
-    border-radius: 15px;
-  }
-
-
-  /* ==================================================
-     獲得アイテム
-  ================================================== */
-
-  .reward-backdrop {
-    padding: 16px;
-  }
-
-  .reward-dialog {
-    padding:
-      24px 18px 20px;
-
-    border-radius: 24px;
-  }
-
-  .reward-icon {
-    width: 84px;
-    height: 84px;
-  }
-
-  .reward-dialog h2 {
-    font-size: 18px;
-  }
-
-
-  /* ==================================================
-     トースト
-  ================================================== */
-
-  .diary-toast {
-    bottom:
-      calc(88px + env(safe-area-inset-bottom));
-
-    max-width:
-      calc(100% - 30px);
+    box-shadow:
+        0 15px 40px rgba(81, 63, 73, 0.14);
 
     font-size: 12px;
-  }
+    font-weight: 600;
 
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translate(-50%, 25px);
+
+    transition:
+        opacity 0.25s,
+        transform 0.25s,
+        visibility 0.25s;
+}
+
+.toast i {
+    color: var(--pink);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0);
+}
+
+
+/* ============================= */
+/* 共通フッター */
+/* ============================= */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        24px 5px 0;
+
+    color: #a0949b;
+
+    font-size: 10px;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.footer span {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.footer i {
+    color: #e8a0bc;
+}
+
+
+/* ============================= */
+/* 共通ツールチップ */
+/* ============================= */
+
+.tooltip-target {
+    position: relative;
+}
+
+.tooltip-target::after {
+    content: attr(data-tooltip);
+
+    position: absolute;
+
+    z-index: 1000;
+
+    top: calc(100% + 8px);
+    left: 50%;
+
+    width: max-content;
+    max-width: 280px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid #333;
+
+    border-radius: 3px;
+
+    color: #333;
+
+    background: white;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.10);
+
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    white-space: normal;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -4px);
+
+    transition:
+        opacity 0.15s,
+        transform 0.15s,
+        visibility 0.15s;
+}
+
+.tooltip-target:hover::after,
+.tooltip-target:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translate(-50%, 0);
+}
+
+
+/* ============================= */
+/* 共通追加ボタン */
+/* ============================= */
+
+.header-add-button {
+    min-height: 52px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 16px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            #d98bbd
+        );
+
+    box-shadow:
+        0 9px 24px rgba(232, 111, 163, 0.22);
+
+    font-size: 17px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        opacity 0.2s;
+}
+
+.header-add-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(232, 111, 163, 0.28);
+}
+
+.header-add-button:active {
+    transform: translateY(0);
+}
+
+
+.page-heading h2 {
+    margin: 0;
+
+    color: var(--heading);
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+/* ============================= */
+/* 共通タイトルカラー */
+/* ============================= */
+
+.page-title,
+.section-title,
+.task-page h1,
+.calendar-page h1,
+.settings-page h1,
+.news-page h1,
+.task-page h2,
+.calendar-page h2,
+.settings-page h2,
+.news-page h2 {
+    color: #5e5368;
+}
+
+
+/* ============================= */
+/* タブレット */
+/* ============================= */
+
+@media (max-width: 900px) {
+
+    .app-container {
+        width: min(
+            calc(100% - 36px),
+            1240px
+        );
+
+        padding-top: 28px;
+        padding-bottom: 42px;
+    }
+
+    .page-header {
+        min-height: 52px;
+
+        margin-bottom: 24px;
+    }
+}
+
+
+/* ============================= */
+/* スマートフォン */
+/* ============================= */
+
+@media (max-width: 550px) {
+
+    .app-page {
+        background:
+            radial-gradient(
+                circle at -8% 12%,
+                rgba(255, 183, 214, 0.20) 0 105px,
+                transparent 108px
+            ),
+
+            radial-gradient(
+                circle at 108% 25%,
+                rgba(206, 190, 242, 0.18) 0 115px,
+                transparent 118px
+            ),
+
+            radial-gradient(
+                circle at 6% 83%,
+                rgba(255, 208, 225, 0.16) 0 90px,
+                transparent 93px
+            ),
+
+            radial-gradient(
+                circle at 101% 77%,
+                rgba(222, 202, 243, 0.15) 0 105px,
+                transparent 108px
+            ),
+
+            var(--bg);
+    }
+
+
+    .app-container {
+        width: calc(100% - 20px);
+
+        padding-top: 14px;
+        padding-bottom: 32px;
+    }
+
+
+    .page-header {
+        min-height: 0;
+
+        gap: 10px;
+
+        margin-bottom: 18px;
+    }
+
+
+    .page-header-left {
+        gap: 8px;
+    }
+
+
+    .back-button {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 14px;
+    }
+
+
+    .page-heading {
+        gap: 8px;
+    }
+
+
+    .page-heading-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 14px;
+
+        font-size: 16px;
+    }
+
+
+    .page-heading h2 {
+        font-size: 20px;
+    }
+
+
+    .page-heading p {
+        font-size: 11px;
+    }
+
+
+    .common-card {
+        border-radius: 23px;
+    }
+
+
+    .footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+
+    .tooltip-target::after {
+        display: none;
+    }
+
+
+    .header-add-button {
+        width: 42px;
+        height: 42px;
+        min-height: 42px;
+
+        padding: 0;
+
+        border-radius: 14px;
+
+        flex-shrink: 0;
+    }
+
+
+    .header-add-button span {
+        display: none;
+    }
+
+
+    .header-add-button i {
+        font-size: 13px;
+    }
+}
+
+
+/* ========================= */
+/* スマホ用 下部ナビ */
+/* ========================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+
+    .mobile-bottom-nav {
+        position: fixed;
+
+        z-index: 1000;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+
+        /*
+         * 75pxの中にsafe-areaを押し込まず、
+         * safe-area分も含めて高さを確保する
+         */
+        min-height:
+            calc(75px + env(safe-area-inset-bottom));
+
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        padding:
+            8px
+            0
+            calc(6px + env(safe-area-inset-bottom));
+
+        border-top:
+            1px solid #eee;
+
+        background: #fff;
+
+        overflow: visible;
+    }
+
+
+    .mobile-nav-item {
+        flex: 1;
+
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        padding:
+            2px
+            0;
+
+        color: #9ba7a5;
+
+        text-decoration: none;
+
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+
+    .mobile-nav-item i {
+        display: block;
+
+        font-size: 23px;
+        line-height: 1;
+    }
+
+
+    .mobile-nav-item span {
+        display: block;
+
+        line-height: 1.2;
+    }
+
+
+    .mobile-nav-item.active {
+        color: #1f2928;
+    }
+
+
+    /*
+     * 下部ナビで本文が隠れないようにする
+     */
+    body {
+        padding-bottom:
+            calc(75px + env(safe-area-inset-bottom));
+    }
 }
